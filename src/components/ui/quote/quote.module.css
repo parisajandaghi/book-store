@@ -1,0 +1,15 @@
+.quoteWrapper {
+  max-width: 700px;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(rgb(31, 15, 31), rgba(31, 15, 31, 0.45));
+  border-radius: 24px;
+}
+.title {
+  opacity: 0.8;
+  line-height: 1.4;
+  font-weight: 400;
+}

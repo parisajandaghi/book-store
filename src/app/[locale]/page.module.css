@@ -1,0 +1,22 @@
+.secondary {
+  color: #fdf6eb;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 0px 28px;
+  background: transparent;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+   backdrop-filter: blur(10px);
+ background: rgba(47, 22, 47, 0.35);
+}
+
+.secondary:hover {
+  background: rgba(47, 22, 47, 0.35);
+  border-color: #349a4780;
+  
+}
+
+.secondary:active {
+  transform: translateY(1);
+}

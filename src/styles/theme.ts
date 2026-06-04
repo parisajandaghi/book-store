@@ -1,0 +1,57 @@
+import { createTheme } from "@mantine/core";
+
+export const theme = createTheme({
+  colors: {
+    primary: [
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+      "#2f162f",
+    ],
+    secondary: [
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+      "#1F0F1F",
+    ],
+    surface: [
+      "#d4af371a",
+      "#d4af3733",
+      "#d4af374d",
+      "#d4af3766",
+      "#d8b04f",
+      "#d4af37",
+      "#bc982a",
+      "#a78622",
+      "#9b7d1b",
+      "#7b6210",
+    ],
+
+    textMain: [
+      "#ffffff",
+      "#fefaf4",
+      "#fdf6eb",
+      "#fcf1e0",
+      "#fbebd3",
+      "#fae5c7",
+      "#f9e0bb",
+      "#f8daae",
+      "#f6d4a2",
+      "#f5ce95",
+    ],
+  },
+  primaryColor: "primary",
+  fontFamily: "'IRANSansWeb', sans-serif",
+});

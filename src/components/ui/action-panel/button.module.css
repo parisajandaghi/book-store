@@ -1,0 +1,33 @@
+.Secondary {
+  color: #fdf6eb;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 0px 15px;
+  background: transparent;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  background: rgba(47, 22, 47, 0.57);
+}
+
+.Secondary:hover {
+  background: rgba(47, 22, 47, 0.35);
+  border-color: #d4af3766;
+}
+
+.Primary {
+  width: 150px;
+  color: #fdf6eb;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 20px;
+  padding: 0px 15px;
+  backdrop-filter: blur(10px);
+  background: rgba(47, 22, 47, 0.4);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.Primary:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+}

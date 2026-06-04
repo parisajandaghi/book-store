@@ -1,0 +1,13 @@
+.card {
+  background-color: #1f0f1fca;
+  transition: all 0.25s ease;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  /* background-color: #1f0f1f68; */
+  border: 1px solid #d4af3766;
+  cursor: pointer;
+}

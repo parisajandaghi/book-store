@@ -1,0 +1,105 @@
+{
+  "Header": {
+    "Book": "Book",
+    "Store": "Store",
+    "Home": "Home",
+    "Books": "Books",
+    "Orders": "Orders",
+    "Cart": "Cart",
+    "Login": "Login",
+    "Logout": "Logout",
+    "fa": "فارسی",
+    "en": "English"
+  },
+  "Home": {
+    "SearchPlaceHolder": "Search books, authors or topics...",
+    "DiscoverAllBooks": "Discover All Books",
+    "Quote": "It now became clear to me that when man sought out preachers of virtue, what he sought above all else: he sought a good sleep and its soporific virtues! And ...",
+    "Author": "Friedrich Nietzsche",
+    "ViewAll": "View All",
+    "FeaturedBooks": "Featured Books"
+  },
+  "Books": {
+    "AllBooks": "All Books",
+    "Sort": "Sort",
+    "MostPopular": "Most Popular",
+    "MostExpensive": "High to Low",
+    "Cheapest": "Low to High"
+  },
+
+  "BooksDetails": {
+    "AddToCart": "Add to Cart",
+    "AuthorBy": "by {authorName}"
+  },
+  "Product": {
+    "CurrencySymbol": "$"
+  },
+  "Orders": {
+    "Title": "Order History",
+    "TableHeaders": {
+      "OrderId": "Order Id",
+      "Date": "Order Date",
+      "Total": "Total Amount",
+      "Status": "وtatuت",
+      "Actions": "Actions",
+      "Items": "Items"
+    },
+    "Sort": {
+      "Title": "Sort",
+      "AllOrders": "All Orders"
+    },
+    "Status": {
+      "Pending": "Pending",
+      "Processing": "Processing",
+      "Delivered": "Delivered",
+      "Cancelled": "Cancelled"
+    },
+    "Actions": {
+      "ViewDetails": "View Details",
+      "TrackOrder": "Track Order",
+      "Reorder": "Reorder"
+    },
+    "EmptyState": {
+      "Title": "No Orders Found !",
+      "Description": "You haven't placed any orders yet.",
+      "StartShopping": "Start Shopping"
+    }
+  },
+  "OrderDetails": {
+    "OrderDate": "Order Date",
+    "OrderStatus": "Order Status",
+    "OrderSummary": "Order Summary",
+    "Subtotal": "Subtotal",
+    "ShippingFee": "Shipping Fee",
+    "TotalAmount": "Total Amount",
+    "DownloadInvoice": "Download Invoice",
+    "CancelOrder": "Cancel Order",
+    "OrderItems": "Order Items",
+    "ShippingInfo": "Shipping Information",
+    "RecipientName": "Recipient Name",
+    "ContactNumber": "Contact Number",
+    "FullAddress": "Full Address",
+    "TrackingCode": "Tracking Code",
+    "Product": "Product",
+    "TotalPrice": "Total Price",
+    "UnitPrice": "Unit Price",
+    "Qty": "Quantity"
+  },
+  "Cart": {
+    "ShoppingCart": "Shopping Cart",
+    "ContinueShopping": "Continue Shopping",
+    "CheckOut": "Check Out",
+    "ShoppingCartOff": "Your Cart Is Empty!"
+  },
+  "Search": {
+    "NotFound": "No Results Found."
+  },
+  "Notifications": {
+    "SearchFailed": "Search failed",
+    "bookCreated": "Book created successfully",
+    "bookUpdated": "Book updated successfully",
+    "bookDeleted": "Book deleted successfully",
+    "somethingWentWrong": "Something went wrong",
+    "noResultsFound": "No results found!"
+  }
+}

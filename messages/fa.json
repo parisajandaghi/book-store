@@ -1,0 +1,105 @@
+{
+  "Header": {
+    "Book": "کتاب ",
+    "Store": "سرا",
+    "Home": "خانه",
+    "Books": "کتاب ها",
+    "Orders": "سفارشات",
+    "Cart": "سبد خرید",
+    "Login": "ورود",
+    "Logout": "خروج",
+    "fa": "فارسی",
+    "en": "English"
+  },
+  "Home": {
+    "SearchPlaceHolder": "جستجوی کتاب، نویسنده، عنوان و ...",
+    "DiscoverAllBooks": "مشاهده همه",
+    "Quote": "اکنون بر من آشکار شد که آدمی آنگاه که در جستجوی واعظانِ فضیلت بود، بیش از هر چیز به دنبال چه می‌گشت: او در جستجوی خوابی خوش و آرام و فضایلِ خواب‌آورِ آن بود! و …",
+    "Author": "فردریش نیچه",
+    "ViewAll": "مشاهده همه",
+    "FeaturedBooks": "کتاب‌های برگزیده"
+  },
+  "Books": {
+    "AllBooks": "لیست کتاب ها",
+    "Sort": "مرتب سازی",
+    "MostPopular": "محبوب ترین",
+    "MostExpensive": "گرانترین",
+    "Cheapest": "ارزانترین"
+  },
+  "BooksDetails": {
+    "AddToCart": "افزودن به سبد خرید",
+    "AuthorBy": "اثر {authorName}"
+  },
+
+  "Product": {
+    "CurrencySymbol": "تومان"
+  },
+  "Orders": {
+    "Title": "تاریخچه سفارشات",
+    "TableHeaders": {
+      "OrderId": "شماره سفارش",
+      "Date": "تاریخ ثبت",
+      "Total": "مبلغ کل",
+      "Status": "وضعیت",
+      "Actions": "عملیات",
+      "Items": "اقلام"
+    },
+    "Sort": {
+      "Title": "مرتب سازی",
+      "AllOrders": "همه سفارشات"
+    },
+    "Status": {
+      "Pending": "در انتظار پرداخت",
+      "Processing": "در حال پردازش",
+      "Delivered": "تحویل داده شده",
+      "Cancelled": "لغو شده"
+    },
+    "Actions": {
+      "ViewDetails": "مشاهده جزئیات",
+      "TrackOrder": "رهگیری سفارش",
+      "Reorder": "خرید مجدد"
+    },
+    "EmptyState": {
+      "Title": "سفارشی یافت نشد!",
+      "Description": "شما هنوز هیچ سفارشی ثبت نکرده‌اید.",
+      "StartShopping": "شروع خرید"
+    }
+  },
+  "OrderDetails": {
+    "OrderDate": "تاریخ ثبت سفارش",
+    "OrderStatus": "وضعیت ثبت سفارش",
+    "OrderSummary": "خلاصه سفارش",
+    "Subtotal": "قیمت کالاها",
+    "ShippingFee": "هزینه ارسال",
+    "TotalAmount": "مبلغ نهایی",
+    "DownloadInvoice": "دانلود فاکتور",
+    "CancelOrder": "لغو سفارش",
+    "OrderItems": "آیتم های سفارش",
+    "ShippingInfo": "اطلاعات ارسال",
+    "RecipientName": "نام گیرنده",
+    "ContactNumber": "شماره تماس",
+    "FullAddress": "آدرس کامل",
+    "TrackingCode": "کد رهگیری مرسوله",
+    "Product": "محصول",
+    "TotalPrice": "قیمت کل",
+    "UnitPrice": "قیمت واحد",
+    "Qty": "تعداد"
+  },
+  "Cart": {
+    "ShoppingCart": "سبد خرید",
+    "ContinueShopping": "ادامه خرید",
+    "CheckOut": "تکمیل خرید",
+    "ShoppingCartOff": "سبد خرید شما خالی است!"
+  },
+  "Search": {
+    "NotFound": "موردی یافت نشد."
+  },
+  "Notifications": {
+    "SearchFailed": "خطا در جستجو",
+    "bookCreated": "کتاب با موفقیت ایجاد شد",
+    "bookUpdated": "کتاب با موفقیت ویرایش شد",
+    "bookDeleted": "کتاب با موفقیت حذف شد",
+    "somethingWentWrong": "مشکلی رخ داد",
+    "noResultsFound": "موردی یافت نشد!"
+  }
+}

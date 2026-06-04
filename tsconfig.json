@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "src/lib/db.ts", "src/app/api/books/route.ts"  ],
   "exclude": ["node_modules"]
 }

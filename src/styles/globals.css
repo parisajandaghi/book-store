@@ -1,0 +1,71 @@
+:root {
+  --app-height: 100vh;
+}
+
+html,
+body,
+#__next {
+  min-height: 100vh;
+  width: 100%;
+  font-family: "IRANSansWeb";
+  padding: 0;
+  margin: 0;
+
+  overflow-x: clip;
+
+  background-color: #1f0f1f;
+}
+
+.appBackground {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+    url("/images/book-cover-1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.custom-select-input {
+  color: #fdf6eb;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 0px 15px;
+  background: rgba(47, 22, 47, 0.57);
+  backdrop-filter: blur(10px);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  height: 40px;
+}
+
+.custom-select-input:hover,
+.custom-select-input:focus {
+  background: rgba(47, 22, 47, 0.35);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.custom-select-dropdown {
+  background: rgba(47, 22, 47, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+}
+
+.mantine-Select-option {
+  color: #fdf6eb !important;
+  border-radius: 8px !important;
+  margin: 4px !important;
+}
+
+.mantine-Select-option:hover,
+.mantine-Select-option[data-combobox-active] {
+  background-color: #d4af3709 !important;
+  color: #ffffff !important;
+}
+
+.mantine-Select-option[data-combobox-selected] {
+  background-color: rgba(212, 175, 55, 0.6) !important;
+  color: #ffffff !important;
+}
