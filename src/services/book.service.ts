@@ -9,11 +9,27 @@ export function getBooks(
   page: number = 1,
   limit: number = 10,
   search: string = "",
+  sort: string = "most_popular",
 ) {
   const offset = (page - 1) * limit;
 
   const hasSearch = search.trim().length > 0;
+  let orderBy = "books.created_at DESC";
 
+  switch (sort) {
+    case "most_popular":
+      orderBy = "books.views DESC";
+      break;
+    case "most_expensive":
+      orderBy = "books.price DESC";
+      break;
+    case "cheapest":
+      orderBy = "books.price ASC";
+      break;
+
+    default:
+      orderBy = "books.created_at DESC";
+  }
   let count: number;
   let booksFromDb: Book[];
 
@@ -42,7 +58,7 @@ export function getBooks(
       ON books.id = translations.book_id
       WHERE translations.title LIKE ?
       OR translations.author LIKE ?
-      ORDER BY books.created_at DESC
+      ORDER BY  ${orderBy}
       LIMIT ? OFFSET ?
     `);
 
@@ -64,7 +80,7 @@ export function getBooks(
     const booksStmt = db.prepare(`
       SELECT *
       FROM books
-      ORDER BY created_at DESC
+       ORDER BY ${orderBy}
       LIMIT ? OFFSET ?
     `);
 
@@ -95,15 +111,15 @@ export function getBooks(
   ) as unknown as Translation[];
 
   const finalBooks = booksFromDb.map((book) => {
-  const bookTranslations = translations
-    .filter((t) => t.book_id === book.id)
-    .map((t) => ({ ...t }));
+    const bookTranslations = translations
+      .filter((t) => t.book_id === book.id)
+      .map((t) => ({ ...t }));
 
-  return {
-    ...book,
-    translations: bookTranslations,
-  };
-});
+    return {
+      ...book,
+      translations: bookTranslations,
+    };
+  });
 
   return {
     data: finalBooks,

@@ -1,6 +1,7 @@
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import VerticalDivider from "@/components/ui/elements/vertical-divider";
 import AddToCartButton from "@/features/books/components/add-to-cart-button";
+import TrackBookView from "@/features/books/components/track-book-view";
 import { getBookById } from "@/services/book.service";
 import { getFormattedPrice, getLocalizedBook } from "@/utils/book.utils";
 import { Card, Group, Image, Stack, Text, Title } from "@mantine/core";
@@ -34,6 +35,7 @@ export default async function BookDetails({
   }
 
   const formattedPrice = getFormattedPrice(book.price, locale);
+console.log('book',book);
 
   return (
     <Group
@@ -43,6 +45,7 @@ export default async function BookDetails({
       align="center"
       style={{ flex: 1 }}
     >
+      <TrackBookView bookId={book.id} />
       <Card
         shadow="sm"
         radius="md"

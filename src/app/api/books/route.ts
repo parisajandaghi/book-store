@@ -15,9 +15,10 @@ export function GET(req: Request) {
     const page = Number(searchParams.get("page")) || 1;
     const limit = Number(searchParams.get("limit")) || 10;
     const search = searchParams.get("search") ?? "";
+    const sort = searchParams.get("sort") || "most_popular";
 
     // حذف await
-    const result = getBooks(page, limit, search);
+    const result = getBooks(page, limit, search, sort);
 
     return NextResponse.json(result, { status: 200 });
   } catch (error: unknown) {

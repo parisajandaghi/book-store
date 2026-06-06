@@ -37,7 +37,8 @@ if (!global.__db) {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               price REAL NOT NULL,
               image_url TEXT NOT NULL,
-              created_at TEXT DEFAULT CURRENT_TIMESTAMP
+              created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+              views INTEGER DEFAULT 0
             );
           `,
         },
