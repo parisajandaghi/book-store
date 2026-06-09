@@ -101,5 +101,21 @@
     "bookDeleted": "کتاب با موفقیت حذف شد",
     "somethingWentWrong": "مشکلی رخ داد",
     "noResultsFound": "موردی یافت نشد!"
+  },
+  "CheckoutInfo": {
+    "Name": "نام و نام خانوادگی",
+    "Mobile": "شماره موبایل",
+    "Address": "آدرس",
+    "PostalCode": "کد پستی",
+    "City": "شهر",
+    "Province": "استان",
+    "ShippingInfo": "اطلاعات ارسال",
+    "PlaceHolders": {
+      "Phone": "مثال : 0912408426",
+      "Name": "مثال : سارا احمدی",
+      "Province": "انتخاب استان",
+      "City": "انتخاب شهر",
+      "PostalCode": "مثال : 1678532349"
+    }
   }
 }

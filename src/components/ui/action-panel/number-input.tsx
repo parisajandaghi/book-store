@@ -3,42 +3,52 @@ import { useCart } from "@/features/carts/hooks/use-cart";
 import { ActionIcon, Group, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import React from "react";
-type NumberInputProps = {
+interface NumberInputProps {
   bookId: number;
   quantity: number;
-};
-export default function NumberInput({ bookId, quantity }: NumberInputProps) {
+  compact?: boolean;
+}
+
+export default function NumberInput({
+  bookId,
+  quantity,
+  compact = false,
+}: NumberInputProps) {
   const { decreaseQuantity, increaseQuantity } = useCart();
+
   return (
     <Group
-      w={80}
-      p={5}
+      w={compact ? 70 : 80}
+      p={compact ? 3 : 5}
       justify="space-between"
       wrap="nowrap"
       align="center"
       bg="#1f0f1fa8"
-      bdrs={8}
-      style={{ border: "1px solid rgba(255, 255, 255, 0.1)" }}
+      style={{
+        borderRadius: 8,
+        border: "1px solid rgba(255, 255, 255, 0.1)",
+      }}
     >
       <ActionIcon
         variant="transparent"
-        size={12}
+        size={compact ? 10 : 12}
         c={"surface.4"}
         onClick={() => decreaseQuantity(bookId)}
       >
-        <IconMinus />
+        <IconMinus size={compact ? 10 : 14} />
       </ActionIcon>
 
-      <Text size="xs" c={"textMain.0"}>
+      <Text fz={compact ? 10 : "xs"} c={"textMain.0"}>
         {quantity}
       </Text>
+
       <ActionIcon
         variant="transparent"
-        size={12}
+        size={compact ? 10 : 12}
         c={"surface.4"}
         onClick={() => increaseQuantity(bookId)}
       >
-        <IconPlus />
+        <IconPlus size={compact ? 10 : 14} />
       </ActionIcon>
     </Group>
   );

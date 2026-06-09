@@ -40,7 +40,7 @@
       "OrderId": "Order Id",
       "Date": "Order Date",
       "Total": "Total Amount",
-      "Status": "وtatuت",
+      "Status": "Status",
       "Actions": "Actions",
       "Items": "Items"
     },
@@ -90,6 +90,22 @@
     "ContinueShopping": "Continue Shopping",
     "CheckOut": "Check Out",
     "ShoppingCartOff": "Your Cart Is Empty!"
+  },
+  "CheckoutInfo": {
+    "Name": "Name",
+    "Mobile": "Phone Number",
+    "Address": "Address",
+    "PostalCode": "Postal Code",
+    "City": "City",
+    "Province": "Province",
+    "ShippingInfo": "Shipping Information",
+    "PlaceHolders": {
+      "Phone": "e.g. : 09124080426",
+      "Name": "e.g. : Sara Ahmadi",
+      "Province": "Select Province",
+      "City": "Select City",
+      "PostalCode": "e.g. : 1678532349"
+    }
   },
   "Search": {
     "NotFound": "No Results Found."
