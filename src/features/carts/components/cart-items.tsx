@@ -6,12 +6,9 @@ import { Link } from "@/navigation";
 import { Container, Group, ScrollArea, Stack, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useCart } from "../hooks/use-cart";
 import CartItemsList from "./cart-items-list";
 
 export default function CartItems() {
-  const { cartTotal } = useCart();
-
   const t2 = useTranslations("Cart");
   const locale = useLocale();
 
@@ -42,16 +39,15 @@ export default function CartItems() {
               <CartItemsList />
             </ScrollArea>
           </GlassPanel>
-          <OrderSummary
+        
+            <OrderSummary
             button={
-              <Link href={"/cart/checkout"}>
-                <PrimaryButton btnText={t2("CheckOut")} />
+              <Link href={"/cart/checkout"} style={{ width: "100%", display: "block" }}>
+                <PrimaryButton btnText={t2("CheckOut")} width={'100%'} />
               </Link>
             }
-            subtotal={cartTotal}
-            shippingFee={12222}
-            totalAmount={1221333}
           />
+        
         </Group>
       </Stack>
     </Container>

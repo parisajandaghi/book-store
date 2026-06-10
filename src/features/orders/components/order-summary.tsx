@@ -6,18 +6,16 @@ import { useLocale, useTranslations } from "next-intl";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import { getFormattedPrice } from "@/utils/book.utils";
 import { OrderSummaryProps } from "../order.type";
+import { useCart } from "@/features/carts/hooks/use-cart";
+import { SHIPPING_FEE } from "@/constants";
 
-export default function OrderSummary({
-  button,
-  subtotal,
-  shippingFee,
-  totalAmount,
-  children,
-}: OrderSummaryProps) {
+export default function OrderSummary({ button, children }: OrderSummaryProps) {
+  const { cartTotal } = useCart();
+  const totalAmount = cartTotal + SHIPPING_FEE;
+  
   const t2 = useTranslations("OrderDetails");
   const t1 = useTranslations("Product");
   const locale = useLocale();
-
   const renderPrice = (amount: number) => {
     const formattedPrice = getFormattedPrice(amount, locale);
     return locale === "en"
@@ -48,7 +46,7 @@ export default function OrderSummary({
           c={"textMain.3"}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
-          {renderPrice(subtotal)}
+          {renderPrice(cartTotal)}
         </Text>
       </Group>
       <Group justify="space-between" px={"xs"}>
@@ -60,7 +58,7 @@ export default function OrderSummary({
           c={"textMain.3"}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
-          {renderPrice(shippingFee)}
+          {renderPrice(SHIPPING_FEE)}
         </Text>
       </Group>
       <HorizontalDivider />
@@ -81,7 +79,7 @@ export default function OrderSummary({
       {button && (
         <>
           <HorizontalDivider />
-          <Group w={"100%"} justify="center" align="center">
+          <Group w={"100%"}  >
             {button}
           </Group>
         </>

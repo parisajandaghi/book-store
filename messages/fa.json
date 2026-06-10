@@ -116,6 +116,8 @@
       "Province": "انتخاب استان",
       "City": "انتخاب شهر",
       "PostalCode": "مثال : 1678532349"
-    }
+    },
+    "ContinueToPayment": "ادامه پرداخت",
+    "AddNewAddress": "افزودن آدرس جدید"
   }
 }

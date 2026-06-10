@@ -16,11 +16,8 @@ export interface Order {
 }
 export interface OrderSummaryProps {
   button?: ReactNode;
-  shippingFee: number;
-  subtotal: number;
-  totalAmount: number;
-  children?:ReactNode;
-  
+
+  children?: ReactNode;
 }
 export interface ShoppingInfoProps {
   name: string;

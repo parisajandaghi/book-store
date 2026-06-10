@@ -1,119 +1,33 @@
 "use client";
-import GlassPanel from "@/components/ui/glass/glass-panel";
+import PrimaryButton from "@/components/ui/action-panel/primary-button";
+import {
+  CheckoutAddressFormValues,
+  userMockAddresses,
+} from "@/features/carts/cart.type";
+import AddressSelector from "@/features/carts/components/address-selector";
 import CartItemsList from "@/features/carts/components/cart-items-list";
+import CheckoutAddressForm from "@/features/carts/components/check-out-address-form";
 import OrderSummary from "@/features/orders/components/order-summary";
-import {
-  Container,
-  Group,
-  ScrollArea,
-  Select,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Container, Group, ScrollArea, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import {
-  IconBuildingCommunity,
-  IconMailbox,
-  IconMap,
-  IconMapPin,
-  IconMapPin2,
-  IconPhone,
-  IconUser,
-} from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import style from "../../../../features/carts/cart.module.css";
-import { useCart } from "@/features/carts/hooks/use-cart";
 export default function Checkout() {
-  const form = useForm({});
-  const { cartTotal } = useCart();
   const t = useTranslations("CheckoutInfo");
-
-  const shippingFee = 100000;
-
-  const totalAmount = cartTotal + shippingFee;
+  const form = useForm<CheckoutAddressFormValues>({});
+  const hasAddress = userMockAddresses.length > 0;
   return (
     <Container w={"55rem"} pt={40} pb={40}>
-      <Group align="flex-start">
-        <GlassPanel flex={2} p={"md"}>
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <Stack>
-              <Group gap={5}>
-                <IconMapPin color="var(--mantine-color-surface-7)" />
-                <Text mt={3} c={"textMain.3"}>
-                  {t("ShippingInfo")}
-                </Text>
-              </Group>
-              <TextInput
-                placeholder={t("PlaceHolders.Name")}
-                leftSection={<IconUser size={16} />}
-                label={t("Name")}
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-              ></TextInput>
-              <TextInput
-                label={t("Mobile")}
-                placeholder={t("PlaceHolders.Phone")}
-                leftSection={<IconPhone size={16} />}
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-              ></TextInput>
-              <Group w={"100%"} justify="space-evenly">
-                <Select
-                  placeholder={t("PlaceHolders.Province")}
-                  label={t("Province")}
-                  leftSection={<IconMap size={16} />}
-                  classNames={{
-                    input: style.input,
-                    label: style.label,
-                  }}
-                  flex={1}
-                />
-                <Select
-                  placeholder={t("PlaceHolders.City")}
-                  leftSection={<IconBuildingCommunity size={16} />}
-                  label={t("City")}
-                  classNames={{
-                    input: style.input,
-                    label: style.label,
-                  }}
-                  flex={1}
-                />
-              </Group>
-              <TextInput
-                placeholder={t("PlaceHolders.PostalCode")}
-                leftSection={<IconMailbox size={16} />}
-                label={t("PostalCode")}
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-              ></TextInput>
-              <Textarea
-                leftSection={<IconMapPin2 size={16} />}
-                label={t("Address")}
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-              ></Textarea>
-            </Stack>
-          </form>
-        </GlassPanel>
-        <OrderSummary
-          subtotal={cartTotal}
-          shippingFee={shippingFee}
-          totalAmount={totalAmount}
-        >
-          <ScrollArea h={200} offsetScrollbars type="hover">
-            <CartItemsList compact={true} />
-          </ScrollArea>
-        </OrderSummary>
+      <Group align="stretch">
+        {hasAddress ? <AddressSelector /> : <CheckoutAddressForm form={form} />}
+        <Stack flex={1}>
+          <OrderSummary
+            button={<PrimaryButton btnText={t("ContinueToPayment")} width={'100%'}/>}
+          >
+            <ScrollArea h={150} offsetScrollbars type="hover">
+              <CartItemsList compact={true} />
+            </ScrollArea>
+          </OrderSummary>
+        </Stack>
       </Group>
     </Container>
   );

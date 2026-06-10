@@ -84,11 +84,7 @@ export default function OrderDetails() {
             </Badge>
           </Group>
         </Stack>
-        <OrderSummary
-          shippingFee="340000 تومان"
-          subtotal="120000 تومان"
-          totalAmount="540000 تومان"
-        />
+        <OrderSummary />
         <Stack flex={1} p={"xs"}>
           <Button
             color="secondary.0"

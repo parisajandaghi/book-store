@@ -4,7 +4,14 @@ export interface CheckoutResult {
   order_id: string;
   total: number;
 }
-
+export type CheckoutAddressFormValues = {
+  name: string;
+  phone: string;
+  province: string | null;
+  city: string | null;
+  postalCode: string;
+  address: string;
+};
 export interface CartItemRow {
   id: number;
   book_id: number;
@@ -21,29 +28,43 @@ export type CartItem = {
   author?: string;
   translations?: Translation[];
 };
-export const cartItems = [
+
+// i define it until using api
+
+export type Address = {
+  id: number;
+  recipientName: string;
+  phone: string;
+  postalCode: string;
+  address: string;
+};
+export const userMockAddresses = [
   {
-    id: 1, // همیشه یک id یکتا برای key در مپ نیاز دارید
-    title: "جاناتان مرغ دریایی",
-    author: "ریچارد باخ",
-    price: 300000,
-    imageSrc: "/images/jonathan-livingston-seagull.jpg",
-    quantity: 1, // مقدار اولیه برای NumberInput
+    id: 1,
+    recipientName: "Parisa Jandaghi",
+    phone: "09123456789",
+    postalCode: "1234567890",
+    address: "Tehran, Valiasr Street, No. 25, Unit 4",
   },
   {
-    id: 2, // همیشه یک id یکتا برای key در مپ نیاز دارید
-    title: "جاناتان مرغ دریایی",
-    author: "ریچارد باخ",
-    price: 300000,
-    imageSrc: "/images/jonathan-livingston-seagull.jpg",
-    quantity: 2, // مقدار اولیه برای NumberInput
+    id: 2,
+    recipientName: "Parisa Jandaghi",
+    phone: "09123456789",
+    postalCode: "1234567891",
+    address: "Tehran, Shariati Street, No. 120, Unit 8",
   },
   {
-    id: 3, // همیشه یک id یکتا برای key در مپ نیاز دارید
-    title: "جاناتان مرغ دریایی",
-    author: "ریچارد باخ",
-    price: 300000,
-    imageSrc: "/images/jonathan-livingston-seagull.jpg",
-    quantity: 1, // مقدار اولیه برای NumberInput
+    id: 3,
+    recipientName: "Ali Ahmadi",
+    phone: "09121234567",
+    postalCode: "9876543210",
+    address: "Mashhad, Ahmadabad Blvd, No. 12",
+  },
+  {
+    id: 4,
+    recipientName: "Sara Mohammadi",
+    phone: "09351234567",
+    postalCode: "4567891230",
+    address: "Shiraz, Zand Street, Alley 8, Unit 2",
   },
 ];

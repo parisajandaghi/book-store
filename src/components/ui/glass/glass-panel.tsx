@@ -7,7 +7,7 @@ export default function GlassPanel({ children, style, ...props }: StackProps) {
       style={{
         backgroundColor: "#1f0f1fa8",
         borderRadius: 8,
-        border: "1px solid #d4af3766",
+        // border: "1px solid #d4af3766",
 
         ...style,
       }}

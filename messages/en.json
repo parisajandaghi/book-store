@@ -105,7 +105,9 @@
       "Province": "Select Province",
       "City": "Select City",
       "PostalCode": "e.g. : 1678532349"
-    }
+    },
+    "ContinueToPayment": "Continue To Payment",
+    "AddNewAddress": "Add New Address"
   },
   "Search": {
     "NotFound": "No Results Found."
