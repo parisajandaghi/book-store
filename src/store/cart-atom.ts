@@ -11,4 +11,4 @@ export const cartCountAtom = atom((get) => {
   const items = get(cartItemsAtom);
   return items.reduce((total, item) => total + item.quantity, 0);
 });
-
+export const addressModalAtom=atom<boolean>(false)

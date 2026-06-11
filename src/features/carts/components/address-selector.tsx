@@ -4,8 +4,11 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import classes from "../address-selector.module.css";
 import { userMockAddresses } from "../cart.type";
+import { addressModalAtom } from "@/store/cart-atom";
+import { useAtom } from "jotai";
 export default function AddressSelector() {
   const [value, setValue] = useState<string | null>(null);
+  const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
   const t = useTranslations("CheckoutInfo");
   const cards = userMockAddresses.map((item) => (
     <Radio.Card
@@ -30,9 +33,10 @@ export default function AddressSelector() {
       </Radio.Group>
       <Button
         className={classes.addAddressButton}
+        onClick={()=>setIsAddressModalOpen(true)}
         leftSection={<IconPlus size={16} />}
       >
-        <Group gap={"xs"}>{t("AddNewAddress")}</Group>
+        {t("AddNewAddress")}
       </Button>
     </Stack>
   );

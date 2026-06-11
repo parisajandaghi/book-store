@@ -1,5 +1,13 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import { Group, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import {
   IconBuildingCommunity,
@@ -9,27 +17,50 @@ import {
   IconMapPin2,
   IconPhone,
   IconUser,
+  IconX,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import style from "../cart.module.css";
+import { ReactNode } from "react";
 import { CheckoutAddressFormValues } from "../cart.type";
+import { addressModalAtom } from "@/store/cart-atom";
+import { useAtom } from "jotai";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
+  title: string;
+  showCloseButton?: boolean;
+  children?: ReactNode;
 };
 
-export default function CheckoutAddressForm({
+export default function AddressForm({
   form,
+  title,
+  showCloseButton,
+  children,
 }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
+  const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
   return (
     <GlassPanel flex={2} p={"md"}>
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <Stack>
-          <Group gap={5}>
-            <IconMapPin color="var(--mantine-color-surface-7)" />
-            <Text mt={3} c={"textMain.3"}>
-              {t("ShippingInfo")}
-            </Text>
+          <Group justify="space-between" align="center">
+            <Group gap={5}>
+              <IconMapPin color="var(--mantine-color-surface-7)" />
+              <Text mt={3} c={"textMain.3"}>
+                {title}
+              </Text>
+            </Group>
+            {showCloseButton && (
+              <IconX
+                size={18}
+                color="var(--mantine-color-surface-7)"
+                cursor={"pointer"}
+                onClick={() => {
+                  setIsAddressModalOpen(false);
+                }}
+              />
+            )}
           </Group>
           <TextInput
             placeholder={t("PlaceHolders.Name")}
@@ -88,6 +119,7 @@ export default function CheckoutAddressForm({
               label: style.label,
             }}
           ></Textarea>
+          {children && <Stack mt={"sm"}>{children}</Stack>}
         </Stack>
       </form>
     </GlassPanel>

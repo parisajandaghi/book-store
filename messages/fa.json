@@ -110,6 +110,7 @@
     "City": "شهر",
     "Province": "استان",
     "ShippingInfo": "اطلاعات ارسال",
+    "ModalTitle": "آدرس جدید",
     "PlaceHolders": {
       "Phone": "مثال : 0912408426",
       "Name": "مثال : سارا احمدی",
@@ -118,6 +119,7 @@
       "PostalCode": "مثال : 1678532349"
     },
     "ContinueToPayment": "ادامه پرداخت",
-    "AddNewAddress": "افزودن آدرس جدید"
+    "AddNewAddress": "افزودن آدرس جدید",
+    "SaveAddress": "ذخیره آدرس"
   }
 }

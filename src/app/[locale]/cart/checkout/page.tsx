@@ -4,9 +4,10 @@ import {
   CheckoutAddressFormValues,
   userMockAddresses,
 } from "@/features/carts/cart.type";
+import AddressModal from "@/features/carts/components/address-modal";
 import AddressSelector from "@/features/carts/components/address-selector";
 import CartItemsList from "@/features/carts/components/cart-items-list";
-import CheckoutAddressForm from "@/features/carts/components/check-out-address-form";
+import AddressForm from "@/features/carts/components/address-form";
 import OrderSummary from "@/features/orders/components/order-summary";
 import { Container, Group, ScrollArea, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -18,7 +19,7 @@ export default function Checkout() {
   return (
     <Container w={"55rem"} pt={40} pb={40}>
       <Group align="stretch">
-        {hasAddress ? <AddressSelector /> : <CheckoutAddressForm form={form} />}
+        {hasAddress ? <AddressSelector /> : <AddressForm form={form} title={t("ShippingInfo")}/>}
         <Stack flex={1}>
           <OrderSummary
             button={<PrimaryButton btnText={t("ContinueToPayment")} width={'100%'}/>}
@@ -29,6 +30,7 @@ export default function Checkout() {
           </OrderSummary>
         </Stack>
       </Group>
+      <AddressModal form={form}/>
     </Container>
   );
 }

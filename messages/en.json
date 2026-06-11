@@ -99,6 +99,7 @@
     "City": "City",
     "Province": "Province",
     "ShippingInfo": "Shipping Information",
+    "ModalTitle": "New Address",
     "PlaceHolders": {
       "Phone": "e.g. : 09124080426",
       "Name": "e.g. : Sara Ahmadi",
@@ -107,7 +108,8 @@
       "PostalCode": "e.g. : 1678532349"
     },
     "ContinueToPayment": "Continue To Payment",
-    "AddNewAddress": "Add New Address"
+    "AddNewAddress": "Add New Address",
+    "SaveAddress": "Save Address"
   },
   "Search": {
     "NotFound": "No Results Found."

@@ -16,5 +16,12 @@
   color: #fefaf4;
   font-size: 12px;
   margin-bottom: 8px;
-  
+}
+.modalButton {
+  background-color: #1f0f1f;
+  font-size: 12;
+  font-weight: normal;
+}
+.modalButton:hover {
+  border: 1px solid #7b6210;
 }
