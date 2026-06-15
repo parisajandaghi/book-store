@@ -119,7 +119,19 @@
       "PostalCode": "مثال : 1678532349"
     },
     "ContinueToPayment": "ادامه پرداخت",
+    "ConfirmAndSelectShipping": "انتخاب زمان ارسال",
+    "ConfirmAndContinueToPayment": "ادامه پرداخت",
+    "FinalPayment": "پرداخت نهایی",
+    "Continue": "ادامه",
     "AddNewAddress": "افزودن آدرس جدید",
-    "SaveAddress": "ذخیره آدرس"
+    "SaveAddress": "ذخیره آدرس",
+    "CheckoutStepper": {
+      "Address": "آدرس",
+      "AddressDescription": "انتخاب آدرس تحویل",
+      "Shipping": "ارسال",
+      "ShippingDescription": "انتخاب زمان ارسال",
+      "Payment": "پرداخت",
+      "PaymentDescription": "انتخاب نوع پرداخت"
+    }
   }
 }

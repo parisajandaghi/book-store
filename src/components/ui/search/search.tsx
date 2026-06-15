@@ -128,7 +128,7 @@ export default function Search({
       </Popover>
 
       <Link href={buttonLink}>
-        <SecondaryButton btnText={buttonText} />
+        <SecondaryButton btnText={buttonText} radius={20}/>
       </Link>
     </Group>
   );

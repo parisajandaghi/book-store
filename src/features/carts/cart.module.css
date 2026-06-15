@@ -25,3 +25,39 @@
 .modalButton:hover {
   border: 1px solid #7b6210;
 }
+
+.glassyStepIcon {
+  
+  background-color: #1f0f1fa8 !important;
+  border: 1px solid #1f0f1fa8 !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.glassyStepIcon[data-progress] {
+  border-color: #d4af3766 !important;
+}
+.glassyStepIcon[data-completed] {
+  background-color: #d4af37 !important;
+  border-color: #d4af37 !important;
+}
+.separator {
+  background-color: #1f0f1f !important;
+  transition: background-color 0.5s ease;
+}
+
+.separator[data-active] {
+  background-color: #d4af37 !important;
+}
+.Label {
+  color: #ffffff;
+}
+
+.stepWrapper[data-completed] .Label {
+  color: #d4af37 !important;
+}
+
+
+.stepWrapper[data-completed] .Description {
+  display: none;
+}

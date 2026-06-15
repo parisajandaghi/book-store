@@ -53,18 +53,4 @@ export const userMockAddresses = [
     postalCode: "1234567891",
     address: "Tehran, Shariati Street, No. 120, Unit 8",
   },
-  {
-    id: 3,
-    recipientName: "Ali Ahmadi",
-    phone: "09121234567",
-    postalCode: "9876543210",
-    address: "Mashhad, Ahmadabad Blvd, No. 12",
-  },
-  {
-    id: 4,
-    recipientName: "Sara Mohammadi",
-    phone: "09351234567",
-    postalCode: "4567891230",
-    address: "Shiraz, Zand Street, Alley 8, Unit 2",
-  },
 ];

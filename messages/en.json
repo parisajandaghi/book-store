@@ -108,8 +108,20 @@
       "PostalCode": "e.g. : 1678532349"
     },
     "ContinueToPayment": "Continue To Payment",
+    "ConfirmAndSelectShipping": "Select Shipping",
+    "ConfirmAndContinueToPayment": "Continue To Payment",
+    "FinalPayment": "Final Payment",
+    "Continue": "Continue",
     "AddNewAddress": "Add New Address",
-    "SaveAddress": "Save Address"
+    "SaveAddress": "Save Address",
+    "CheckoutStepper": {
+      "Address": "Address",
+      "AddressDescription": "Select Delivery Address",
+      "Shipping": "Delivery",
+      "ShippingDescription": "Select Delivery Method",
+      "Payment": "Payment",
+      "PaymentDescription": "Select Payment Method"
+    }
   },
   "Search": {
     "NotFound": "No Results Found."

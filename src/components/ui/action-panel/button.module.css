@@ -1,7 +1,7 @@
 .Secondary {
   color: #fdf6eb;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
+  /* border-radius: 20px; */
   padding: 0px 15px;
   background: transparent;
   font-weight: 500;
