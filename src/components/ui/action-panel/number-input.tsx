@@ -2,6 +2,7 @@
 import { useCart } from "@/features/carts/hooks/use-cart";
 import { ActionIcon, Group, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { useLocale } from "next-intl";
 import React from "react";
 interface NumberInputProps {
   bookId: number;
@@ -15,7 +16,7 @@ export default function NumberInput({
   compact = false,
 }: NumberInputProps) {
   const { decreaseQuantity, increaseQuantity } = useCart();
-
+  const locale = useLocale();
   return (
     <Group
       w={compact ? 70 : 80}
@@ -38,7 +39,11 @@ export default function NumberInput({
         <IconMinus size={compact ? 10 : 14} />
       </ActionIcon>
 
-      <Text fz={compact ? 10 : "xs"} c={"textMain.0"}>
+      <Text
+        fz={compact ? 10 : "xs"}
+        c={"textMain.0"}
+        ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
+      >
         {quantity}
       </Text>
 

@@ -7,6 +7,7 @@ import "@mantine/core/styles.css";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
 import "@mantine/notifications/styles.css";
+import '@mantine/carousel/styles.css';
 import { Notifications } from "@mantine/notifications";
 import { theme } from "@/styles/theme";
 import AppShellLayout from "@/components/layouts/appshell";

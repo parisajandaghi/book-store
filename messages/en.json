@@ -121,6 +121,25 @@
       "ShippingDescription": "Select Delivery Method",
       "Payment": "Payment",
       "PaymentDescription": "Select Payment Method"
+    },
+    "Shipping": {
+      "ShippingTitle": {
+        "Title": "Shipping and Delivery Options",
+        "Description": "Choose your preferred shipping method and delivery time",
+        "SelectDateTime": "Select Delivery Date And Time"
+      },
+      "Methods": {
+        "Express": {
+          "Title": "Express Shipping",
+          "Description": "Your order will be processed and shipped as quickly as possible.",
+          "Days": "1 to 2 business days"
+        },
+        "Standard": {
+          "Title": "Standard Shipping",
+          "Description": "Economical shipping for orders you are not in a rush to receive.",
+          "Days": "3 to 5 business days"
+        }
+      }
     }
   },
   "Search": {
