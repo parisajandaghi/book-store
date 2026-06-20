@@ -124,7 +124,7 @@ export default function Checkout() {
       <Group align="stretch">
         {activeStep === 0 && <AddressStep form={form} />}
         {activeStep === 1 && <ShippingStep />}
-        {activeStep === 2 && <PaymentStep />}
+        {activeStep === 2 && <PaymentStep form={form} />}
         <Stack flex={1}>
           <OrderSummary
             button={

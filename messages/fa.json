@@ -133,11 +133,17 @@
       "Payment": "پرداخت",
       "PaymentDescription": "انتخاب نوع پرداخت"
     },
+    "CardInfo": {
+      "CardHolderName": "نام دارنده کارت",
+      "CardNumber": "شماره کارت",
+      "ExpiryDate": "تاریخ انقضا",
+      "Cvv2": "Cvv2"
+    },
     "Shipping": {
       "ShippingTitle": {
         "Title": "گزینه‌های ارسال و تحویل",
         "Description": "روش ارسال و زمان تحویل مورد نظر خود را انتخاب کنید",
-        "SelectDateTime":"انتخاب تاریخ و زمان تحویل"
+        "SelectDateTime": "انتخاب تاریخ و زمان تحویل"
       },
       "Methods": {
         "Express": {

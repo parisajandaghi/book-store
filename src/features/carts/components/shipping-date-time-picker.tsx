@@ -14,7 +14,7 @@ const TIME_SLOTS = [
   { id: "4", label: "18:00 - 21:00" },
 ];
 export default function ShippingDatePicker() {
-  const [selectedTime, setSelectedTime] = useState<string | null>("3");
+  const [selectedTime, setSelectedTime] = useState<string | null>();
   const currentLocale = useLocale();
 
   const locale = currentLocale === "fa" ? "fa-IR" : "en-US";

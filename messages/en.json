@@ -122,6 +122,12 @@
       "Payment": "Payment",
       "PaymentDescription": "Select Payment Method"
     },
+    "CardInfo": {
+      "CardHolderName": "Card Holder Name",
+      "CardNumber": "Card Number",
+      "ExpiryDate": "Expiry Date",
+      "Cvv2": "Cvv2"
+    },
     "Shipping": {
       "ShippingTitle": {
         "Title": "Shipping and Delivery Options",
