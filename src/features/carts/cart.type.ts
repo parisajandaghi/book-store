@@ -12,6 +12,12 @@ export type CheckoutAddressFormValues = {
   postalCode: string;
   address: string;
 };
+export type paymentFormValues = {
+  cardHolderName: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvv2: string;
+};
 export interface CartItemRow {
   id: number;
   book_id: number;

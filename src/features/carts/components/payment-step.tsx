@@ -9,11 +9,11 @@ import {
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import style from "../cart.module.css";
-import { CheckoutAddressFormValues } from "../cart.type";
-type CheckoutAddressFormProps = {
-  form: UseFormReturnType<CheckoutAddressFormValues>;
+import { paymentFormValues } from "../cart.type";
+type paymentFormProps = {
+  form: UseFormReturnType<paymentFormValues>;
 };
-export default function PaymentStep({ form }: CheckoutAddressFormProps) {
+export default function PaymentStep({ form }: paymentFormProps) {
   const t = useTranslations("CheckoutInfo");
 
   return (
@@ -29,6 +29,12 @@ export default function PaymentStep({ form }: CheckoutAddressFormProps) {
             input: style.input,
             label: style.label,
           }}
+          styles={{
+            root: {
+              minHeight: 85,
+            },
+          }}
+          {...form.getInputProps("cardHolderName")}
         />
         <TextInput
           label={t("CardInfo.CardNumber")}
@@ -37,16 +43,30 @@ export default function PaymentStep({ form }: CheckoutAddressFormProps) {
             input: style.input,
             label: style.label,
           }}
+          styles={{
+            root: {
+              minHeight: 85,
+            },
+          }}
+          maxLength={19}
+          {...form.getInputProps("cardNumber")}
         />
         <Group justify="space-between">
           <TextInput
+            placeholder="MM/YY"
             label={t("CardInfo.ExpiryDate")}
             leftSection={<IconCalendarTime size={16} />}
             classNames={{
               input: style.input,
               label: style.label,
             }}
+            styles={{
+              root: {
+                minHeight: 85,
+              },
+            }}
             flex={1}
+            {...form.getInputProps("expiryDate")}
           />
           <TextInput
             label={t("CardInfo.Cvv2")}
@@ -55,7 +75,14 @@ export default function PaymentStep({ form }: CheckoutAddressFormProps) {
               input: style.input,
               label: style.label,
             }}
+            styles={{
+              root: {
+                minHeight: 85,
+              },
+            }}
+            maxLength={4}
             flex={1}
+            {...form.getInputProps("cvv2")}
           />
         </Group>
       </GlassPanel>

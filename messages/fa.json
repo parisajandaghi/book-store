@@ -128,6 +128,14 @@
         "RequiredCity": "لطفاً شهر را انتخاب کنید"
       }
     },
+    "PaymentForm": {
+      "Validation": {
+        "CardHolderName": "نام دارنده کارت باید حداقل ۳ کاراکتر باشد",
+        "CardNumber": "شماره کارت باید ۱۶ رقم باشد",
+        "ExpiryDate": "تاریخ انقضا باید به فرمت MM/YY باشد",
+        "Cvv2": "کد CVV2 باید ۳ یا ۴ رقم باشد"
+      }
+    },
     "ContinueToPayment": "ادامه پرداخت",
     "ConfirmAndSelectShipping": "انتخاب زمان ارسال",
     "ConfirmAndContinueToPayment": "ادامه پرداخت",

@@ -124,6 +124,14 @@
         "RequiredCity": "Please select a city"
       }
     },
+    "PaymentForm": {
+      "Validation": {
+        "CardHolderName": "Card holder name must be at least 3 characters",
+        "CardNumber": "Card number must contain 16 digits",
+        "ExpiryDate": "Expiry date must be in MM/YY format",
+        "Cvv2": "CVV2 must be 3 or 4 digits"
+      }
+    },
     "CheckoutStepper": {
       "Address": "Address",
       "AddressDescription": "Select Delivery Address",

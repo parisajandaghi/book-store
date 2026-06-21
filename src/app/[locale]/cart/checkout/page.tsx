@@ -1,7 +1,10 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
-import { CheckoutAddressFormValues } from "@/features/carts/cart.type";
+import {
+  CheckoutAddressFormValues,
+  paymentFormValues,
+} from "@/features/carts/cart.type";
 import AddressModal from "@/features/carts/components/address-modal";
 import AddressStep from "@/features/carts/components/address-step";
 import CartItemsList from "@/features/carts/components/cart-items-list";
@@ -32,7 +35,7 @@ import { useAtom } from "jotai";
 export default function Checkout() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const t = useTranslations("CheckoutInfo");
-  const form = useForm<CheckoutAddressFormValues>({
+  const checkoutForm = useForm<CheckoutAddressFormValues>({
     initialValues: {
       recipientName: "",
       phone: "",
@@ -61,6 +64,33 @@ export default function Checkout() {
 
       city: (value) =>
         !value ? t("AddressForm.Validation.RequiredCity") : null,
+    },
+  });
+  const paymentForm = useForm<paymentFormValues>({
+    initialValues: {
+      cardHolderName: "",
+      cardNumber: "",
+      expiryDate: "",
+      cvv2: "",
+    },
+    validate: {
+      cardHolderName: (value) =>
+        value.trim().length < 3
+          ? t("PaymentForm.Validation.CardHolderName")
+          : null,
+
+      cardNumber: (value) =>
+        /^\d{16}$/.test(value.replace(/\s/g, ""))
+          ? null
+          : t("PaymentForm.Validation.CardNumber"),
+
+      expiryDate: (value) =>
+        /^(0[1-9]|1[0-2])\/\d{2}$/.test(value)
+          ? null
+          : t("PaymentForm.Validation.ExpiryDate"),
+
+      cvv2: (value) =>
+        /^\d{3,4}$/.test(value) ? null : t("PaymentForm.Validation.Cvv2"),
     },
   });
   const locale = useLocale();
@@ -97,7 +127,11 @@ export default function Checkout() {
         break;
       }
       case 2: {
-        // Payment validation later
+        const result = paymentForm.validate();
+
+        if (result.hasErrors) {
+          return;
+        }
         break;
       }
     }
@@ -183,9 +217,9 @@ export default function Checkout() {
         )}
       </Group>
       <Group align="stretch">
-        {activeStep === 0 && <AddressStep form={form} />}
+        {activeStep === 0 && <AddressStep form={checkoutForm} />}
         {activeStep === 1 && <ShippingStep />}
-        {activeStep === 2 && <PaymentStep form={form} />}
+        {activeStep === 2 && <PaymentStep form={paymentForm} />}
         <Stack flex={1}>
           <OrderSummary
             button={
@@ -202,7 +236,7 @@ export default function Checkout() {
           </OrderSummary>
         </Stack>
       </Group>
-      <AddressModal form={form} />
+      <AddressModal form={checkoutForm} />
     </Container>
   );
 }
