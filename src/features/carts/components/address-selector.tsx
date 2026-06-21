@@ -1,16 +1,22 @@
+import {
+  addressesAtom,
+  addressModalAtom,
+  radioValueAtom,
+} from "@/store/cart-atom";
 import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import styles from "../address-selector.module.css";
-import { userMockAddresses } from "../cart.type";
-import { addressModalAtom } from "@/store/cart-atom";
-import { useAtom } from "jotai";
 export default function AddressSelector() {
-  const [value, setValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useAtom(radioValueAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
+  const [addresses] = useAtom(addressesAtom);
   const t = useTranslations("CheckoutInfo");
-  const addressCards = userMockAddresses.map((item) => (
+  const activeValue =
+    selectedValue ?? (addresses.length > 0 ? String(addresses[0].id) : null);
+  const addressCards = addresses.map((item) => (
     <Radio.Card
       className={styles.root}
       value={item.id.toString()}
@@ -28,7 +34,7 @@ export default function AddressSelector() {
   ));
   return (
     <Stack flex={2}>
-      <Radio.Group value={value} onChange={setValue}>
+      <Radio.Group value={activeValue} onChange={setSelectedValue}>
         <Stack gap="xs">{addressCards}</Stack>
       </Radio.Group>
       <Button

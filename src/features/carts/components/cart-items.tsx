@@ -31,7 +31,11 @@ export default function CartItems() {
       <Stack>
         <Group justify="space-between">
           <Title c={"textMain.0"}>{t2("ShoppingCart")}</Title>
-          <SecondaryButton btnText={t2("ContinueShopping")} icon={icon} />
+          <SecondaryButton
+            btnText={t2("ContinueShopping")}
+            icon={icon}
+            radius={20}
+          />
         </Group>
         <Group align="flex-start">
           <GlassPanel flex={2} p={"md"}>
@@ -39,15 +43,17 @@ export default function CartItems() {
               <CartItemsList />
             </ScrollArea>
           </GlassPanel>
-        
-            <OrderSummary
+
+          <OrderSummary
             button={
-              <Link href={"/cart/checkout"} style={{ width: "100%", display: "block" }}>
-                <PrimaryButton btnText={t2("CheckOut")} width={'100%'} />
+              <Link
+                href={"/cart/checkout"}
+                style={{ width: "100%", display: "block" }}
+              >
+                <PrimaryButton btnText={t2("CheckOut")} width={"100%"} />
               </Link>
             }
           />
-        
         </Group>
       </Stack>
     </Container>

@@ -5,6 +5,7 @@ export type ButtonProps = {
   width?: number | string;
   hight?: number | string;
   icon?: ReactNode;
-  radius?:number;
+  radius?: number;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  type?: "button" | "submit" | "reset" ;
 };

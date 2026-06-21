@@ -114,6 +114,16 @@
     "Continue": "Continue",
     "AddNewAddress": "Add New Address",
     "SaveAddress": "Save Address",
+    "AddressForm": {
+      "Validation": {
+        "NameMinLength": "Recipient name must be at least 3 characters",
+        "ValidPhone": "Invalid phone number (e.g., 09123456789)",
+        "ValidPostalCode": "Postal code must be exactly 10 digits",
+        "AddressMinLength": "Please enter a more detailed address",
+        "RequiredProvince": "Please select a province",
+        "RequiredCity": "Please select a city"
+      }
+    },
     "CheckoutStepper": {
       "Address": "Address",
       "AddressDescription": "Select Delivery Address",

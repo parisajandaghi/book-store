@@ -1,13 +1,5 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import {
-  Button,
-  Group,
-  Select,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Group, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import {
   IconBuildingCommunity,
@@ -23,7 +15,7 @@ import { useTranslations } from "next-intl";
 import style from "../cart.module.css";
 import { ReactNode } from "react";
 import { CheckoutAddressFormValues } from "../cart.type";
-import { addressModalAtom } from "@/store/cart-atom";
+import { addressesAtom, addressModalAtom } from "@/store/cart-atom";
 import { useAtom } from "jotai";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
@@ -40,10 +32,24 @@ export default function AddressForm({
 }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
+  const [, setAddresses] = useAtom(addressesAtom);
+  const handleSubmit = (values: CheckoutAddressFormValues) => {
+    setAddresses((prev) => {
+      const nextId =
+        prev.length > 0 ? Math.max(...prev.map((a) => Number(a.id))) + 1 : 1;
+
+      const newAddress = { id: nextId, ...values };
+
+      return [...prev, newAddress];
+    });
+
+    form.reset();
+    setIsAddressModalOpen(false);
+  };
   return (
     <GlassPanel flex={2} p={"md"}>
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
-        <Stack>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap={3}>
           <Group justify="space-between" align="center">
             <Group gap={5}>
               <IconMapPin color="var(--mantine-color-surface-7)" />
@@ -70,6 +76,7 @@ export default function AddressForm({
               input: style.input,
               label: style.label,
             }}
+            {...form.getInputProps("recipientName")}
           ></TextInput>
           <TextInput
             label={t("Mobile")}
@@ -79,27 +86,36 @@ export default function AddressForm({
               input: style.input,
               label: style.label,
             }}
+            {...form.getInputProps("phone")}
           ></TextInput>
           <Group w={"100%"} justify="space-evenly">
             <Select
               placeholder={t("PlaceHolders.Province")}
+              data={["تهران", "اصفهان", "فارس"]}
               label={t("Province")}
               leftSection={<IconMap size={16} />}
               classNames={{
                 input: style.input,
                 label: style.label,
+                dropdown: style.dropDown,
+                option: style.option, 
               }}
               flex={1}
+              {...form.getInputProps("province")}
             />
             <Select
               placeholder={t("PlaceHolders.City")}
+              data={["تهران", "شیراز", "اصفهان"]}
               leftSection={<IconBuildingCommunity size={16} />}
               label={t("City")}
               classNames={{
                 input: style.input,
                 label: style.label,
+                 dropdown: style.dropDown,
+                option: style.option,
               }}
               flex={1}
+              {...form.getInputProps("city")}
             />
           </Group>
           <TextInput
@@ -110,6 +126,7 @@ export default function AddressForm({
               input: style.input,
               label: style.label,
             }}
+            {...form.getInputProps("postalCode")}
           ></TextInput>
           <Textarea
             leftSection={<IconMapPin2 size={16} />}
@@ -118,6 +135,7 @@ export default function AddressForm({
               input: style.input,
               label: style.label,
             }}
+            {...form.getInputProps("address")}
           ></Textarea>
           {children && <Stack mt={"sm"}>{children}</Stack>}
         </Stack>

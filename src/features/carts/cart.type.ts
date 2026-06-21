@@ -5,7 +5,7 @@ export interface CheckoutResult {
   total: number;
 }
 export type CheckoutAddressFormValues = {
-  name: string;
+  recipientName: string;
   phone: string;
   province: string | null;
   city: string | null;
@@ -32,13 +32,15 @@ export type CartItem = {
 // i define it until using api
 
 export type Address = {
-  id: number;
+  id: number | string;
   recipientName: string;
   phone: string;
   postalCode: string;
   address: string;
+  province?: string | null;
+  city?: string | null;
 };
-export const userMockAddresses = [
+export const initialMockAddresses: Address[] = [
   {
     id: 1,
     recipientName: "Parisa Jandaghi",

@@ -118,6 +118,16 @@
       "City": "انتخاب شهر",
       "PostalCode": "مثال : 1678532349"
     },
+    "AddressForm": {
+      "Validation": {
+        "NameMinLength": "نام گیرنده باید حداقل ۳ حرف باشد",
+        "ValidPhone": "شماره موبایل نامعتبر است (مثال: 09123456789)",
+        "ValidPostalCode": "کد پستی باید دقیقاً ۱۰ عدد باشد",
+        "AddressMinLength": "لطفاً آدرس دقیق‌تری وارد کنید",
+        "RequiredProvince": "لطفاً استان را انتخاب کنید",
+        "RequiredCity": "لطفاً شهر را انتخاب کنید"
+      }
+    },
     "ContinueToPayment": "ادامه پرداخت",
     "ConfirmAndSelectShipping": "انتخاب زمان ارسال",
     "ConfirmAndContinueToPayment": "ادامه پرداخت",

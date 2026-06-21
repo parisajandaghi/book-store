@@ -7,7 +7,7 @@ import { IconTrash } from "@tabler/icons-react";
 import NumberInput from "@/components/ui/action-panel/number-input";
 
 interface CartItemsListProps {
-  compact?: boolean; // اضافه شدن این پراپ
+  compact?: boolean; 
 }
 
 export default function CartItemsList({ compact = false }: CartItemsListProps) {

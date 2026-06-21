@@ -1,3 +1,4 @@
+"use client";
 import { addressModalAtom } from "@/store/cart-atom";
 import { Button, Modal } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
@@ -30,10 +31,7 @@ export default function AddressModal({ form }: CheckoutAddressFormProps) {
       }}
     >
       <AddressForm form={form} title={t("ModalTitle")} showCloseButton={true}>
-        <Button
-          onClick={() => setIsAddressModalOpen(false)}
-          className={style.modalButton}
-        >
+        <Button type="submit" className={style.modalButton}>
           {t("SaveAddress")}
         </Button>
       </AddressForm>

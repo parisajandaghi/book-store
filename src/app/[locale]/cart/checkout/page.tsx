@@ -29,7 +29,37 @@ import { useState } from "react";
 import style from "../../../../features/carts/cart.module.css";
 export default function Checkout() {
   const t = useTranslations("CheckoutInfo");
-  const form = useForm<CheckoutAddressFormValues>({});
+  const form = useForm<CheckoutAddressFormValues>({
+    initialValues: {
+      recipientName: "",
+      phone: "",
+      postalCode: "",
+      address: "",
+      province: "",
+      city: "",
+    },
+    validate: {
+      recipientName: (value) =>
+        value.length < 3 ? t("AddressForm.Validation.NameMinLength") : null,
+
+      phone: (value) =>
+        /^09\d{9}$/.test(value) ? null : t("AddressForm.Validation.ValidPhone"),
+
+      postalCode: (value) =>
+        /^\d{10}$/.test(value)
+          ? null
+          : t("AddressForm.Validation.ValidPostalCode"),
+
+      address: (value) =>
+        value.length < 10 ? t("AddressForm.Validation.AddressMinLength") : null,
+
+      province: (value) =>
+        !value ? t("AddressForm.Validation.RequiredProvince") : null,
+
+      city: (value) =>
+        !value ? t("AddressForm.Validation.RequiredCity") : null,
+    },
+  });
   const locale = useLocale();
   const [activeStep, setActiveStep] = useState(0);
   console.log("activeStep", activeStep);
