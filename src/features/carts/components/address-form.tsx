@@ -15,8 +15,9 @@ import { useTranslations } from "next-intl";
 import style from "../cart.module.css";
 import { ReactNode } from "react";
 import { CheckoutAddressFormValues } from "../cart.type";
-import { addressesAtom, addressModalAtom } from "@/store/cart-atom";
+
 import { useAtom } from "jotai";
+import { addressesAtom, addressModalAtom } from "@/store/checkout-atom";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
   title: string;
@@ -98,7 +99,7 @@ export default function AddressForm({
                 input: style.input,
                 label: style.label,
                 dropdown: style.dropDown,
-                option: style.option, 
+                option: style.option,
               }}
               flex={1}
               {...form.getInputProps("province")}
@@ -111,7 +112,7 @@ export default function AddressForm({
               classNames={{
                 input: style.input,
                 label: style.label,
-                 dropdown: style.dropDown,
+                dropdown: style.dropDown,
                 option: style.option,
               }}
               flex={1}

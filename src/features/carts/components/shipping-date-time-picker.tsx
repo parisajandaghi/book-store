@@ -7,6 +7,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useLocale } from "next-intl";
 import { useMemo, useState } from "react";
 import style from "../cart.module.css";
+import { checkoutAtom } from "@/store/checkout-atom";
+import { useAtom } from "jotai";
 const TIME_SLOTS = [
   { id: "1", label: "09:00 - 12:00" },
   { id: "2", label: "12:00 - 15:00" },
@@ -14,7 +16,7 @@ const TIME_SLOTS = [
   { id: "4", label: "18:00 - 21:00" },
 ];
 export default function ShippingDatePicker() {
-  const [selectedTime, setSelectedTime] = useState<string | null>();
+  const [checkout, setCheckout] = useAtom(checkoutAtom);
   const currentLocale = useLocale();
 
   const locale = currentLocale === "fa" ? "fa-IR" : "en-US";
@@ -22,8 +24,6 @@ export default function ShippingDatePicker() {
   const deliveryDates = useMemo(() => {
     return generateDeliveryDates(locale, 10);
   }, [locale]);
-
-  const [selectedDate, setSelectedDate] = useState(deliveryDates[0]?.id);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     direction: currentLocale === "fa" ? "rtl" : "ltr",
@@ -33,8 +33,8 @@ export default function ShippingDatePicker() {
     slidesToScroll: 1,
     dragFree: false,
   });
-  console.log("selectedData", selectedDate);
-
+  const deliveryDate = checkout.deliveryDate;
+  const deliverTime = checkout.deliveryTime;
   return (
     <Stack gap={0}>
       <Flex gap={3} align="center" p={"sm"}>
@@ -65,7 +65,7 @@ export default function ShippingDatePicker() {
             }}
           >
             {deliveryDates.map((date) => {
-              const active = selectedDate === date.id;
+              const active = deliveryDate === date.id;
 
               return (
                 <Box
@@ -77,7 +77,12 @@ export default function ShippingDatePicker() {
                   }}
                 >
                   <Box
-                    onClick={() => setSelectedDate(date.id)}
+                    onClick={() =>
+                      setCheckout((prev) => ({
+                        ...prev,
+                        deliveryDate: date.id,
+                      }))
+                    }
                     className={style.dateCard}
                     data-active={active}
                   >
@@ -145,14 +150,19 @@ export default function ShippingDatePicker() {
       </Flex>
       <Group gap={10} justify="center" p={"sm"}>
         {TIME_SLOTS.map((slot) => {
-          const isActive = selectedTime === slot.id;
+          const isActive = deliverTime === slot.id;
 
           return (
             <Box
               key={slot.id}
               className={style.timeSlot}
               data-active={isActive}
-              onClick={() => setSelectedTime(slot.id)}
+              onClick={() =>
+                setCheckout((prev) => ({
+                  ...prev,
+                  deliveryTime: slot.id,
+                }))
+              }
               ff={currentLocale === "en" ? "system-ui, sans-serif" : "inherit"}
             >
               {slot.label}

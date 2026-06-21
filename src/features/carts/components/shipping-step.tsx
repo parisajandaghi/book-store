@@ -11,8 +11,10 @@ import style from "../address-selector.module.css";
 import { getFormattedPrice } from "@/utils/book.utils";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import ShippingDateTimePicker from "./shipping-date-time-picker";
+import { checkoutAtom } from "@/store/checkout-atom";
+import { useAtom } from "jotai";
 export default function ShippingStep() {
-  const [value, setValue] = useState<string | null>(null);
+  const [checkout, setCheckout] = useAtom(checkoutAtom);
   const t = useTranslations("CheckoutInfo");
   const t1 = useTranslations("Product");
   const locale = useLocale();
@@ -22,7 +24,7 @@ export default function ShippingStep() {
       ? `${t1("CurrencySymbol")} ${formattedPrice}`
       : `${formattedPrice} ${t1("CurrencySymbol")}`;
   };
-  const deliveryMethods = [
+  const shippingMethods = [
     {
       id: "express",
       title: t("Shipping.Methods.Express.Title"),
@@ -40,7 +42,7 @@ export default function ShippingStep() {
       icon: <IconTruck size={30} color="#d4af37" stroke={1} />,
     },
   ];
-  const shippingCards = deliveryMethods.map((item) => (
+  const shippingCards = shippingMethods.map((item) => (
     <Radio.Card className={style.root} value={item.id.toString()} key={item.id}>
       <Group wrap="nowrap" align="center" justify="space-between" w="100%">
         <Group wrap="nowrap" align="flex-start">
@@ -87,7 +89,15 @@ export default function ShippingStep() {
           {t("Shipping.ShippingTitle.Description")}
         </Text>
       </Stack>
-      <Radio.Group value={value} onChange={setValue}>
+      <Radio.Group
+        value={checkout.shippingMethod}
+        onChange={(value) =>
+          setCheckout((prev) => ({
+            ...prev,
+            shippingMethod: value,
+          }))
+        }
+      >
         <Stack gap="xs">{shippingCards}</Stack>
       </Radio.Group>
       <GlassPanel>

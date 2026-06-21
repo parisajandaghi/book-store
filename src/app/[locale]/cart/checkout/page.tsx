@@ -27,7 +27,10 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import style from "../../../../features/carts/cart.module.css";
+import { checkoutAtom } from "@/store/checkout-atom";
+import { useAtom } from "jotai";
 export default function Checkout() {
+  const [checkout, setCheckout] = useAtom(checkoutAtom);
   const t = useTranslations("CheckoutInfo");
   const form = useForm<CheckoutAddressFormValues>({
     initialValues: {
@@ -69,9 +72,37 @@ export default function Checkout() {
     ) : (
       <IconArrowRight size={14} />
     );
+  console.log(checkout);
 
-  const nextStep = () =>
+  const nextStep = () => {
+    switch (activeStep) {
+      case 0:
+        if (!checkout.addressId) {
+          return;
+        }
+        setCheckout((prev) => ({
+          ...prev,
+          addressId: Number(checkout.addressId),
+        }));
+        break;
+      case 1: {
+        if (
+          !checkout.shippingMethod ||
+          !checkout.deliveryDate ||
+          !checkout.deliveryTime
+        ) {
+          return;
+        }
+
+        break;
+      }
+      case 2: {
+        // Payment validation later
+        break;
+      }
+    }
     setActiveStep((current) => (current < 3 ? current + 1 : current));
+  };
   const prevStep = () =>
     setActiveStep((current: number) => (current > 0 ? current - 1 : current));
   const getButtonText = () => {

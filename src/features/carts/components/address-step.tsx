@@ -3,8 +3,9 @@ import { useTranslations } from "next-intl";
 import { CheckoutAddressFormValues} from "../cart.type";
 import AddressForm from "./address-form";
 import AddressSelector from "./address-selector";
-import { addressesAtom } from "@/store/cart-atom";
+
 import { useAtom } from "jotai";
+import { addressesAtom } from "@/store/checkout-atom";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
 };

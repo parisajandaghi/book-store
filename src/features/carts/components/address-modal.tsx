@@ -1,5 +1,5 @@
 "use client";
-import { addressModalAtom } from "@/store/cart-atom";
+
 import { Button, Modal } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { useAtom } from "jotai";
@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import style from "../cart.module.css";
 import { CheckoutAddressFormValues } from "../cart.type";
 import AddressForm from "./address-form";
+import { addressModalAtom } from "@/store/checkout-atom";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
 };
