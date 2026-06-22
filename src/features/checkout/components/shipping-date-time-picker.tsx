@@ -1,14 +1,14 @@
 "use client";
 
+import { checkoutAtom } from "@/store/checkout-atom";
 import { generateDeliveryDates } from "@/utils/checkout.utils";
 import { ActionIcon, Box, Flex, Group, Stack, Text } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import useEmblaCarousel from "embla-carousel-react";
-import { useLocale } from "next-intl";
-import { useMemo, useState } from "react";
-import style from "../cart.module.css";
-import { checkoutAtom } from "@/store/checkout-atom";
 import { useAtom } from "jotai";
+import { useLocale } from "next-intl";
+import { useMemo } from "react";
+import style from "../../carts/cart.module.css";
 const TIME_SLOTS = [
   { id: "1", label: "09:00 - 12:00" },
   { id: "2", label: "12:00 - 15:00" },

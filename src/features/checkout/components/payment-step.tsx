@@ -8,8 +8,9 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import style from "../cart.module.css";
-import { paymentFormValues } from "../cart.type";
+import style from "../../carts/cart.module.css";
+import { paymentFormValues } from "@/features/carts/cart.type";
+
 type paymentFormProps = {
   form: UseFormReturnType<paymentFormValues>;
 };

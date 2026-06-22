@@ -10,9 +10,10 @@ import React, { useState } from "react";
 import style from "../address-selector.module.css";
 import { getFormattedPrice } from "@/utils/book.utils";
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import ShippingDateTimePicker from "./shipping-date-time-picker";
+
 import { checkoutAtom } from "@/store/checkout-atom";
 import { useAtom } from "jotai";
+import ShippingDateTimePicker from "./shipping-date-time-picker";
 export default function ShippingStep() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const t = useTranslations("CheckoutInfo");

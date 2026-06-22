@@ -8,7 +8,7 @@ import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
-import styles from "../address-selector.module.css";
+import styles from "../address-selector.module.css"
 export default function AddressSelector() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);

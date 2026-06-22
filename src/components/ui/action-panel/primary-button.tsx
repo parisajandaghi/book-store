@@ -6,9 +6,16 @@ export default function PrimaryButton({
   width,
   onClick,
   type,
+  isLoading,
 }: ButtonProps) {
   return (
-    <Button className={style.Primary} w={width} onClick={onClick} type={type}>
+    <Button
+      className={style.Primary}
+      w={width}
+      onClick={onClick}
+      type={type}
+      loading={isLoading}
+    >
       <Text fz={14}>{btnText}</Text>
     </Button>
   );

@@ -7,5 +7,6 @@ export type ButtonProps = {
   icon?: ReactNode;
   radius?: number;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  type?: "button" | "submit" | "reset" ;
+  isLoading?: boolean;
+  type?: "button" | "submit" | "reset";
 };

@@ -4,10 +4,11 @@ import { Button, Modal } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
-import style from "../cart.module.css";
-import { CheckoutAddressFormValues } from "../cart.type";
-import AddressForm from "./address-form";
+import style from "../../carts/cart.module.css";
+
 import { addressModalAtom } from "@/store/checkout-atom";
+import AddressForm from "@/features/carts/components/address-form";
+import { CheckoutAddressFormValues } from "@/features/carts/cart.type";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
 };

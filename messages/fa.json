@@ -89,7 +89,9 @@
     "ShoppingCart": "سبد خرید",
     "ContinueShopping": "ادامه خرید",
     "CheckOut": "تکمیل خرید",
-    "ShoppingCartOff": "سبد خرید شما خالی است!"
+    "ShoppingCartOff": "سبد خرید شما خالی است!",
+    "OrderPlacedSuccessfully": "سفارش شما با موفقیت ثبت شد",
+    "OrderTrackingMessage": "کد پیگیری سفارش برای شما ارسال خواهد شد."
   },
   "Search": {
     "NotFound": "موردی یافت نشد."
@@ -126,14 +128,6 @@
         "AddressMinLength": "لطفاً آدرس دقیق‌تری وارد کنید",
         "RequiredProvince": "لطفاً استان را انتخاب کنید",
         "RequiredCity": "لطفاً شهر را انتخاب کنید"
-      }
-    },
-    "PaymentForm": {
-      "Validation": {
-        "CardHolderName": "نام دارنده کارت باید حداقل ۳ کاراکتر باشد",
-        "CardNumber": "شماره کارت باید ۱۶ رقم باشد",
-        "ExpiryDate": "تاریخ انقضا باید به فرمت MM/YY باشد",
-        "Cvv2": "کد CVV2 باید ۳ یا ۴ رقم باشد"
       }
     },
     "ContinueToPayment": "ادامه پرداخت",

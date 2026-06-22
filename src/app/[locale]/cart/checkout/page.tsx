@@ -1,15 +1,15 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
-import {
-  CheckoutAddressFormValues,
-  paymentFormValues,
-} from "@/features/carts/cart.type";
-import AddressModal from "@/features/carts/components/address-modal";
-import AddressStep from "@/features/carts/components/address-step";
+
 import CartItemsList from "@/features/carts/components/cart-items-list";
-import PaymentStep from "@/features/carts/components/payment-step";
-import ShippingStep from "@/features/carts/components/shipping-step";
+
+import AddressModal from "@/features/checkout/components/address-modal";
+import AddressStep from "@/features/checkout/components/address-step";
+import PaymentStep from "@/features/checkout/components/payment-step";
+import ShippingStep from "@/features/checkout/components/shipping-step";
+import { useCheckoutForms } from "@/features/checkout/hooks/use-checkout-forms";
+import { useCheckoutStepper } from "@/features/checkout/hooks/use-checkout-stepper";
 import OrderSummary from "@/features/orders/components/order-summary";
 import {
   Box,
@@ -19,7 +19,6 @@ import {
   Stack,
   Stepper,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -28,117 +27,22 @@ import {
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
 import style from "../../../../features/carts/cart.module.css";
-import { checkoutAtom } from "@/store/checkout-atom";
-import { useAtom } from "jotai";
 export default function Checkout() {
-  const [checkout, setCheckout] = useAtom(checkoutAtom);
-  const t = useTranslations("CheckoutInfo");
-  const checkoutForm = useForm<CheckoutAddressFormValues>({
-    initialValues: {
-      recipientName: "",
-      phone: "",
-      postalCode: "",
-      address: "",
-      province: "",
-      city: "",
-    },
-    validate: {
-      recipientName: (value) =>
-        value.length < 3 ? t("AddressForm.Validation.NameMinLength") : null,
+  const { checkoutForm, paymentForm } = useCheckoutForms();
+  const { activeStep, isProcessing, nextStep, prevStep, setActiveStep } =
+    useCheckoutStepper({ paymentForm });
 
-      phone: (value) =>
-        /^09\d{9}$/.test(value) ? null : t("AddressForm.Validation.ValidPhone"),
-
-      postalCode: (value) =>
-        /^\d{10}$/.test(value)
-          ? null
-          : t("AddressForm.Validation.ValidPostalCode"),
-
-      address: (value) =>
-        value.length < 10 ? t("AddressForm.Validation.AddressMinLength") : null,
-
-      province: (value) =>
-        !value ? t("AddressForm.Validation.RequiredProvince") : null,
-
-      city: (value) =>
-        !value ? t("AddressForm.Validation.RequiredCity") : null,
-    },
-  });
-  const paymentForm = useForm<paymentFormValues>({
-    initialValues: {
-      cardHolderName: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvv2: "",
-    },
-    validate: {
-      cardHolderName: (value) =>
-        value.trim().length < 3
-          ? t("PaymentForm.Validation.CardHolderName")
-          : null,
-
-      cardNumber: (value) =>
-        /^\d{16}$/.test(value.replace(/\s/g, ""))
-          ? null
-          : t("PaymentForm.Validation.CardNumber"),
-
-      expiryDate: (value) =>
-        /^(0[1-9]|1[0-2])\/\d{2}$/.test(value)
-          ? null
-          : t("PaymentForm.Validation.ExpiryDate"),
-
-      cvv2: (value) =>
-        /^\d{3,4}$/.test(value) ? null : t("PaymentForm.Validation.Cvv2"),
-    },
-  });
   const locale = useLocale();
-  const [activeStep, setActiveStep] = useState(0);
-  console.log("activeStep", activeStep);
+  const t = useTranslations("CheckoutInfo");
+
   const icon =
     locale === "fa" ? (
       <IconArrowLeft size={14} />
     ) : (
       <IconArrowRight size={14} />
     );
-  console.log(checkout);
 
-  const nextStep = () => {
-    switch (activeStep) {
-      case 0:
-        if (!checkout.addressId) {
-          return;
-        }
-        setCheckout((prev) => ({
-          ...prev,
-          addressId: Number(checkout.addressId),
-        }));
-        break;
-      case 1: {
-        if (
-          !checkout.shippingMethod ||
-          !checkout.deliveryDate ||
-          !checkout.deliveryTime
-        ) {
-          return;
-        }
-
-        break;
-      }
-      case 2: {
-        const result = paymentForm.validate();
-
-        if (result.hasErrors) {
-          return;
-        }
-        break;
-      }
-    }
-    setActiveStep((current) => (current < 3 ? current + 1 : current));
-  };
-  const prevStep = () =>
-    setActiveStep((current: number) => (current > 0 ? current - 1 : current));
   const getButtonText = () => {
     switch (activeStep) {
       case 0:
@@ -227,6 +131,7 @@ export default function Checkout() {
                 btnText={getButtonText()}
                 width={"100%"}
                 onClick={nextStep}
+                isLoading={isProcessing}
               />
             }
           >

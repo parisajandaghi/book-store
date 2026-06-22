@@ -89,7 +89,9 @@
     "ShoppingCart": "Shopping Cart",
     "ContinueShopping": "Continue Shopping",
     "CheckOut": "Check Out",
-    "ShoppingCartOff": "Your Cart Is Empty!"
+    "ShoppingCartOff": "Your Cart Is Empty!",
+    "OrderPlacedSuccessfully": "Your Order Has Been Placed Successfully",
+    "OrderTrackingMessage": "Your Order Tracking Code Will Be Sent To You Shortly"
   },
   "CheckoutInfo": {
     "Name": "Name",

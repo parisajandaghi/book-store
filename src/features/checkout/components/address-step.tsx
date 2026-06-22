@@ -1,11 +1,11 @@
 import { UseFormReturnType } from "@mantine/form";
 import { useTranslations } from "next-intl";
-import { CheckoutAddressFormValues} from "../cart.type";
-import AddressForm from "./address-form";
-import AddressSelector from "./address-selector";
 
 import { useAtom } from "jotai";
 import { addressesAtom } from "@/store/checkout-atom";
+import AddressForm from "@/features/carts/components/address-form";
+import AddressSelector from "./address-selector";
+import { CheckoutAddressFormValues } from "@/features/carts/cart.type";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
 };
