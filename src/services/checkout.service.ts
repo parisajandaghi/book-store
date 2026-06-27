@@ -1,64 +1,197 @@
 import db from "@/lib/db";
-import { CartItemRow, CheckoutResult } from "@/features/carts/cart.type";
+import {
+  CartItemRow,
+  CheckoutRequest,
+  CheckoutResult,
+} from "@/features/carts/cart.type";
 
-export function checkout(userId: number): CheckoutResult {
-  db.exec("BEGIN TRANSACTION;");
+const SHIPPING_FEE = 10;
+
+function generateTrackingCode() {
+  return `BS${Date.now()}${Math.floor(1000 + Math.random() * 9000)}`;
+}
+
+export function checkout(
+  userId: number,
+  checkoutData: CheckoutRequest,
+): CheckoutResult {
+  db.exec("BEGIN TRANSACTION");
 
   try {
-    // اصلاح نام ستون‌ها: user_id و book_id
-    const getCartItemsStmt = db.prepare(`
-      SELECT c.id, c.book_id, c.quantity, b.price
+    // گرفتن آیتم‌های سبد خرید
+    const cartItemsStmt = db.prepare(`
+      SELECT
+        c.book_id,
+        c.quantity,
+        b.price
       FROM cart_items c
-      JOIN books b ON c.book_id = b.id
+      INNER JOIN books b
+      ON b.id = c.book_id
       WHERE c.user_id = ?
     `);
 
-    const cartItems = getCartItemsStmt.all(userId) as unknown as CartItemRow[];
+    const cartItems = cartItemsStmt.all(userId) as unknown as CartItemRow[];
 
-    if (!cartItems || cartItems.length === 0) {
-      throw new Error("Cart is empty");
+    if (cartItems.length === 0) {
+      throw new Error("Cart is empty.");
     }
 
-    const totalAmount = cartItems.reduce((sum, item) => {
-      if (item.price === undefined || item.price === null) {
-        throw new Error(`Book price not found for book ID ${item.book_id}`);
-      }
-      return sum + item.quantity * item.price;
-    }, 0);
+    // محاسبه subtotal
+    const subtotal = cartItems.reduce(
+      (sum, item) => sum + item.quantity * item.price,
+      0,
+    );
 
-    // اصلاح نام ستون‌های جدول orders: از total_amount به total و از order_date به created_at
-    const insertOrderStmt = db.prepare(`
-      INSERT INTO orders (user_id, created_at, total)
-      VALUES (?, CURRENT_TIMESTAMP, ?)
+    const shippingFee = SHIPPING_FEE;
+
+    const total = subtotal + shippingFee;
+
+    const trackingCode = generateTrackingCode();
+
+    // ایجاد سفارش
+    const createOrderStmt = db.prepare(`
+      INSERT INTO orders (
+
+        user_id,
+
+        subtotal,
+
+        shipping_fee,
+
+        total,
+
+        recipient_name,
+
+        phone,
+
+        address,
+
+        tracking_code,
+
+        address_id,
+
+        shipping_method,
+
+        delivery_date,
+
+        delivery_time,
+
+        status
+
+      )
+
+      VALUES (
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?,
+
+        'pending'
+
+      )
     `);
 
-    const orderResult = insertOrderStmt.run(userId, totalAmount);
-    const orderId = orderResult.lastInsertRowid as number;
+    const orderResult = createOrderStmt.run(
+      userId,
 
-    const insertOrderItemStmt = db.prepare(`
-      INSERT INTO order_items (order_id, book_id, quantity, price)
-      VALUES (?, ?, ?, ?)
+      subtotal,
+
+      shippingFee,
+
+      total,
+
+      checkoutData.recipientName,
+
+      checkoutData.phone,
+
+      checkoutData.address,
+
+      trackingCode,
+
+      checkoutData.addressId,
+
+      checkoutData.shippingMethod,
+
+      checkoutData.deliveryDate,
+
+      checkoutData.deliveryTime,
+    );
+
+    const orderId = Number(orderResult.lastInsertRowid);
+    if (!orderId) {
+      throw new Error("Failed to create order.");
+    }
+
+    // ثبت آیتم‌های سفارش
+    const createOrderItemStmt = db.prepare(`
+      INSERT INTO order_items (
+
+        order_id,
+
+        book_id,
+
+        quantity,
+
+        price
+
+      )
+
+      VALUES (
+
+        ?,
+
+        ?,
+
+        ?,
+
+        ?
+
+      )
     `);
 
     for (const item of cartItems) {
-      // استفاده از item.book_id به جای item.bookId
-      insertOrderItemStmt.run(orderId, item.book_id, item.quantity, item.price);
+      createOrderItemStmt.run(orderId, item.book_id, item.quantity, item.price);
     }
 
-    // اصلاح نام ستون: user_id
-    const deleteCartItemsStmt = db.prepare(
-      `DELETE FROM cart_items WHERE user_id = ?`,
-    );
-    deleteCartItemsStmt.run(userId);
+    // پاک کردن سبد خرید
+    const clearCartStmt = db.prepare(`
+      DELETE FROM cart_items
+      WHERE user_id = ?
+    `);
 
-    db.exec("COMMIT;");
+    clearCartStmt.run(userId);
+
+    db.exec("COMMIT");
 
     return {
-      order_id: orderId.toString(), // هماهنگی با CheckoutResult
-      total: totalAmount,
+      orderId: orderId,
+      trackingCode,
+      subtotal,
+      shippingFee,
+      total,
     };
   } catch (error) {
-    db.exec("ROLLBACK;");
+    db.exec("ROLLBACK");
     throw error;
   }
 }

@@ -74,23 +74,29 @@ if (!global.__db) {
           name: "orders",
           schema: `
            CREATE TABLE IF NOT EXISTS orders (
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           user_id INTEGER NOT NULL,
-  
- 
-           subtotal REAL NOT NULL,
-           shipping_fee REAL DEFAULT 0,
-           total REAL NOT NULL,
-  
-  
-           recipient_name TEXT,
-           phone TEXT,
-           address TEXT,
-           tracking_code TEXT,
-  
-           status TEXT DEFAULT 'pending',
-           created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-           FOREIGN KEY (user_id) REFERENCES users (id)
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    user_id INTEGER NOT NULL,
+
+    subtotal REAL NOT NULL,
+    shipping_fee REAL DEFAULT 0,
+    total REAL NOT NULL,
+
+    recipient_name TEXT,
+    phone TEXT,
+    address TEXT,
+
+    tracking_code TEXT,
+
+    status TEXT DEFAULT 'pending',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+    address_id INTEGER,
+    shipping_method TEXT,
+    delivery_date TEXT,
+    delivery_time TEXT,
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
           `,

@@ -1,7 +1,35 @@
 import { Translation } from "../books/book.type";
+export interface CheckoutRequest {
+  addressId: number;
 
+  recipientName: string;
+
+  phone: string;
+
+  address: string;
+
+  shippingMethod: string;
+
+  deliveryDate: string;
+
+  deliveryTime: string;
+
+  payment: {
+    cardHolderName: string;
+    cardNumber: string;
+    expiryDate: string;
+    cvv2: string;
+  };
+}
 export interface CheckoutResult {
-  order_id: string;
+  orderId: number;
+
+  trackingCode: string;
+
+  subtotal: number;
+
+  shippingFee: number;
+
   total: number;
 }
 export type CheckoutAddressFormValues = {
