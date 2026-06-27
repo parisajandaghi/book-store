@@ -8,7 +8,8 @@ import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
-import styles from "../address-selector.module.css"
+import styles from "../address-selector.module.css";
+import { useEffect } from "react";
 export default function AddressSelector() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
@@ -17,6 +18,23 @@ export default function AddressSelector() {
   const activeValue =
     checkout.addressId?.toString() ??
     (addresses.length > 0 ? String(addresses[0].id) : null);
+  useEffect(() => {
+    if (checkout.addressId || addresses.length === 0) return;
+
+    const first = addresses[0];
+
+    setCheckout((prev) => ({
+      ...prev,
+
+      addressId: Number(first.id),
+
+      recipientName: first.recipientName,
+
+      phone: first.phone,
+
+      address: first.address,
+    }));
+  }, [addresses, checkout.addressId, setCheckout]);
   const addressCards = addresses.map((item) => (
     <Radio.Card
       className={styles.root}
@@ -37,12 +55,25 @@ export default function AddressSelector() {
     <Stack flex={2}>
       <Radio.Group
         value={activeValue}
-        onChange={(value) =>
+        onChange={(value) => {
+          const selectedAddress = addresses.find(
+            (address) => String(address.id) === value,
+          );
+
+          if (!selectedAddress) return;
+
           setCheckout((prev) => ({
             ...prev,
-            addressId: Number(value),
-          }))
-        }
+
+            addressId: Number(selectedAddress.id),
+
+            recipientName: selectedAddress.recipientName,
+
+            phone: selectedAddress.phone,
+
+            address: selectedAddress.address,
+          }));
+        }}
       >
         <Stack gap="xs">{addressCards}</Stack>
       </Radio.Group>

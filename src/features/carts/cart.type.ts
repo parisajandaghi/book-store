@@ -8,11 +8,11 @@ export interface CheckoutRequest {
 
   address: string;
 
-  shippingMethod: string;
+  shippingMethod: string | null;
 
-  deliveryDate: string;
+  deliveryDate: string | null;
 
-  deliveryTime: string;
+  deliveryTime:string | null;
 
   payment: {
     cardHolderName: string;

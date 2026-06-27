@@ -17,7 +17,11 @@ import { ReactNode } from "react";
 import { CheckoutAddressFormValues } from "../cart.type";
 
 import { useAtom } from "jotai";
-import { addressesAtom, addressModalAtom } from "@/store/checkout-atom";
+import {
+  addressesAtom,
+  addressModalAtom,
+  checkoutAtom,
+} from "@/store/checkout-atom";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
   title: string;
@@ -32,21 +36,34 @@ export default function AddressForm({
   children,
 }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
+  const [, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
-  const [, setAddresses] = useAtom(addressesAtom);
+  const [addresses, setAddresses] = useAtom(addressesAtom);
   const handleSubmit = (values: CheckoutAddressFormValues) => {
-    setAddresses((prev) => {
-      const nextId =
-        prev.length > 0 ? Math.max(...prev.map((a) => Number(a.id))) + 1 : 1;
+  const nextId =
+    addresses.length > 0
+      ? Math.max(...addresses.map((item) => Number(item.id))) + 1
+      : 1;
 
-      const newAddress = { id: nextId, ...values };
-
-      return [...prev, newAddress];
-    });
-
-    form.reset();
-    setIsAddressModalOpen(false);
+  const newAddress = {
+    id: nextId,
+    ...values,
   };
+
+  setAddresses((prev) => [...prev, newAddress]);
+
+  setCheckout((prev) => ({
+    ...prev,
+    addressId: nextId,
+    recipientName: values.recipientName,
+    phone: values.phone,
+    address: values.address,
+  }));
+
+  form.reset();
+
+  setIsAddressModalOpen(false);
+};
   return (
     <GlassPanel flex={2} p={"md"}>
       <form onSubmit={form.onSubmit(handleSubmit)}>

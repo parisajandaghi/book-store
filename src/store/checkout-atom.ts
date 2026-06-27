@@ -10,4 +10,7 @@ export const checkoutAtom = atom({
   shippingMethod: null as string | null,
   deliveryDate: null as string | null,
   deliveryTime: null as string | null,
+  recipientName: "",
+  phone: "",
+  address: "",
 });
