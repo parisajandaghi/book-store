@@ -22,18 +22,17 @@ export default function BookCard({ book }: BookCardProps) {
   }
 
   const formattedPrice = getFormattedPrice(book.price, locale);
-  const bookData = {
-    book_id: book.id,
-    title: localizedBook.title,
-    price: book.price,
-    image_url: book.image_url,
-    author: localizedBook.author,
-    translations: book.translations,
-  };
-  const handleAddToCart = (e: MouseEvent<SVGSVGElement>) => {
+
+  const handleAddToCart = async (e: MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(bookData);
+    console.log('add');
+    
+    try {
+      await addToCart(book.id);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <Link href={`/books/${book.id}`} style={{ textDecoration: "none" }}>

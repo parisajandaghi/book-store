@@ -1,58 +1,117 @@
-import { cartItemsAtom, cartTotalAtom } from "@/store/cart-atom";
-import { useAtom } from "jotai";
 import { CartItem } from "../cart.type";
 
+import useSWR from "swr";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch cart.");
+  }
+
+  return response.json();
+};
+
 export const useCart = () => {
-  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
-  const [cartTotal] = useAtom(cartTotalAtom);
-  const addToCart = (product: Omit<CartItem, "quantity">) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (item) => item.book_id === product.book_id,
-      );
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.book_id === product.book_id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-      return [...prevItems, { ...product, quantity: 1 }];
+  const {
+    data: cartItems = [],
+    error,
+    isLoading,
+    mutate,
+  } = useSWR<CartItem[]>("/api/cart", fetcher);
+
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const addToCart = async (bookId: number) => {
+    const response = await fetch("/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ bookId }),
     });
+
+    console.log("status:", response.status);
+
+    const data = await response.json();
+
+    console.log("response:", data);
+
+    if (!response.ok) {
+      throw new Error(data.error);
+    }
+
+    await mutate();
   };
-  const decreaseQuantity = (book_id: number) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.book_id === book_id);
-      if (existingItem?.quantity === 1) {
-        return prevItems.filter((item) => item.book_id !== book_id);
-      }
-      return prevItems.map((item) =>
-        item.book_id === book_id
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      );
+
+  const increaseQuantity = async (itemId: number, currentQuantity: number) => {
+    const response = await fetch("/api/cart", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        itemId,
+        quantity: currentQuantity + 1,
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error("Failed to update cart.");
+    }
+
+    await mutate();
   };
-  const increaseQuantity = (book_id: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.book_id === book_id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    );
+
+  const decreaseQuantity = async (itemId: number, currentQuantity: number) => {
+    if (currentQuantity === 1) {
+      await removeFromCart(itemId);
+      return;
+    }
+
+    const response = await fetch("/api/cart", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        itemId,
+        quantity: currentQuantity - 1,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update cart.");
+    }
+
+    await mutate();
   };
-  const removeFromCart = (book_id: number) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.book_id !== book_id),
-    );
+
+  const removeFromCart = async (itemId: number) => {
+    const response = await fetch(`/api/cart?id=${itemId}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to remove item.");
+    }
+
+    await mutate();
   };
+
   return {
     cartItems,
     cartTotal,
+    isLoading,
+    error,
+    cartCount,
+
     addToCart,
+    increaseQuantity,
     decreaseQuantity,
     removeFromCart,
-    increaseQuantity,
   };
 };

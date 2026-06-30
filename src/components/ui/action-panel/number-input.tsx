@@ -5,13 +5,13 @@ import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useLocale } from "next-intl";
 import React from "react";
 interface NumberInputProps {
-  bookId: number;
+  itemId: number;
   quantity: number;
   compact?: boolean;
 }
 
 export default function NumberInput({
-  bookId,
+  itemId,
   quantity,
   compact = false,
 }: NumberInputProps) {
@@ -34,7 +34,9 @@ export default function NumberInput({
         variant="transparent"
         size={compact ? 10 : 12}
         c={"surface.4"}
-        onClick={() => decreaseQuantity(bookId)}
+        onClick={async () => {
+          await decreaseQuantity(itemId, quantity);
+        }}
       >
         <IconMinus size={compact ? 10 : 14} />
       </ActionIcon>
@@ -51,7 +53,9 @@ export default function NumberInput({
         variant="transparent"
         size={compact ? 10 : 12}
         c={"surface.4"}
-        onClick={() => increaseQuantity(bookId)}
+        onClick={async () => {
+          await increaseQuantity(itemId, quantity);
+        }}
       >
         <IconPlus size={compact ? 10 : 14} />
       </ActionIcon>

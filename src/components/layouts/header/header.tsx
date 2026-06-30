@@ -5,10 +5,11 @@ import { usePathname, Link } from "../../../navigation";
 import style from "./header.module.css";
 import LanguageDropdown from "./language-dropdown";
 import { useTranslations } from "next-intl";
-import { useAtomValue } from "jotai";
-import { cartCountAtom } from "@/store/cart-atom";
+
+import { useCart } from "@/features/carts/hooks/use-cart";
+
 function Header() {
-  const cartCount = useAtomValue(cartCountAtom);
+  const { cartCount } = useCart();
   const t = useTranslations("Header");
   const pathName = usePathname();
 

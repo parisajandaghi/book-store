@@ -26,7 +26,7 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
 
         return (
           <Grid
-            key={item.book_id}
+            key={item.id}
             p={"xs"}
             align="center"
             style={{
@@ -45,7 +45,7 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
                   src={item.image_url}
                   w={compact ? 28 : 40}
                   h={compact ? 42 : 60}
-                  alt={item.title}
+                   alt={localizedBook?.title ?? ""}
                 />
 
                 <Center
@@ -83,7 +83,7 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
             <Grid.Col span={compact ? 4 : 3}>
               <Center h={"100%"}>
                 <NumberInput
-                  bookId={item.book_id}
+                  itemId={item.id}
                   quantity={item.quantity}
                   compact={compact}
                 />
@@ -92,7 +92,7 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
 
             {!compact && (
               <Grid.Col span={2}>
-                <Center h={"100%"} onClick={() => removeFromCart(item.book_id)}>
+                <Center h={"100%"} onClick={() => removeFromCart(item.id)}>
                   <IconTrash
                     size={18}
                     color="var(--mantine-color-surface-9)"

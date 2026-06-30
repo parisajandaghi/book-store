@@ -12,7 +12,7 @@ export interface CheckoutRequest {
 
   deliveryDate: string | null;
 
-  deliveryTime:string | null;
+  deliveryTime: string | null;
 
   payment: {
     cardHolderName: string;
@@ -48,20 +48,25 @@ export type paymentFormValues = {
 };
 export interface CartItemRow {
   id: number;
+  user_id: number;
   book_id: number;
   quantity: number;
-  price: number;
+  created_at: string;
 }
 
-export type CartItem = {
+export interface CartItem {
+  id: number;
+
   book_id: number;
-  title: string;
-  price: number;
+
   quantity: number;
-  image_url?: string;
-  author?: string;
-  translations?: Translation[];
-};
+
+  price: number;
+
+  image_url: string;
+
+  translations: Translation[];
+}
 
 // i define it until using api
 

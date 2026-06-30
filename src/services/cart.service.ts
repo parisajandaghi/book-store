@@ -1,20 +1,18 @@
 import db from "@/lib/db";
-import { Book } from "@/features/books/book.type";
+import { Book, Translation } from "@/features/books/book.type";
 import { CartItem } from "@/features/carts/cart.type";
 
 export function getCart(userId: number): CartItem[] {
-  // type changed to number
   const stmt = db.prepare(`
     SELECT * FROM cart_items 
     WHERE user_id = ? 
     ORDER BY created_at DESC
   `);
-  // خروجی دیتابیس ستون‌های user_id و book_id را برمی‌گرداند
+
   const items = stmt.all(userId) as unknown as CartItem[];
 
   if (items.length === 0) return [];
 
-  // باید از book_id استفاده کنیم
   const bookIds = items.map((item) => item.book_id);
   const placeholders = bookIds.map(() => "?").join(",");
 
@@ -22,11 +20,36 @@ export function getCart(userId: number): CartItem[] {
     `SELECT * FROM books WHERE id IN (${placeholders})`,
   );
   const books = booksStmt.all(...bookIds) as unknown as Book[];
+  const translationsStmt = db.prepare(`
+  SELECT *
+  FROM translations
+  WHERE book_id IN (${placeholders})
+`);
 
-  return items.map((item) => ({
-    ...item,
-    books: books.find((b) => b.id === item.book_id), // از book_id استفاده شد
-  }));
+  const translations = translationsStmt.all(
+    ...bookIds,
+  ) as unknown as Translation[];
+
+  return items.map((item) => {
+    const book = books.find((b) => b.id === item.book_id);
+
+    if (!book) {
+      throw new Error(`Book ${item.book_id} not found.`);
+    }
+
+    return {
+      id: item.id,
+      book_id: item.book_id,
+      quantity: item.quantity,
+
+      price: book.price,
+      image_url: book.image_url,
+
+      translations: translations.filter(
+        (translation) => translation.book_id === item.book_id,
+      ),
+    };
+  });
 }
 
 export function addToCart(userId: number, bookId: number): CartItem {
@@ -44,7 +67,7 @@ export function addToCart(userId: number, bookId: number): CartItem {
       SET quantity = ? 
       WHERE id = ?
     `);
-    updateStmt.run(newQuantity, existing.book_id);
+    updateStmt.run(newQuantity, existing.id);
 
     return { ...existing, quantity: newQuantity };
   }

@@ -13,7 +13,7 @@ export default function AddToCartButton({ bookData }: AddToCartProps) {
   const { addToCart } = useCart();
 
   return (
-    <Group justify="center" mt={25} onClick={() => addToCart(bookData)}>
+    <Group justify="center" mt={25} onClick={() => addToCart(bookData.id)}>
       <PrimaryButton btnText={t("AddToCart")} />
     </Group>
   );

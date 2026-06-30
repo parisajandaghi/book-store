@@ -90,7 +90,7 @@ console.log(payload);
     try {
       await submitOrder();
 
-      router.push("/cart/checkout/success");
+      router.push("/cart/success");
     } catch (error) {
       console.error(error);
     } finally {

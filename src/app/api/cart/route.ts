@@ -32,7 +32,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const user = await getUser();
-    const { bookId } = (await req.json()) as { bookId: string | number };
+  const body = await req.json();
+
+console.log("BODY =", body);
+
+const { bookId } = body as { bookId: string | number };
+
+console.log("bookId =", bookId);
 
     if (!bookId) {
       return NextResponse.json(

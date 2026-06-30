@@ -12,6 +12,25 @@ db.exec(`
   PRAGMA foreign_keys = ON;
 `);
 
+const userStmt = db.prepare(`
+INSERT OR IGNORE INTO users (
+    id,
+    name,
+    email,
+    password,
+    role
+)
+VALUES (
+    1,
+    'Test User',
+    'test@test.com',
+    '123456',
+    'user'
+)
+`);
+
+userStmt.run();
+
 const booksSeedData = [
   {
     id: 1,
@@ -280,7 +299,7 @@ const seedBooksData = () => {
 
   try {
     booksSeedData.forEach((book) => {
-      insertBookStmt.run(book.id, book.price, book.image_url,0);
+      insertBookStmt.run(book.id, book.price, book.image_url, 0);
 
       book.translations.forEach((translation) => {
         insertTranslationStmt.run(
@@ -308,6 +327,8 @@ try {
   const errorMessage = error instanceof Error ? error.message : String(error);
   console.error("Error seeding books table:", errorMessage);
 } finally {
+  const result = db.prepare("SELECT COUNT(*) as count FROM books").get();
+  console.log(result);
   db.close();
   console.log("Database connection closed.");
 }
