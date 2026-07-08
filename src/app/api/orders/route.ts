@@ -6,16 +6,15 @@ import {
   deleteOrder,
 } from "@/services/order.service";
 import { getErrorMessage } from "@/utils/error";
+import { getCurrentUser } from "@/lib/auth";
 
-const getUserId = () => 1;
-
-export function GET() {
+export async function GET() {
   try {
-    const userId = getUserId();
-    if (!userId)
+    const user = await getCurrentUser();
+    if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const orders = getOrdersByUserId(userId);
+    const orders = getOrdersByUserId(user.id);
     return NextResponse.json(orders);
   } catch (error) {
     return NextResponse.json(
@@ -27,8 +26,8 @@ export function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const userId = getUserId();
-    if (!userId)
+    const user = await getCurrentUser();
+    if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
@@ -49,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     // پاس دادن تمام دیتاهای لازم به سرویس
     const order = createOrder(
-      userId,
+      user.id,
       numSubtotal,
       numShippingFee,
       total,
@@ -69,8 +68,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const userId = getUserId();
-    if (!userId)
+    const user = await getCurrentUser();
+    if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
@@ -83,7 +82,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const updated = updateOrder(Number(id), userId, updates);
+    const updated = updateOrder(Number(id), user.id, updates);
     return NextResponse.json(updated);
   } catch (error) {
     return NextResponse.json(
@@ -93,10 +92,10 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-export function DELETE(req: Request) {
+export async function DELETE(req: Request) {
   try {
-    const userId = getUserId();
-    if (!userId)
+    const user = await getCurrentUser();
+    if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { searchParams } = new URL(req.url);
@@ -109,7 +108,7 @@ export function DELETE(req: Request) {
       );
     }
 
-    deleteOrder(Number(id), userId);
+    deleteOrder(Number(id), user.id);
     return NextResponse.json({ message: "Order deleted" });
   } catch (error) {
     return NextResponse.json(

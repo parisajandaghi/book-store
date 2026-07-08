@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
 import { getErrorMessage } from "@/utils/error";
 import { getOrderHistory } from "@/services/order.service";
+import { getCurrentUser } from "@/lib/auth";
 
-export function GET() {
+export async function GET() {
   try {
-    const userId = 1;
+    const user = await getCurrentUser();
 
-    if (!userId) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const data = getOrderHistory(userId);
+    const data = getOrderHistory(user.id);
 
     return NextResponse.json(data);
   } catch (error) {

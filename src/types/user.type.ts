@@ -5,6 +5,6 @@ export interface User {
 }
 
 export interface DBUser extends User {
-  password?: string;
-  role?: string;
+  password: string;
+  role: string;
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCurrentUser } from "@/lib/auth";
 import {
   getCart,
   addToCart,
@@ -7,19 +8,14 @@ import {
 } from "@/services/cart.service";
 import { getErrorMessage } from "@/utils/error";
 
-// TODO: در مرحله بعد این تابع باید با منطق اعتبارسنجی JWT جایگزین شود
-async function getUser() {
-  // id باید عدد باشد تا با دیتابیس بخواند
-  const user = { id: 1 };
-
-  if (!user) throw new Error("Unauthorized");
-  return user;
-}
-
 export async function GET() {
   try {
-    const user = await getUser();
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const cart = getCart(user.id);
+
     return NextResponse.json(cart);
   } catch (error) {
     return NextResponse.json(
@@ -31,14 +27,17 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getUser();
-  const body = await req.json();
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const body = await req.json();
 
-console.log("BODY =", body);
+    console.log("BODY =", body);
 
-const { bookId } = body as { bookId: string | number };
+    const { bookId } = body as { bookId: string | number };
 
-console.log("bookId =", bookId);
+    console.log("bookId =", bookId);
 
     if (!bookId) {
       return NextResponse.json(
@@ -60,7 +59,10 @@ console.log("bookId =", bookId);
 
 export async function PUT(req: NextRequest) {
   try {
-    const user = await getUser();
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const { itemId, quantity } = (await req.json()) as {
       itemId: string | number;
       quantity: number;
@@ -83,7 +85,10 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: Request) {
   try {
-    const user = await getUser();
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const { searchParams } = new URL(req.url);
     const itemId = searchParams.get("id");
 

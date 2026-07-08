@@ -178,5 +178,24 @@
     "bookDeleted": "Book deleted successfully",
     "somethingWentWrong": "Something went wrong",
     "noResultsFound": "No results found!"
+  },
+  "Login": {
+    "Email": "Email",
+    "Password": "Password",
+    "ForgotPassword": "Forgot Password?",
+    "SignIn": "Sign In",
+    "CreateAccount": "Create an account",
+    "NoAccount": "No Account ?"
+  },
+  "Register": {
+    "Title": "Create an account",
+    "Name": "Name",
+    "Email": "Email",
+    "Password": "Password",
+    "ConfirmPassword": "Confirm Password",
+    "PhoneNumber": "Phone Number",
+    "CreateAccount": "Create Account",
+    "AlreadyHaveAccount": "Have an account?",
+    "SignIn": "Sign In"
   }
 }

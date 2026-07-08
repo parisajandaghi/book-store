@@ -2,26 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkout } from "@/services/checkout.service";
 import { CheckoutRequest } from "@/features/carts/cart.type";
 import { getErrorMessage } from "@/utils/error";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const authHeader = req.headers.get("authorization");
-    const token = authHeader?.split(" ")[1];
+    const user = await getCurrentUser();
 
-    if (!token) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 },
-      );
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    /**
-     * بعداً از JWT استخراج می‌شود
-     */
-    const user = {
-      id: 1,
-    };
-
     const checkoutData: CheckoutRequest = await req.json();
 
     const result = checkout(user.id, checkoutData);

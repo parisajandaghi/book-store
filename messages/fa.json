@@ -170,5 +170,23 @@
         }
       }
     }
+  },
+  "Login": {
+    "Email": "ایمیل",
+    "Password": "رمزعبور",
+    "ForgotPassword": "رمز عبور خود را فراموش کرده اید؟",
+    "SignIn": "ورود",
+    "CreateAccount": " ایجاد حساب کاربری",
+    "NoAccount": "حساب کاربری ندارید ؟"
+  },
+  "Register": {
+    "Title": "ایجاد حساب کاربری",
+    "Name": "نام و نام خانوادگی",
+    "Email": "ایمیل",
+    "Password": "رمز عبور",
+    "PhoneNumber": "شماره موبایل",
+    "ConfirmPassword": "تکرار رمز عبور",
+    "AlreadyHaveAccount": "حساب کاربری دارید؟",
+    "SignIn": "وارد شوید"
   }
 }
