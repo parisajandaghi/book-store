@@ -1,7 +1,7 @@
+import { hashPassword } from "@/lib/auth";
 import db from "@/lib/db";
 import { DBUser, User } from "@/types/user.type";
 
-// تعریف دقیق تایپ‌ها به جای استفاده از any
 type SqliteParam = string | number | null;
 
 export function getProfile(userId: number): User {
@@ -10,30 +10,26 @@ export function getProfile(userId: number): User {
     WHERE id = ?
   `);
 
-  const user = stmt.get(userId) as unknown as DBUser | undefined;
+  const user = stmt.get(userId) as DBUser | undefined;
 
   if (!user) {
     throw new Error("کاربر پیدا نشد");
   }
 
-  const { password, role, ...safeUser } = user;
+  const { password, ...safeUser } = user;
 
   return safeUser;
 }
 
-export function updateProfile(
-  userId: number,
-  updates: Partial<User>,
-): User {
+export function updateProfile(userId: number, updates: Partial<User>): User {
   const updateFields: string[] = [];
   const values: SqliteParam[] = [];
 
-  // بررسی صریح فیلدهای مجاز و حذف کامل Object.keys و any
   if (updates.name !== undefined) {
     updateFields.push("name = ?");
     values.push(updates.name);
   }
-  
+
   if (updates.email !== undefined) {
     updateFields.push("email = ?");
     values.push(updates.email);
@@ -54,4 +50,41 @@ export function updateProfile(
   stmt.run(...values, userId);
 
   return getProfile(userId);
+}
+export function getUserByEmail(email: string): DBUser | null {
+  const stmt = db.prepare(`
+    SELECT * FROM users
+    WHERE email = ?
+  `);
+
+  const user = stmt.get(email) as DBUser | undefined;
+
+  return user ?? null;
+}
+
+export async function createUser(data: {
+  name: string;
+  email: string;
+  password: string;
+}) {
+  const hashedPassword = await hashPassword(data.password);
+
+  const stmt = db.prepare(`
+    INSERT INTO users (
+      name,
+      email,
+      password,
+      role
+    )
+    VALUES (?, ?, ?, ?)
+  `);
+
+  const result = stmt.run(data.name, data.email, hashedPassword, "user");
+
+  return {
+    id: Number(result.lastInsertRowid),
+    name: data.name,
+    email: data.email,
+    role: "user",
+  };
 }

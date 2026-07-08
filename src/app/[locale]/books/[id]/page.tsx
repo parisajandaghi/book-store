@@ -17,6 +17,7 @@ export default async function BookDetails({
   const t1 = await getTranslations("Product");
   const locale = await getLocale();
   const { id } = await params;
+
   let book;
   try {
     book = getBookById(id);
@@ -35,7 +36,7 @@ export default async function BookDetails({
   }
 
   const formattedPrice = getFormattedPrice(book.price, locale);
-console.log('book',book);
+  console.log("book", book);
 
   return (
     <Group
@@ -93,16 +94,7 @@ console.log('book',book);
             </Stack>
             <HorizontalDivider my="md" />
 
-            <AddToCartButton
-              bookData={{
-                book_id: book.id,
-                title: localizedBook.title,
-                price: book.price,
-                image_url: book.image_url,
-                author: localizedBook.author,
-                translations: book.translations,
-              }}
-            />
+            <AddToCartButton bookId={book.id} />
           </Stack>
         </Group>
       </Card>
