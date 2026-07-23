@@ -185,7 +185,10 @@
     "ForgotPassword": "Forgot Password?",
     "SignIn": "Sign In",
     "CreateAccount": "Create an account",
-    "NoAccount": "No Account ?"
+    "NoAccount": "No Account ?",
+    "InvalidEmail": "Invalid email",
+    "PasswordTooShort": "Password must be at least 6 characters",
+    "SomethingWentWrong": "Something went wrong"
   },
   "Register": {
     "Title": "Create an account",
@@ -196,6 +199,11 @@
     "PhoneNumber": "Phone Number",
     "CreateAccount": "Create Account",
     "AlreadyHaveAccount": "Have an account?",
-    "SignIn": "Sign In"
+    "SignIn": "Sign In",
+    "NameRequired": "Please enter your name",
+    "InvalidEmail": "Invalid email address",
+    "InvalidPhoneNumber": "Invalid phone number",
+    "PasswordTooShort": "Password must be at least 6 characters long",
+    "PasswordNotMatch": "Passwords do not match"
   }
 }

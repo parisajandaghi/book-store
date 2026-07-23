@@ -44,10 +44,10 @@ export async function POST(req: NextRequest) {
         },
       );
     }
-    const token = createToken({
+    const token = await createToken({
       id: user.id,
       email: user.email,
-      role: user.role,
+      role: user.role!,
     });
     const { password: _, ...safeUser } = user;
 

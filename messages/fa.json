@@ -177,7 +177,10 @@
     "ForgotPassword": "رمز عبور خود را فراموش کرده اید؟",
     "SignIn": "ورود",
     "CreateAccount": " ایجاد حساب کاربری",
-    "NoAccount": "حساب کاربری ندارید ؟"
+    "NoAccount": "حساب کاربری ندارید ؟",
+    "InvalidEmail": "ایمیل وارد شده صحیح نیست",
+    "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "SomethingWentWrong": "مشکلی رخ داده است"
   },
   "Register": {
     "Title": "ایجاد حساب کاربری",
@@ -187,6 +190,11 @@
     "PhoneNumber": "شماره موبایل",
     "ConfirmPassword": "تکرار رمز عبور",
     "AlreadyHaveAccount": "حساب کاربری دارید؟",
-    "SignIn": "وارد شوید"
+    "SignIn": "وارد شوید",
+    "NameRequired": "نام را وارد کنید",
+    "InvalidEmail": "ایمیل معتبر نیست",
+    "InvalidPhoneNumber": "شماره موبایل معتبر نیست",
+    "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "PasswordNotMatch": "رمز عبور و تکرار آن یکسان نیست"
   }
 }
