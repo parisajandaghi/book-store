@@ -28,10 +28,15 @@ import {
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import style from "../../../../features/carts/cart.module.css";
+import { useCart } from "@/features/carts/hooks/use-cart";
+import { SHIPPING_FEE } from "@/constants";
 export default function Checkout() {
   const { checkoutForm, paymentForm } = useCheckoutForms();
   const { activeStep, isProcessing, nextStep, prevStep, setActiveStep } =
     useCheckoutStepper({ paymentForm });
+  const { cartTotal } = useCart();
+
+  const totalAmount = cartTotal + SHIPPING_FEE;
 
   const locale = useLocale();
   const t = useTranslations("CheckoutInfo");
@@ -126,6 +131,9 @@ export default function Checkout() {
         {activeStep === 2 && <PaymentStep form={paymentForm} />}
         <Stack flex={1}>
           <OrderSummary
+            subtotal={cartTotal}
+            shippingFee={SHIPPING_FEE}
+            totalAmount={totalAmount}
             button={
               <PrimaryButton
                 btnText={getButtonText()}

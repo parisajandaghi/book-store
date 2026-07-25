@@ -2,11 +2,14 @@
 import OrderItems from "@/features/orders/components/order-items";
 import OrderSummary from "@/features/orders/components/order-summary";
 import ShoppingInfo from "@/features/orders/components/shopping-info";
+import { useOrderDetails } from "@/features/orders/hooks/use-order.details";
 import {
   Badge,
   Button,
+  Center,
   Container,
   Group,
+  Loader,
   Stack,
   Text,
   Title,
@@ -18,6 +21,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 const getStatusProps = (status: string) => {
   switch (status.toLowerCase()) {
     case "pending":
@@ -35,7 +39,29 @@ const getStatusProps = (status: string) => {
 export default function OrderDetails() {
   const t = useTranslations("OrderDetails");
   const t1 = useTranslations("Orders");
-  const Status: string = "Delivered";
+  const params = useParams();
+  const orderId = params.id as string;
+  const { error, isLoading, order } = useOrderDetails(orderId);
+
+  if (isLoading) {
+    return (
+      <Center h={400}>
+        <Loader color="surface.9" />
+      </Center>
+    );
+  }
+
+  // ۲. هندل کردن حالت ارور یا پیدا نشدن سفارش
+  if (error || !order) {
+    return (
+      <Center h={400}>
+        <Text c="red">{error || "سفارش یافت نشد"}</Text>
+      </Center>
+    );
+  }
+
+  const Status = order.status || "pending";
+
   return (
     <Container
       w={"100%"}
@@ -56,17 +82,21 @@ export default function OrderDetails() {
         <Stack flex={1}>
           <Group>
             <Title c={"textMain.2"} order={2}>
-              assjad
+              {t("Order")}
             </Title>
             <Title c={"surface.9"} order={5}>
-              234772347
+              {order.id}
             </Title>
           </Group>
           <Group gap={5} c={"textMain.3"}>
             <IconCalendarWeek color="var(--mantine-color-surface-9)" />
             <Text fz={"xs"}>{t("OrderDate")}</Text>
             <Text>:</Text>
-            <Text fz={"xs"}>2015-20-01</Text>
+            <Text fz={"xs"}>
+              {order.created_at
+                ? new Date(order.created_at).toLocaleDateString()
+                : "---"}
+            </Text>
           </Group>
           <Group gap={5} c={"textMain.3"}>
             <IconPackage color="var(--mantine-color-surface-9)" />
@@ -84,7 +114,11 @@ export default function OrderDetails() {
             </Badge>
           </Group>
         </Stack>
-        <OrderSummary />
+        <OrderSummary
+          subtotal={order.subtotal}
+          shippingFee={order.shipping_fee}
+          totalAmount={order.total}
+        />
         <Stack flex={1} p={"xs"}>
           <Button
             color="secondary.0"
@@ -110,12 +144,12 @@ export default function OrderDetails() {
       </Stack>
 
       <Stack flex={3} p={"xs"}>
-        <OrderItems />
+        <OrderItems items={order.order_items || []} />
         <ShoppingInfo
-          name="pary"
-          address="abfsdf kfsdf sdjsdf"
-          phone_number="09124080426"
-          tracking_code="3764234234"
+          name={order.recipient_name}
+          address={order.address}
+          phone_number={order.phone}
+          tracking_code={order.tracking_code}
         />
       </Stack>
     </Container>

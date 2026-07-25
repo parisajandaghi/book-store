@@ -4,7 +4,9 @@ import { getFormattedPrice } from "@/utils/book.utils";
 import {
   Badge,
   Card,
+  Center,
   Group,
+  Loader,
   SimpleGrid,
   Stack,
   Text,
@@ -20,25 +22,53 @@ import {
   IconShoppingBag,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useOrderHistory } from "../hooks/use-order-history";
 import style from "../order-card.module.css";
-import { mockOrders, OrderStatus } from "../order.type";
+import { OrderStatus } from "../order.type";
 const statusConfig: Record<
   OrderStatus,
   { icon: React.ElementType; color: string }
 > = {
-  Pending: { icon: IconClock, color: "surface" },
-  Processing: { icon: IconLoader, color: "surface" },
-  Delivered: { icon: IconCircleCheck, color: "#86A789" },
-  Cancelled: { icon: IconCircleX, color: "#C5705D" },
+  pending: { icon: IconClock, color: "surface" },
+  processing: { icon: IconLoader, color: "surface" },
+  delivered: { icon: IconCircleCheck, color: "#86A789" },
+  cancelled: { icon: IconCircleX, color: "#C5705D" },
 };
+
 export default function OrderCard() {
   const t1 = useTranslations("Orders");
   const t2 = useTranslations("Product");
   const locale = useLocale();
   const ChevronIcon = locale === "fa" ? IconChevronLeft : IconChevronRight;
+  const { orders, isLoading, error } = useOrderHistory();
+  if (isLoading) {
+    return (
+      <Center h={200}>
+        <Loader color="surface.9" />
+      </Center>
+    );
+  }
+
+  // هندل کردن ارور
+  if (error) {
+    return (
+      <Center h={200}>
+        <Text c="red">خطا در دریافت لیست سفارشات</Text>
+      </Center>
+    );
+  }
+
+  // اگه سفارشی نبود
+  if (orders.length === 0) {
+    return (
+      <Center h={200}>
+        <Text c="dimmed">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</Text>
+      </Center>
+    );
+  }
   return (
     <SimpleGrid cols={{ base: 1 }}>
-      {mockOrders.map((item) => {
+      {orders.map((item) => {
         const formattedPrice = getFormattedPrice(item.total, locale);
 
         const currentStatus = statusConfig[item.status] || {

@@ -7,8 +7,13 @@ import { Container, Group, ScrollArea, Stack, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import CartItemsList from "./cart-items-list";
+import { useCart } from "../hooks/use-cart";
+import { SHIPPING_FEE } from "@/constants";
 
 export default function CartItems() {
+  const { cartTotal } = useCart();
+
+  const totalAmount = cartTotal + SHIPPING_FEE;
   const t2 = useTranslations("Cart");
   const locale = useLocale();
 
@@ -45,6 +50,9 @@ export default function CartItems() {
           </GlassPanel>
 
           <OrderSummary
+            subtotal={cartTotal}
+            shippingFee={SHIPPING_FEE}
+            totalAmount={totalAmount}
             button={
               <Link
                 href={"/cart/checkout"}

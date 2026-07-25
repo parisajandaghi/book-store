@@ -13,7 +13,7 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
   const [activeStep, setActiveStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [checkout] = useAtom(checkoutAtom);
+  const [checkout, setCheckout] = useAtom(checkoutAtom);
 
   const router = useRouter();
 
@@ -40,7 +40,7 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
         cvv2: paymentForm.values.cvv2,
       },
     };
-console.log(payload);
+    console.log(payload);
     const response = await fetch("/api/checkout", {
       method: "POST",
 
@@ -90,7 +90,18 @@ console.log(payload);
     try {
       await submitOrder();
 
+      setCheckout({
+        addressId: null,
+        shippingMethod: null,
+        deliveryDate: null,
+        deliveryTime: null,
+        recipientName: "",
+        phone: "",
+        address: "",
+      });
+
       router.push("/cart/success");
+      router.refresh();
     } catch (error) {
       console.error(error);
     } finally {

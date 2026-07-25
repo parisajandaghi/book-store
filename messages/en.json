@@ -49,10 +49,10 @@
       "AllOrders": "All Orders"
     },
     "Status": {
-      "Pending": "Pending",
-      "Processing": "Processing",
-      "Delivered": "Delivered",
-      "Cancelled": "Cancelled"
+      "pending": "Pending",
+      "processing": "Processing",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     },
     "Actions": {
       "ViewDetails": "View Details",
@@ -83,7 +83,8 @@
     "Product": "Product",
     "TotalPrice": "Total Price",
     "UnitPrice": "Unit Price",
-    "Qty": "Quantity"
+    "Qty": "Quantity",
+    "Order": "Order"
   },
   "Cart": {
     "ShoppingCart": "Shopping Cart",

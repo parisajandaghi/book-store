@@ -10,9 +10,14 @@ import {
 } from "@mantine/core";
 import { IconShoppingBag } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-
-export default function OrderItems() {
+import { OrderItem } from "../order-item.type";
+interface OrderItemsProps {
+  items: OrderItem[];
+}
+export default function OrderItems({ items = [] }: OrderItemsProps) {
   const t = useTranslations("OrderDetails");
+  console.log(" items in orderItem", items);
+
   return (
     <Stack
       flex={2}
@@ -63,64 +68,69 @@ export default function OrderItems() {
       </Grid>
       <ScrollArea h={200} offsetScrollbars p={"xs"} type="hover">
         <Stack>
-          <Grid
-            p={"xs"}
-            style={{
-              display: "flex",
-              backgroundColor: "#1f0f1fa8",
-              borderRadius: 5,
-              border: "1px solid #d4af3766",
-            }}
-          >
-            <Grid.Col span={5}>
-              <Group>
-                <Image
-                  src={"/images/jonathan-livingston-seagull.jpg"}
-                  w={30}
-                  h={40}
-                  alt=""
-                />
+          {items.map((item) => (
+            <Grid
+              key={item.id}
+              p={"xs"}
+              style={{
+                display: "flex",
+                backgroundColor: "#1f0f1fa8",
+                borderRadius: 5,
+                border: "1px solid #d4af3766",
+              }}
+            >
+              <Grid.Col span={5}>
+                <Group>
+                  <Image src={item.image_url} w={30} h={40} alt={item.title} />
 
-                <Center
-                  h={"100%"}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 5,
-                  }}
-                >
+                  <Center
+                    h={"100%"}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 5,
+                    }}
+                  >
+                    <Text fz={"xs"} c={"textMain.3"}>
+                      {item.title}
+                    </Text>
+                    <Text fz={"xs"} c={"textMain.3"}>
+                      {item.author}
+                    </Text>
+                  </Center>
+                </Group>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Center h={"100%"}>
                   <Text fz={"xs"} c={"textMain.3"}>
-                    جاناتان مرغ دریایی
-                  </Text>
-                  <Text fz={"xs"} c={"textMain.3"}>
-                    ریچارد باخ
+                    {item.price.toLocaleString()}
                   </Text>
                 </Center>
-              </Group>
-            </Grid.Col>
-            <Grid.Col span={2}>
-              <Center h={"100%"}>
-                <Text fz={"xs"} c={"textMain.3"}>
-                  300000
-                </Text>
-              </Center>
-            </Grid.Col>
-            <Grid.Col span={2}>
-              <Center h={"100%"}>
-                {" "}
-                <Text fz={"xs"} c={"textMain.3"}>
-                  10
-                </Text>
-              </Center>
-            </Grid.Col>
-            <Grid.Col span={2}>
-              <Center h={"100%"}>
-                <Text fz={"xs"} c={"textMain.3"}>
-                  600000
-                </Text>
-              </Center>
-            </Grid.Col>
-          </Grid>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Center h={"100%"}>
+                  {" "}
+                  <Text fz={"xs"} c={"textMain.3"}>
+                    {item.quantity}
+                  </Text>
+                </Center>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Center h={"100%"}>
+                  <Text fz={"xs"} c={"textMain.3"}>
+                    {(item.price * item.quantity).toLocaleString()}
+                  </Text>
+                </Center>
+              </Grid.Col>
+            </Grid>
+          ))}
+          {items.length === 0 && (
+            <Center p="md">
+              <Text fz="sm" c="dimmed">
+                هیچ آیتمی یافت نشد.
+              </Text>
+            </Center>
+          )}
         </Stack>
       </ScrollArea>
     </Stack>

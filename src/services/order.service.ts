@@ -20,8 +20,16 @@ export function getOrderHistory(userId: number) {
   const orders = ordersStmt.all(userId) as unknown as Order[];
 
   const itemsStmt = db.prepare(`
-    SELECT * FROM order_items 
-    WHERE order_id = ?
+    SELECT
+      order_items.*,
+      books.image_url,
+      translations.title,
+      translations.author
+    FROM order_items
+    JOIN books ON books.id = order_items.book_id
+    LEFT JOIN translations ON translations.book_id = books.id AND translations.language_code='en'
+    WHERE order_items.order_id=?
+    GROUP BY order_items.id -- این خط اضافه شد تا جلوی تکرار را بگیرد
   `);
 
   const history = orders.map((order) => {
@@ -127,4 +135,36 @@ export function deleteOrder(orderId: number, userId: number): void {
     WHERE id = ? AND user_id = ?
   `);
   stmt.run(orderId, userId);
+}
+
+export function getOrderById(orderId: number, userId: number) {
+  const orderStmt = db.prepare(`
+    SELECT * FROM orders 
+    WHERE id = ? AND user_id = ?
+  `);
+  const order = orderStmt.get(orderId, userId) as unknown as Order;
+
+  if (!order) {
+    return null;
+  }
+
+  const itemsStmt = db.prepare(`
+    SELECT
+      order_items.*,
+      books.image_url,
+      translations.title,
+      translations.author
+    FROM order_items
+    JOIN books ON books.id = order_items.book_id
+    LEFT JOIN translations ON translations.book_id = books.id AND translations.language_code = 'en'
+    WHERE order_items.order_id = ?
+    GROUP BY order_items.id -- این خط اضافه شد تا جلوی تکرار را بگیرد
+  `);
+
+  const items = itemsStmt.all(order.id) as unknown as OrderItem[];
+
+  return {
+    ...order,
+    order_items: items,
+  };
 }

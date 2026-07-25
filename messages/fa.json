@@ -49,10 +49,10 @@
       "AllOrders": "همه سفارشات"
     },
     "Status": {
-      "Pending": "در انتظار پرداخت",
-      "Processing": "در حال پردازش",
-      "Delivered": "تحویل داده شده",
-      "Cancelled": "لغو شده"
+      "pending": "در انتظار پرداخت",
+      "processing": "در حال پردازش",
+      "delivered": "تحویل داده شده",
+      "cancelled": "لغو شده"
     },
     "Actions": {
       "ViewDetails": "مشاهده جزئیات",
@@ -83,7 +83,8 @@
     "Product": "محصول",
     "TotalPrice": "قیمت کل",
     "UnitPrice": "قیمت واحد",
-    "Qty": "تعداد"
+    "Qty": "تعداد",
+    "Order": "سفارش"
   },
   "Cart": {
     "ShoppingCart": "سبد خرید",

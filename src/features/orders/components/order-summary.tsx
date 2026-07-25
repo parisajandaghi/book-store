@@ -6,13 +6,14 @@ import { useLocale, useTranslations } from "next-intl";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import { getFormattedPrice } from "@/utils/book.utils";
 import { OrderSummaryProps } from "../order.type";
-import { useCart } from "@/features/carts/hooks/use-cart";
-import { SHIPPING_FEE } from "@/constants";
 
-export default function OrderSummary({ button, children }: OrderSummaryProps) {
-  const { cartTotal } = useCart();
-  const totalAmount = cartTotal + SHIPPING_FEE;
-  
+export default function OrderSummary({
+  button,
+  children,
+  subtotal,
+  shippingFee,
+  totalAmount,
+}: OrderSummaryProps) {
   const t2 = useTranslations("OrderDetails");
   const t1 = useTranslations("Product");
   const locale = useLocale();
@@ -46,7 +47,7 @@ export default function OrderSummary({ button, children }: OrderSummaryProps) {
           c={"textMain.3"}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
-          {renderPrice(cartTotal)}
+          {renderPrice(subtotal)}
         </Text>
       </Group>
       <Group justify="space-between" px={"xs"}>
@@ -58,7 +59,7 @@ export default function OrderSummary({ button, children }: OrderSummaryProps) {
           c={"textMain.3"}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
-          {renderPrice(SHIPPING_FEE)}
+          {renderPrice(shippingFee)}
         </Text>
       </Group>
       <HorizontalDivider />
@@ -79,9 +80,7 @@ export default function OrderSummary({ button, children }: OrderSummaryProps) {
       {button && (
         <>
           <HorizontalDivider />
-          <Group w={"100%"}  >
-            {button}
-          </Group>
+          <Group w={"100%"}>{button}</Group>
         </>
       )}
     </GlassPanel>
