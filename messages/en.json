@@ -185,6 +185,7 @@
     "Password": "Password",
     "ForgotPassword": "Forgot Password?",
     "SignIn": "Sign In",
+    "Register": "Register",
     "CreateAccount": "Create an account",
     "NoAccount": "No Account ?",
     "InvalidEmail": "Invalid email",
@@ -206,5 +207,18 @@
     "InvalidPhoneNumber": "Invalid phone number",
     "PasswordTooShort": "Password must be at least 6 characters long",
     "PasswordNotMatch": "Passwords do not match"
+  },
+  "Profile": {
+    "Logout": "Logout",
+    "InfoEdit": "Edit Information",
+    "MyOrders": "My Orders",
+    "Modal": {
+      "Email": "Email",
+      "Mobile": "Phone Number",
+      "Name": "Name",
+      "NewPassword": "New Password",
+      "SaveChanges": "Save Changes",
+      "Cancel": "Cancel"
+    }
   }
 }

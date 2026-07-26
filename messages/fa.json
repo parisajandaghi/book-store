@@ -177,6 +177,7 @@
     "Password": "رمزعبور",
     "ForgotPassword": "رمز عبور خود را فراموش کرده اید؟",
     "SignIn": "ورود",
+    "Register": "ثبت نام",
     "CreateAccount": " ایجاد حساب کاربری",
     "NoAccount": "حساب کاربری ندارید ؟",
     "InvalidEmail": "ایمیل وارد شده صحیح نیست",
@@ -197,5 +198,18 @@
     "InvalidPhoneNumber": "شماره موبایل معتبر نیست",
     "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
     "PasswordNotMatch": "رمز عبور و تکرار آن یکسان نیست"
+  },
+  "Profile": {
+    "Logout": "خروج از حساب کاربری",
+    "InfoEdit": "ویرایش اطلاعات",
+    "MyOrders": "سفارش های من",
+    "Modal": {
+      "Email": "ایمیل",
+      "Mobile": "شماره موبایل",
+      "Name": "نام و نام خانوادگی",
+      "NewPassword": "رمز عبور جدید",
+      "SaveChanges": "ذخیره تغییرات",
+      "Cancel": "انصراف"
+    }
   }
 }

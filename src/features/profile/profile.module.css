@@ -1,0 +1,11 @@
+.menuItem {
+  color: #fdf6eb;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.menuItem:hover,
+.menuItem[data-hovered] {
+  background-color: #1f0f1fa8;
+  color: #d4af37 !important;
+}
