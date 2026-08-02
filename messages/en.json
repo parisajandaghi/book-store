@@ -220,5 +220,21 @@
       "SaveChanges": "Save Changes",
       "Cancel": "Cancel"
     }
+  },
+  "PasswordRecovery": {
+    "Validation": {
+      "InvalidEmail": "Please enter a valid email address.",
+      "PasswordMinLength": "Password must be at least 6 characters.",
+      "PasswordsDoNotMatch": "Passwords do not match."
+    },
+    "Form": {
+      "ResetPassword": "Reset Password",
+      "NewPassword": "New Password",
+      "ConfirmPassword": "Confirm Password",
+      "PasswordRecovery": "Password Recovery",
+      "SendRecoveryRequest": "Send Recovery Request",
+      "BackToLogin": "Back To Login",
+      "Email": "Email"
+    }
   }
 }

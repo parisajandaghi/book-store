@@ -115,6 +115,17 @@ if (!global.__db) {
             );
           `,
         },
+        {
+          name: "reset_tokens",
+          schema: `
+        CREATE TABLE IF NOT EXISTS reset_tokens (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          email TEXT NOT NULL,
+          token TEXT NOT NULL,
+          expires_at INTEGER NOT NULL
+        );
+      `,
+        },
       ];
 
       tables.forEach((table) => {

@@ -13,7 +13,10 @@ function AppShellLayout({ children }: AppShellProps) {
   const pathname = usePathname();
 
   const hideHeader =
-    pathname.endsWith("/login") || pathname.endsWith("/signup");
+    pathname.endsWith("/login") ||
+    pathname.endsWith("/signup") ||
+    pathname.endsWith("/forgot-password") ||
+    pathname.endsWith("/reset-password");
 
   return (
     <Stack mih="100vh">
@@ -24,7 +27,7 @@ function AppShellLayout({ children }: AppShellProps) {
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          justifyContent:"center"
+          justifyContent: "center",
         }}
       >
         {children}

@@ -11,7 +11,7 @@ import { useForm } from "@mantine/form";
 export default function Login() {
   const t = useTranslations("Login");
   const locale = useLocale();
-   const router = useRouter();
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: "",
@@ -24,7 +24,7 @@ export default function Login() {
       password: (value) => (value.length >= 6 ? null : t("PasswordTooShort")),
     },
   });
-    const handleSubmit = async (values: typeof form.values) => {
+  const handleSubmit = async (values: typeof form.values) => {
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -82,9 +82,11 @@ export default function Login() {
               {...form.getInputProps("password")}
             />
             <Group w={300} dir={locale === "fa" ? "rtl" : "ltr"} gap={0}>
-              <Text c="surface.6" fz={12}>
-                {t("ForgotPassword")}
-              </Text>
+              <Link href="/forgot-password" style={{ textDecoration: "none" }}>
+                <Text c="surface.6" fz={12} style={{ cursor: "pointer" }}>
+                  {t("ForgotPassword")}
+                </Text>
+              </Link>
             </Group>
             <PrimaryButton btnText={t("SignIn")} width={300} type="submit" />
           </Stack>

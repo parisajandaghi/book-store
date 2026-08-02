@@ -211,5 +211,22 @@
       "SaveChanges": "ذخیره تغییرات",
       "Cancel": "انصراف"
     }
+  },
+  "PasswordRecovery": {
+   
+    "Validation": {
+      "InvalidEmail": "لطفاً یک ایمیل معتبر وارد کنید.",
+      "PasswordMinLength": "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+      "PasswordsDoNotMatch": "رمزهای عبور با هم مطابقت ندارند."
+    },
+    "Form": {
+      "ResetPassword": "تعریف رمز عبور جدید",
+      "NewPassword": "رمز عبور جدید",
+      "ConfirmPassword": "تکرار رمز عبور",
+      "PasswordRecovery": "بازیابی رمز عبور",
+      "SendRecoveryRequest": "ارسال درخواست بازیابی",
+      "BackToLogin": "برو به صفحه ورود",
+      "Email":"ایمیل"
+    }
   }
 }
