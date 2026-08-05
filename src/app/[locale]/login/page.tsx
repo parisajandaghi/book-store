@@ -8,6 +8,7 @@ import { useRouter } from "@/navigation";
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import { Link } from "@/navigation";
 import { useForm } from "@mantine/form";
+import { useUser } from "@/features/profile/hook/use-user";
 export default function Login() {
   const t = useTranslations("Login");
   const locale = useLocale();
@@ -24,6 +25,7 @@ export default function Login() {
       password: (value) => (value.length >= 6 ? null : t("PasswordTooShort")),
     },
   });
+  const { refetch } = useUser();
   const handleSubmit = async (values: typeof form.values) => {
     try {
       const res = await fetch("/api/auth/login", {
@@ -44,7 +46,7 @@ export default function Login() {
       }
 
       form.reset();
-
+      await refetch();
       router.push("/");
       router.refresh();
     } catch {

@@ -1,6 +1,9 @@
+import { useUser } from "@/features/profile/hook/use-user";
 import { CartItem } from "../cart.type";
 
 import useSWR from "swr";
+
+import { useRouter } from "@/navigation";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -13,6 +16,8 @@ const fetcher = async (url: string) => {
 };
 
 export const useCart = () => {
+  const { user } = useUser();
+  const router = useRouter();
   const {
     data: cartItems = [],
     error,
@@ -26,6 +31,10 @@ export const useCart = () => {
   );
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const addToCart = async (bookId: number) => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
     const response = await fetch("/api/cart", {
       method: "POST",
       headers: {

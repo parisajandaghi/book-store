@@ -38,32 +38,40 @@ export default function AddressForm({
   const t = useTranslations("CheckoutInfo");
   const [, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
-  const [addresses, setAddresses] = useAtom(addressesAtom);
-  const handleSubmit = (values: CheckoutAddressFormValues) => {
-  const nextId =
-    addresses.length > 0
-      ? Math.max(...addresses.map((item) => Number(item.id))) + 1
-      : 1;
+  const [, setAddresses] = useAtom(addressesAtom);
+  const handleSubmit = async (values: CheckoutAddressFormValues) => {
+    try {
+      const response = await fetch("/api/users/addresses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-  const newAddress = {
-    id: nextId,
-    ...values,
+      if (!response.ok) {
+        throw new Error("مشکلی در ثبت آدرس به وجود آمد");
+      }
+
+      const newAddress = await response.json();
+
+      setAddresses((prev) => [...prev, newAddress]);
+
+      setCheckout((prev) => ({
+        ...prev,
+        addressId: newAddress.id,
+        recipientName: newAddress.recipientName,
+        phone: newAddress.phone,
+        address: newAddress.address,
+      }));
+
+      form.reset();
+      setIsAddressModalOpen(false);
+    } catch (error) {
+      console.error("Error saving address:", error);
+    }
   };
 
-  setAddresses((prev) => [...prev, newAddress]);
-
-  setCheckout((prev) => ({
-    ...prev,
-    addressId: nextId,
-    recipientName: values.recipientName,
-    phone: values.phone,
-    address: values.address,
-  }));
-
-  form.reset();
-
-  setIsAddressModalOpen(false);
-};
   return (
     <GlassPanel flex={2} p={"md"}>
       <form onSubmit={form.onSubmit(handleSubmit)}>

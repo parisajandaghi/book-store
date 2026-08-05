@@ -8,3 +8,5 @@ export default function Carts() {
   const { cartItems } = useCart();
   return <>{cartItems.length === 0 ? <EmptyCartState /> : <CartItems />}</>;
 }
+
+

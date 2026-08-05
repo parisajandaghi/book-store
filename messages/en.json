@@ -45,8 +45,9 @@
       "Items": "Items"
     },
     "Sort": {
-      "Title": "Sort",
-      "AllOrders": "All Orders"
+      "OrderStatus": "Order Status",
+      "AllOrders": "All Orders",
+      "NoOrdersFound": "No orders found with this status."
     },
     "Status": {
       "pending": "Pending",
@@ -92,7 +93,8 @@
     "CheckOut": "Check Out",
     "ShoppingCartOff": "Your Cart Is Empty!",
     "OrderPlacedSuccessfully": "Your Order Has Been Placed Successfully",
-    "OrderTrackingMessage": "Your Order Tracking Code Will Be Sent To You Shortly"
+    "OrderTrackingMessage": "Your Order Tracking Code Will Be Sent To You Shortly",
+     "OrderId":"Order Id"
   },
   "CheckoutInfo": {
     "Name": "Name",

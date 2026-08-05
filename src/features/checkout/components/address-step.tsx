@@ -1,17 +1,27 @@
 import { UseFormReturnType } from "@mantine/form";
 import { useTranslations } from "next-intl";
 
-import { useAtom } from "jotai";
-import { addressesAtom } from "@/store/checkout-atom";
-import AddressForm from "@/features/carts/components/address-form";
-import AddressSelector from "./address-selector";
+import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import { CheckoutAddressFormValues } from "@/features/carts/cart.type";
+import AddressForm from "@/features/carts/components/address-form";
+import { useAddresses } from "@/features/profile/hook/use-address";
+import { Center, Loader } from "@mantine/core";
+import AddressSelector from "./address-selector";
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
 };
 export default function AddressStep({ form }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
-  const [addresses] = useAtom(addressesAtom);
+
+  const { addresses, isLoading } = useAddresses();
+
+  if (isLoading) {
+    return (
+      <Center>
+        <Loader color="surface.9" />
+      </Center>
+    );
+  }
   const hasAddress = addresses.length > 0;
 
   return (
@@ -19,7 +29,9 @@ export default function AddressStep({ form }: CheckoutAddressFormProps) {
       {hasAddress ? (
         <AddressSelector />
       ) : (
-        <AddressForm form={form} title={t("ShippingInfo")} />
+        <AddressForm form={form} title={t("ShippingInfo")}>
+          <PrimaryButton type="submit" btnText={t("SaveAddress")} />
+        </AddressForm>
       )}
     </>
   );

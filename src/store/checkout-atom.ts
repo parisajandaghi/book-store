@@ -1,9 +1,9 @@
-import { Address, initialMockAddresses } from "@/features/carts/cart.type";
+import { Address } from "@/features/carts/cart.type";
 
 import { atom } from "jotai";
 
 export const addressModalAtom = atom<boolean>(false);
-export const addressesAtom = atom<Address[]>(initialMockAddresses);
+export const addressesAtom = atom<Address[]>([]);
 export const radioValueAtom = atom<string | null>(null);
 export const checkoutAtom = atom({
   addressId: null as number | null,

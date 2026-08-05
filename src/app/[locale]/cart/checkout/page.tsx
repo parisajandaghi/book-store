@@ -30,7 +30,11 @@ import { useLocale, useTranslations } from "next-intl";
 import style from "../../../../features/carts/cart.module.css";
 import { useCart } from "@/features/carts/hooks/use-cart";
 import { SHIPPING_FEE } from "@/constants";
+import { useEffect } from "react";
+import { useRouter } from "@/navigation";
+
 export default function Checkout() {
+  const router = useRouter();
   const { checkoutForm, paymentForm } = useCheckoutForms();
   const { activeStep, isProcessing, nextStep, prevStep, setActiveStep } =
     useCheckoutStepper({ paymentForm });
@@ -40,7 +44,11 @@ export default function Checkout() {
 
   const locale = useLocale();
   const t = useTranslations("CheckoutInfo");
-
+  useEffect(() => {
+    if (cartTotal === 0) {
+      router.replace("/cart");
+    }
+  }, [cartTotal, router]);
   const icon =
     locale === "fa" ? (
       <IconArrowLeft size={14} />

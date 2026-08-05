@@ -9,13 +9,14 @@ import {
   Text,
 } from "@mantine/core";
 import { IconShoppingBag } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { OrderItem } from "../order-item.type";
 interface OrderItemsProps {
   items: OrderItem[];
 }
 export default function OrderItems({ items = [] }: OrderItemsProps) {
   const t = useTranslations("OrderDetails");
+  const locale = useLocale();
   console.log(" items in orderItem", items);
 
   return (
@@ -102,7 +103,16 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
               </Grid.Col>
               <Grid.Col span={2}>
                 <Center h={"100%"}>
-                  <Text fz={"xs"} c={"textMain.3"}>
+                  <Text
+                    fz={"xs"}
+                    c={"textMain.3"}
+                    style={{
+                      fontFamily:
+                        locale === "en"
+                          ? "system-ui, -apple-system, sans-serif"
+                          : undefined,
+                    }}
+                  >
                     {item.price.toLocaleString()}
                   </Text>
                 </Center>
@@ -110,14 +120,32 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
               <Grid.Col span={2}>
                 <Center h={"100%"}>
                   {" "}
-                  <Text fz={"xs"} c={"textMain.3"}>
+                  <Text
+                    fz={"xs"}
+                    c={"textMain.3"}
+                    style={{
+                      fontFamily:
+                        locale === "en"
+                          ? "system-ui, -apple-system, sans-serif"
+                          : undefined,
+                    }}
+                  >
                     {item.quantity}
                   </Text>
                 </Center>
               </Grid.Col>
               <Grid.Col span={2}>
                 <Center h={"100%"}>
-                  <Text fz={"xs"} c={"textMain.3"}>
+                  <Text
+                    fz={"xs"}
+                    c={"textMain.3"}
+                    style={{
+                      fontFamily:
+                        locale === "en"
+                          ? "system-ui, -apple-system, sans-serif"
+                          : undefined,
+                    }}
+                  >
                     {(item.price * item.quantity).toLocaleString()}
                   </Text>
                 </Center>

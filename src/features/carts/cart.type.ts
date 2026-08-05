@@ -79,19 +79,3 @@ export type Address = {
   province?: string | null;
   city?: string | null;
 };
-export const initialMockAddresses: Address[] = [
-  {
-    id: 1,
-    recipientName: "Parisa Jandaghi",
-    phone: "09123456789",
-    postalCode: "1234567890",
-    address: "Tehran, Valiasr Street, No. 25, Unit 4",
-  },
-  {
-    id: 2,
-    recipientName: "Parisa Jandaghi",
-    phone: "09123456789",
-    postalCode: "1234567891",
-    address: "Tehran, Shariati Street, No. 120, Unit 8",
-  },
-];

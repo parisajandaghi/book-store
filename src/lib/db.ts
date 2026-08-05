@@ -126,6 +126,20 @@ if (!global.__db) {
         );
       `,
         },
+        {
+          name: "addresses",
+          schema: `
+            CREATE TABLE IF NOT EXISTS addresses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id INTEGER NOT NULL,
+              recipientName TEXT NOT NULL,
+              phone TEXT NOT NULL,
+              address TEXT NOT NULL,
+              created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+              FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+            );
+          `,
+        },
       ];
 
       tables.forEach((table) => {

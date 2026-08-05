@@ -45,8 +45,9 @@
       "Items": "اقلام"
     },
     "Sort": {
-      "Title": "مرتب سازی",
-      "AllOrders": "همه سفارشات"
+      "OrderStatus": "وضعیت سفارش",
+      "AllOrders": "همه سفارشات",
+      "NoOrdersFound": "هیچ سفارشی با این وضعیت یافت نشد."
     },
     "Status": {
       "pending": "در انتظار پرداخت",
@@ -92,7 +93,8 @@
     "CheckOut": "تکمیل خرید",
     "ShoppingCartOff": "سبد خرید شما خالی است!",
     "OrderPlacedSuccessfully": "سفارش شما با موفقیت ثبت شد",
-    "OrderTrackingMessage": "کد پیگیری سفارش برای شما ارسال خواهد شد."
+    "OrderTrackingMessage": "کد پیگیری سفارش برای شما ارسال خواهد شد.",
+    "OrderId":"شماره سفارش"
   },
   "Search": {
     "NotFound": "موردی یافت نشد."
@@ -213,7 +215,6 @@
     }
   },
   "PasswordRecovery": {
-   
     "Validation": {
       "InvalidEmail": "لطفاً یک ایمیل معتبر وارد کنید.",
       "PasswordMinLength": "رمز عبور باید حداقل ۶ کاراکتر باشد.",
@@ -226,7 +227,7 @@
       "PasswordRecovery": "بازیابی رمز عبور",
       "SendRecoveryRequest": "ارسال درخواست بازیابی",
       "BackToLogin": "برو به صفحه ورود",
-      "Email":"ایمیل"
+      "Email": "ایمیل"
     }
   }
 }

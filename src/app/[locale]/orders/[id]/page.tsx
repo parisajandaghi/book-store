@@ -20,17 +20,17 @@ import {
   IconPackage,
   IconTrash,
 } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 const getStatusProps = (status: string) => {
   switch (status.toLowerCase()) {
     case "pending":
       return { color: "yellow", label: "در حال پردازش (Pending)" };
-    case "shipped":
-      return { color: "blue", label: "ارسال شده (Shipped)" };
+    case "processing":
+      return { color: "blue", label: "ارسال شده (processing)" };
     case "delivered":
       return { color: "green", label: "تحویل داده شده (Delivered)" };
-    case "canceled":
+    case "cancelled":
       return { color: "red", label: "لغو شده (Canceled)" };
     default:
       return { color: "gray", label: "نامشخص" };
@@ -40,6 +40,7 @@ export default function OrderDetails() {
   const t = useTranslations("OrderDetails");
   const t1 = useTranslations("Orders");
   const params = useParams();
+  const locale = useLocale();
   const orderId = params.id as string;
   const { error, isLoading, order } = useOrderDetails(orderId);
 
@@ -51,7 +52,6 @@ export default function OrderDetails() {
     );
   }
 
-  // ۲. هندل کردن حالت ارور یا پیدا نشدن سفارش
   if (error || !order) {
     return (
       <Center h={400}>
@@ -61,6 +61,7 @@ export default function OrderDetails() {
   }
 
   const Status = order.status || "pending";
+  console.log("order", order);
 
   return (
     <Container
@@ -80,21 +81,44 @@ export default function OrderDetails() {
     >
       <Stack flex={1} p={"xs"}>
         <Stack flex={1}>
-          <Group>
+          <Group gap={"xl"}>
             <Title c={"textMain.2"} order={2}>
               {t("Order")}
             </Title>
-            <Title c={"surface.9"} order={5}>
-              {order.id}
-            </Title>
+            <Badge color="surface.7" variant="light" size="xl" radius={"lg"}>
+              <Center>
+                <Title
+                  c={"surface.6"}
+                  order={3}
+                  style={{
+                    fontFamily:
+                      locale === "en"
+                        ? "system-ui, -apple-system, sans-serif"
+                        : undefined,
+                  }}
+                >
+                  {order.id}
+                </Title>
+              </Center>
+            </Badge>
           </Group>
           <Group gap={5} c={"textMain.3"}>
             <IconCalendarWeek color="var(--mantine-color-surface-9)" />
             <Text fz={"xs"}>{t("OrderDate")}</Text>
             <Text>:</Text>
-            <Text fz={"xs"}>
+            <Text
+              fz={"xs"}
+              style={{
+                fontFamily:
+                  locale === "en"
+                    ? "system-ui, -apple-system, sans-serif"
+                    : undefined,
+              }}
+            >
               {order.created_at
-                ? new Date(order.created_at).toLocaleDateString()
+                ? new Date(order.created_at).toLocaleDateString(
+                    locale === "fa" ? "fa-IR" : "en-US",
+                  )
                 : "---"}
             </Text>
           </Group>

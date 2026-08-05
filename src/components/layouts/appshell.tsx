@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import Header from "./header/header";
 import { Stack } from "@mantine/core";
 import { usePathname } from "@/navigation";
+import { useUser } from "@/features/profile/hook/use-user";
 
 type AppShellProps = {
   children: ReactNode;
@@ -11,7 +12,7 @@ type AppShellProps = {
 
 function AppShellLayout({ children }: AppShellProps) {
   const pathname = usePathname();
-
+  useUser();
   const hideHeader =
     pathname.endsWith("/login") ||
     pathname.endsWith("/signup") ||

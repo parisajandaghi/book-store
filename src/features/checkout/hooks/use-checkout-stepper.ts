@@ -88,7 +88,7 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
     setIsProcessing(true);
 
     try {
-      await submitOrder();
+      const result = await submitOrder();
 
       setCheckout({
         addressId: null,
@@ -100,7 +100,7 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
         address: "",
       });
 
-      router.push("/cart/success");
+      router.push(`/cart/success?orderId=${result.orderId}`);
       router.refresh();
     } catch (error) {
       console.error(error);

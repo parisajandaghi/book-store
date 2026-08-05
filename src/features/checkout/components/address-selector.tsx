@@ -1,19 +1,15 @@
-import {
-  addressesAtom,
-  addressModalAtom,
-  checkoutAtom,
-  radioValueAtom,
-} from "@/store/checkout-atom";
+import { useAddresses } from "@/features/profile/hook/use-address";
+import { addressModalAtom, checkoutAtom } from "@/store/checkout-atom";
 import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
-import styles from "../address-selector.module.css";
 import { useEffect } from "react";
+import styles from "../address-selector.module.css";
 export default function AddressSelector() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
-  const [addresses] = useAtom(addressesAtom);
+  const { addresses } = useAddresses();
   const t = useTranslations("CheckoutInfo");
   const activeValue =
     checkout.addressId?.toString() ??
@@ -51,6 +47,8 @@ export default function AddressSelector() {
       </Group>
     </Radio.Card>
   ));
+  console.log("addressCards", addresses);
+
   return (
     <Stack flex={2}>
       <Radio.Group
