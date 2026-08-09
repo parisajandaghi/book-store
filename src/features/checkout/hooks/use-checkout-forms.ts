@@ -3,18 +3,20 @@ import {
   paymentFormValues,
 } from "@/features/carts/cart.type";
 import { useForm } from "@mantine/form";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function useCheckoutForms() {
   const t = useTranslations("CheckoutInfo");
+  const locale = useLocale();
+  const currentLang = locale === "en" ? "en" : "fa";
   const checkoutForm = useForm<CheckoutAddressFormValues>({
     initialValues: {
       recipientName: "",
       phone: "",
       postalCode: "",
       address: "",
-      province: "",
-      city: "",
+      province: currentLang === "en" ? "Tehran" : "تهران",
+      city: currentLang === "en" ? "Tehran" : "تهران",
     },
     validate: {
       recipientName: (value) =>

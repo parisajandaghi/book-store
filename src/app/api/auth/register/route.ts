@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  createUser,
-  getUserByEmail,
-} from "@/services/user.service";
+import { createUser, getUserByEmail } from "@/services/user.service";
 import { getErrorMessage } from "@/utils/error";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, email, password, phone } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -37,6 +34,7 @@ export async function POST(req: NextRequest) {
       name,
       email,
       password,
+      phone,
     });
 
     return NextResponse.json(user, {

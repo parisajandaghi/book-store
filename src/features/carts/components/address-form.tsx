@@ -11,17 +11,19 @@ import {
   IconUser,
   IconX,
 } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
-import style from "../cart.module.css";
+import { useLocale, useTranslations } from "next-intl";
 import { ReactNode } from "react";
+import style from "../cart.module.css";
 import { CheckoutAddressFormValues } from "../cart.type";
 
-import { useAtom } from "jotai";
+import { locationsData } from "@/lib/iran-data";
 import {
   addressesAtom,
   addressModalAtom,
   checkoutAtom,
 } from "@/store/checkout-atom";
+import { useAtom } from "jotai";
+
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
   title: string;
@@ -36,9 +38,17 @@ export default function AddressForm({
   children,
 }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
+  const locale = useLocale();
+  const currentLang = locale === "en" ? "en" : "fa";
   const [, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
   const [, setAddresses] = useAtom(addressesAtom);
+
+  const currentProvincesData = locationsData[currentLang];
+  const provincesList = Object.keys(currentProvincesData);
+  const currentCitiesList = form.values.province
+    ? currentProvincesData[form.values.province] || []
+    : [];
   const handleSubmit = async (values: CheckoutAddressFormValues) => {
     try {
       const response = await fetch("/api/users/addresses", {
@@ -71,7 +81,16 @@ export default function AddressForm({
       console.error("Error saving address:", error);
     }
   };
+  const commonClasses = {
+    input: style.input,
+    label: style.label,
+  };
 
+  const selectClasses = {
+    ...commonClasses,
+    dropdown: style.dropDown,
+    option: style.option,
+  };
   return (
     <GlassPanel flex={2} p={"md"}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -98,48 +117,39 @@ export default function AddressForm({
             placeholder={t("PlaceHolders.Name")}
             leftSection={<IconUser size={16} />}
             label={t("Name")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
+            classNames={commonClasses}
             {...form.getInputProps("recipientName")}
           ></TextInput>
           <TextInput
             label={t("Mobile")}
             placeholder={t("PlaceHolders.Phone")}
             leftSection={<IconPhone size={16} />}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
+            classNames={commonClasses}
             {...form.getInputProps("phone")}
           ></TextInput>
           <Group w={"100%"} justify="space-evenly">
             <Select
               placeholder={t("PlaceHolders.Province")}
-              data={["تهران", "اصفهان", "فارس"]}
               label={t("Province")}
               leftSection={<IconMap size={16} />}
-              classNames={{
-                input: style.input,
-                label: style.label,
-                dropdown: style.dropDown,
-                option: style.option,
-              }}
+              searchable
+              data={provincesList}
+              classNames={selectClasses}
               flex={1}
               {...form.getInputProps("province")}
+              onChange={(value) => {
+                form.setFieldValue("province", value);
+                form.setFieldValue("city", null);
+              }}
             />
             <Select
+              key={form.values.province}
+              data={currentCitiesList}
               placeholder={t("PlaceHolders.City")}
-              data={["تهران", "شیراز", "اصفهان"]}
-              leftSection={<IconBuildingCommunity size={16} />}
               label={t("City")}
-              classNames={{
-                input: style.input,
-                label: style.label,
-                dropdown: style.dropDown,
-                option: style.option,
-              }}
+              searchable
+              leftSection={<IconBuildingCommunity size={16} />}
+              classNames={selectClasses}
               flex={1}
               {...form.getInputProps("city")}
             />
@@ -148,19 +158,13 @@ export default function AddressForm({
             placeholder={t("PlaceHolders.PostalCode")}
             leftSection={<IconMailbox size={16} />}
             label={t("PostalCode")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
+            classNames={commonClasses}
             {...form.getInputProps("postalCode")}
           ></TextInput>
           <Textarea
             leftSection={<IconMapPin2 size={16} />}
             label={t("Address")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
+            classNames={commonClasses}
             {...form.getInputProps("address")}
           ></Textarea>
           {children && <Stack mt={"sm"}>{children}</Stack>}

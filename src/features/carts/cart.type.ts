@@ -52,6 +52,7 @@ export interface CartItemRow {
   book_id: number;
   quantity: number;
   created_at: string;
+  price: number;
 }
 
 export interface CartItem {

@@ -61,13 +61,7 @@ export default function OrderCard() {
     );
   }
 
-  if (orders.length === 0) {
-    return (
-      <Center h={200}>
-        <Text c="dimmed">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</Text>
-      </Center>
-    );
-  }
+
   const filteredOrders = orders.filter((order) => {
     if (filterStatus === "all") return true;
     return order.status === filterStatus;

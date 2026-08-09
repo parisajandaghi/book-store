@@ -5,10 +5,18 @@ import { useAtom } from "jotai";
 import style from "../../carts/cart.module.css";
 import { IconX } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
+import { useProfileForm } from "../hook/use-profile-form";
 
 export default function UserInformationModal() {
   const t = useTranslations("Profile");
+  const { form, loading, error, handleSubmit } = useProfileForm();
   const [isInfoModalOpen, setIsInfoModalOpen] = useAtom(informationModalAtom);
+  const onSubmit = async (values: typeof form.values) => {
+    const isSuccess = await handleSubmit(values);
+    if (isSuccess) {
+      setIsInfoModalOpen(false); // اگر موفق بود، مودال بسته شود
+    }
+  };
   return (
     <Modal
       onClose={() => setIsInfoModalOpen(false)}
@@ -38,55 +46,61 @@ export default function UserInformationModal() {
             onClick={() => setIsInfoModalOpen(false)}
           />
         </Group>
-        <Group>
-          {" "}
-          <TextInput
-            flex={1}
-            label={t("Modal.Name")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
-          />
-          <TextInput
-            flex={1}
-            label={t("Modal.Email")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
-          />
-        </Group>
-        <Group>
-          <TextInput
-            flex={1}
-            label={t("Modal.NewPassword")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
-          />
-          <TextInput
-            flex={1}
-            label={t("Modal.Mobile")}
-            classNames={{
-              input: style.input,
-              label: style.label,
-            }}
-          />
-        </Group>
-        <Group justify="center" mt={"sm"}>
-          <Button type="submit" className={style.modalButton}>
-            {t("Modal.SaveChanges")}
-          </Button>
-          <Button
-            type="submit"
-            className={style.modalButton}
-            onClick={() => setIsInfoModalOpen(false)}
-          >
-            {t("Modal.Cancel")}
-          </Button>
-        </Group>
+        <form onSubmit={form.onSubmit(onSubmit)}>
+          <Group>
+            {" "}
+            <TextInput
+              flex={1}
+              label={t("Modal.Name")}
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              {...form.getInputProps("name")}
+            />
+            <TextInput
+              flex={1}
+              label={t("Modal.Email")}
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              {...form.getInputProps("email")}
+            />
+          </Group>
+          <Group>
+            <TextInput
+              flex={1}
+              label={t("Modal.NewPassword")}
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              {...form.getInputProps("password")}
+            />
+            <TextInput
+              flex={1}
+              label={t("Modal.Mobile")}
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              {...form.getInputProps("phone")}
+            />
+          </Group>
+          <Group justify="center" mt={"sm"}>
+            <Button type="submit" className={style.modalButton}>
+              {t("Modal.SaveChanges")}
+            </Button>
+            <Button
+              type="button"
+              className={style.modalButton}
+              onClick={() => setIsInfoModalOpen(false)}
+            >
+              {t("Modal.Cancel")}
+            </Button>
+          </Group>
+        </form>
       </GlassPanel>
     </Modal>
   );

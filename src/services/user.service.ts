@@ -35,6 +35,11 @@ export function updateProfile(userId: number, updates: Partial<User>): User {
     values.push(updates.email);
   }
 
+  if (updates.phone !== undefined) {
+    updateFields.push("phone = ?");
+    values.push(updates.phone);
+  }
+
   if (updateFields.length === 0) {
     throw new Error("هیچ داده‌ مجازی برای آپدیت ارسال نشده است.");
   }
@@ -51,6 +56,7 @@ export function updateProfile(userId: number, updates: Partial<User>): User {
 
   return getProfile(userId);
 }
+
 export function getUserByEmail(email: string): DBUser | null {
   const stmt = db.prepare(`
     SELECT * FROM users
@@ -66,6 +72,7 @@ export async function createUser(data: {
   name: string;
   email: string;
   password: string;
+  phone: string;
 }) {
   const hashedPassword = await hashPassword(data.password);
 
@@ -74,17 +81,25 @@ export async function createUser(data: {
       name,
       email,
       password,
+      phone,
       role
     )
-    VALUES (?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?)
   `);
 
-  const result = stmt.run(data.name, data.email, hashedPassword, "user");
+  const result = stmt.run(
+    data.name,
+    data.email,
+    hashedPassword,
+    data.phone || null,
+    "user",
+  );
 
   return {
     id: Number(result.lastInsertRowid),
     name: data.name,
     email: data.email,
+    phone: data.phone,
     role: "user",
   };
 }

@@ -26,6 +26,7 @@ if (!global.__db) {
               name TEXT NOT NULL,
               email TEXT NOT NULL UNIQUE,
               password TEXT NOT NULL, 
+              phone TEXT,
               role TEXT DEFAULT 'user'
             );
           `,
