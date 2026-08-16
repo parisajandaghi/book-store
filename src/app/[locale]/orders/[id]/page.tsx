@@ -2,6 +2,7 @@
 import OrderItems from "@/features/orders/components/order-items";
 import OrderSummary from "@/features/orders/components/order-summary";
 import ShoppingInfo from "@/features/orders/components/shopping-info";
+import { useCancelOrder } from "@/features/orders/hooks/use-cancel-order";
 import { useOrderDetails } from "@/features/orders/hooks/use-order.details";
 import {
   Badge,
@@ -42,6 +43,7 @@ export default function OrderDetails() {
   const params = useParams();
   const locale = useLocale();
   const orderId = params.id as string;
+  const { cancelOrder, isCancelling } = useCancelOrder(orderId);
   const { error, isLoading, order } = useOrderDetails(orderId);
 
   if (isLoading) {
@@ -60,9 +62,28 @@ export default function OrderDetails() {
     );
   }
 
-  const Status = order.status || "pending";
-  console.log("order", order);
+  const status = order.status || "pending";
+  const handleCancelClick = async () => {
+    try {
+      // اجرای عملیات هوک
+      await cancelOrder();
 
+      // notifications.show({
+      //   title: 'موفقیت',
+      //   message: 'سفارش با موفقیت لغو شد.',
+      //   color: 'green',
+      // });
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "خطای ناشناخته‌ای رخ داد.";
+      // notifications.show({
+      //   title: 'خطا',
+      //   message: err.message,
+      //   color: 'red',
+      // });
+    }
+  };
+  const isBtnDisabled = order.status !== "pending" || isCancelling;
   return (
     <Container
       w={"100%"}
@@ -127,13 +148,13 @@ export default function OrderDetails() {
             <Text fz={"xs"}>{t("OrderStatus")}</Text>
             <Text>:</Text>
             <Badge
-              color={getStatusProps(Status).color}
+              color={getStatusProps(status).color}
               variant="light"
               size="md"
               radius="md"
             >
               <Text fz={"xs"} mt={2} fw={"bold"}>
-                {t1(`Status.${Status}`)}
+                {t1(`Status.${status}`)}
               </Text>
             </Badge>
           </Group>
@@ -143,8 +164,8 @@ export default function OrderDetails() {
           shippingFee={order.shipping_fee}
           totalAmount={order.total}
         />
-        <Stack flex={1} p={"xs"}>
-          <Button
+        <Stack flex={1} p={"xs"} justify="center" >
+          {/* <Button
             color="secondary.0"
             bd={"1px solid #7b6210"}
             leftSection={
@@ -154,13 +175,22 @@ export default function OrderDetails() {
             <Text fz={"xs"} c={"surface.9"}>
               {t("DownloadInvoice")}
             </Text>
-          </Button>
+          </Button> */}
+
           <Button
-            color="secondary.0"
-            bd={"1px solid #C5705D"}
-            leftSection={<IconTrash size={16} color="#C5705D" />}
+            onClick={handleCancelClick}
+            bg={isBtnDisabled ? "#f1f3f542" : "secondary.0"}
+            bd={isBtnDisabled ? "1px solid #e9ecef56" : "1px solid #C5705D"}
+            leftSection={
+              <IconTrash
+                size={16}
+                color={isBtnDisabled ? "#adb5bd" : "#C5705D"}
+              />
+            }
+            disabled={isBtnDisabled}
+            loading={isCancelling}
           >
-            <Text fz={"xs"} c={"#C5705D"}>
+            <Text fz={"xs"} c={isBtnDisabled ? "#adb5bd" : "#C5705D"}>
               {t("CancelOrder")}
             </Text>
           </Button>
