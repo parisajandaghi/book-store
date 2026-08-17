@@ -1,55 +1,55 @@
 "use client";
 
-import { ReactNode } from "react";
-import { Flex, Box, Stack, NavLink, Group, Text, Burger } from "@mantine/core";
+import { Link, usePathname } from "@/navigation";
+import { Box, Burger, Flex, Group, NavLink, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { usePathname, Link } from "@/navigation";
 import {
-  IconDashboard,
   IconBooks,
+  IconBuildingStore,
+  IconDashboard,
+  IconSettings,
   IconShoppingCart,
   IconUsers,
-  IconSettings,
-  IconLogout,
 } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
+import { ReactNode } from "react";
+import LanguageDropdown from "../header/language-dropdown";
 
 type AdminLayoutProps = {
   children: ReactNode;
 };
 
-const navItems = [
-  { label: "داشبورد", icon: IconDashboard, href: "/admin" },
-  { label: "مدیریت کتاب‌ها", icon: IconBooks, href: "/admin/books" },
-  { label: "سفارش‌ها", icon: IconShoppingCart, href: "/admin/orders" },
-  { label: "کاربران", icon: IconUsers, href: "/admin/users" },
-  { label: "تنظیمات", icon: IconSettings, href: "/admin/settings" },
-];
-
 export default function AdminShell({ children }: AdminLayoutProps) {
   const pathname = usePathname();
-  // در حالت پیش‌فرض می‌تونی true بذاری که منو باز باشه، یا false که بسته باشه
   const [opened, { toggle, close }] = useDisclosure(false);
-
+  const t = useTranslations("Admin");
+  const navItems = [
+    { label: t("Dashboard"), icon: IconDashboard, href: "/admin" },
+    { label: t("Books"), icon: IconBooks, href: "/admin/books" },
+    { label: t("Orders"), icon: IconShoppingCart, href: "/admin/orders" },
+    { label: t("Users"), icon: IconUsers, href: "/admin/users" },
+    { label: t("Setting"), icon: IconSettings, href: "/admin/settings" },
+  ];
   return (
     <Flex h="100vh" direction="column" bg="#1f0f1f34">
-      {/* هدر بالایی */}
       <Group
         h={70}
         px="xl"
         justify="space-between"
         bg="linear-gradient(rgb(31, 15, 31), rgba(31, 15, 31, 0.45))"
       >
-        <Group>
+        <Group justify="space-between">
           <Burger
             opened={opened}
             onClick={toggle}
             color="surface.9"
             size="sm"
           />
-          <Text c="surface.9" fw={700} size="lg">
-            کتاب‌خانه
+          <Text c="surface.6" fw={700} size="lg">
+            {t("BookStoreDashboard")}
           </Text>
         </Group>
+        <LanguageDropdown />
       </Group>
 
       <Flex flex={1} style={{ overflow: "hidden" }}>
@@ -63,15 +63,14 @@ export default function AdminShell({ children }: AdminLayoutProps) {
           }}
         >
           <Box w={260} p="md">
-            <Text c="surface.9" fw={700} size="1.2rem" mb="xl" px="sm">
-              منوی مدیریت
-            </Text>
-            <Stack h="calc(100vh - 160px)" justify="space-between">
+            <Stack h="calc(100vh - 100px)" justify="space-between" py={"md"}>
               <Box>
                 {navItems.map((item) => {
                   const isActive =
-                    pathname === item.href ||
-                    pathname.startsWith(`${item.href}/`);
+                    item.href === "/admin"
+                      ? pathname === "/admin"
+                      : pathname === item.href ||
+                        pathname.startsWith(`${item.href}/`);
 
                   return (
                     <NavLink
@@ -82,15 +81,14 @@ export default function AdminShell({ children }: AdminLayoutProps) {
                       leftSection={<item.icon size="1.2rem" stroke={1.5} />}
                       active={isActive}
                       color="surface.9"
-                      variant="filled"
                       mb="sm"
                       onClick={close}
                       styles={{
                         root: {
                           borderRadius: "8px",
-                          color: isActive ? "#1F0F1F" : "#fefaf4",
+                          color: isActive ? "#bc982a" : "#fefaf4",
                           backgroundColor: isActive
-                            ? "#d4af37b2"
+                            ? "#7b62101a"
                             : "transparent",
                           whiteSpace: "nowrap",
                         },
@@ -103,21 +101,20 @@ export default function AdminShell({ children }: AdminLayoutProps) {
               <NavLink
                 component={Link}
                 href="/"
-                label="بازگشت به فروشگاه"
-                leftSection={<IconLogout size="1.2rem" stroke={1.5} />}
-                styles={{
-                  root: {
-                    borderRadius: "8px",
-                    color: "#fefaf4",
-                    whiteSpace: "nowrap",
-                  },
-                }}
+                label={t("BacktoStore")}
+                leftSection={
+                  <IconBuildingStore
+                    size="1.2rem"
+                    stroke={1.5}
+                    color="#bc982a"
+                  />
+                }
+                className="store-back-link"
               />
             </Stack>
           </Box>
         </Box>
 
-        {/* محتوای اصلی که هول داده میشه */}
         <Box flex={1} p="xl" style={{ overflowY: "auto" }}>
           {children}
         </Box>

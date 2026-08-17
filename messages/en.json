@@ -1,4 +1,18 @@
 {
+  "Admin": {
+    "BookStoreDashboard": "Book Store Dashboard",
+    "Dashboard": "Dashboard",
+    "BacktoStore": "Back to Store",
+    "Books": "Books",
+    "Orders": "Orders",
+    "Users": "Users",
+    "Setting": "Setting",
+    "Wellcom": "Welcome to the Bookstore Dashboard .",
+    "TotalRevenue": "Total Revenue",
+    "ActiveOrders": "Active Orders",
+    "NewCustomers": "New Customers",
+    "BooksInStock": "Books In Stock"
+  },
   "Header": {
     "Book": "Book",
     "Store": "Store",
@@ -94,7 +108,7 @@
     "ShoppingCartOff": "Your Cart Is Empty!",
     "OrderPlacedSuccessfully": "Your Order Has Been Placed Successfully",
     "OrderTrackingMessage": "Your Order Tracking Code Will Be Sent To You Shortly",
-     "OrderId":"Order Id"
+    "OrderId": "Order Id"
   },
   "CheckoutInfo": {
     "Name": "Name",

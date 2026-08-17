@@ -1,10 +1,24 @@
 {
+  "Admin": {
+    "BookStoreDashboard": "پیشخوان کتاب سرا",
+    "Dashboard": "پیشخوان",
+    "BacktoStore": "بازگشت به کتاب سرا",
+    "Books": "کتاب ها",
+    "Orders": "سفارش ها",
+    "Users": "کاربران",
+    "Setting": "پیکربندی",
+    "Wellcom": "به پیشخوان کتاب سرا خوش آمدید .",
+    "TotalRevenue": "کل فروش",
+    "ActiveOrders": "سفارش های فعال",
+    "NewCustomers": "مشتریان جدید",
+    "BooksInStock": "کتاب های موجود"
+  },
   "Header": {
     "Book": "کتاب ",
     "Store": "سرا",
     "Home": "خانه",
     "Books": "کتاب ها",
-    "Orders": "سفارشات",
+    "Orders": "سفارش ها",
     "Cart": "سبد خرید",
     "Login": "ورود",
     "Logout": "خروج",
@@ -35,7 +49,7 @@
     "CurrencySymbol": "تومان"
   },
   "Orders": {
-    "Title": "تاریخچه سفارشات",
+    "Title": "تاریخچه سفارش ها",
     "TableHeaders": {
       "OrderId": "شماره سفارش",
       "Date": "تاریخ ثبت",
@@ -46,7 +60,7 @@
     },
     "Sort": {
       "OrderStatus": "وضعیت سفارش",
-      "AllOrders": "همه سفارشات",
+      "AllOrders": "همه سفارش ها",
       "NoOrdersFound": "هیچ سفارشی با این وضعیت یافت نشد."
     },
     "Status": {
@@ -94,7 +108,7 @@
     "ShoppingCartOff": "سبد خرید شما خالی است!",
     "OrderPlacedSuccessfully": "سفارش شما با موفقیت ثبت شد",
     "OrderTrackingMessage": "کد پیگیری سفارش برای شما ارسال خواهد شد.",
-    "OrderId":"شماره سفارش"
+    "OrderId": "شماره سفارش"
   },
   "Search": {
     "NotFound": "موردی یافت نشد."
