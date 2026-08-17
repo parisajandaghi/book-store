@@ -5,7 +5,7 @@ import GlassPanel from "@/components/ui/glass/glass-panel";
 import { Link } from "@/navigation";
 import { Group, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import style from "../../../features/carts/cart.module.css";
+import style from "../../../../features/carts/cart.module.css";
 import { useForm } from "@mantine/form";
 import { useRouter } from "@/navigation";
 export default function Signup() {

@@ -26,8 +26,8 @@ export default function BookCard({ book }: BookCardProps) {
   const handleAddToCart = async (e: MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('add');
-    
+    console.log("add");
+
     try {
       await addToCart(book.id);
     } catch (error) {

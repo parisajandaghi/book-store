@@ -3,7 +3,7 @@ import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import { Group, Text, TextInput, Stack } from "@mantine/core";
 import { useLocale, useTranslations } from "next-intl";
-import style from "../../../features/carts/cart.module.css";
+import style from "../../../../features/carts/cart.module.css";
 import { useRouter } from "@/navigation";
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import { Link } from "@/navigation";

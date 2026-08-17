@@ -1,16 +1,20 @@
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css"; // اگر استفاده می‌کنید
+
+// سپس استایل‌های گلوبال شما (تا روی استایل‌های منتاین بازنویسی شوند)
+import "@/styles/globals.css";
+
+import { theme } from "@/styles/theme";
+import "@mantine/carousel/styles.css";
 import {
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
 } from "@mantine/core";
-import "@mantine/core/styles.css";
-import localFont from "next/font/local";
-import "@/styles/globals.css";
-import "@mantine/notifications/styles.css";
-import '@mantine/carousel/styles.css';
+
 import { Notifications } from "@mantine/notifications";
-import { theme } from "@/styles/theme";
-import AppShellLayout from "@/components/layouts/appshell";
+
+import localFont from "next/font/local";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -76,8 +80,8 @@ export default async function RootLayout({
               fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",
             }}
           >
-            <Notifications position="top-left"/>
-            <AppShellLayout>{children}</AppShellLayout>
+            <Notifications position="top-left" />
+            {children}
           </MantineProvider>
         </NextIntlClientProvider>
       </body>
