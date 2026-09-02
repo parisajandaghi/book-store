@@ -1,6 +1,6 @@
 "use client";
 import { Book } from "@/features/books/book.type";
-import { Card, Group, Image, Stack, Text } from "@mantine/core";
+import { Badge, Card, Group, Image, Stack, Text } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { Link } from "../../../navigation";
 import style from "../featured-books.module.css";
@@ -34,6 +34,7 @@ export default function BookCard({ book }: BookCardProps) {
       console.error(error);
     }
   };
+
   return (
     <Link href={`/books/${book.id}`} style={{ textDecoration: "none" }}>
       <Card
@@ -73,12 +74,25 @@ export default function BookCard({ book }: BookCardProps) {
                 ? `${t("CurrencySymbol")} ${formattedPrice}`
                 : `${formattedPrice} ${t("CurrencySymbol")}`}
             </Text>
-
-            <IconShoppingCart
-              size={18}
-              color="rgba(212, 175, 55, 0.6)"
-              onClick={handleAddToCart}
-            />
+            {book.stock === 0 ? (
+              <Badge
+                color="gray"
+                variant="light"
+                styles={{
+                  label: {
+                    textTransform: "none",
+                  },
+                }}
+              >
+                <Text fz={"xs"}>{t("OutOfStock")}</Text>
+              </Badge>
+            ) : (
+              <IconShoppingCart
+                size={18}
+                color="rgba(212, 175, 55, 0.6)"
+                onClick={handleAddToCart}
+              />
+            )}
           </Group>
         </Stack>
       </Card>

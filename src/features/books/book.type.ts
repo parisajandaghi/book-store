@@ -16,6 +16,7 @@ export interface Book {
   price: number;
   image_url: string;
   created_at?: string;
+  stock?: number;
   translations?: Translation[];
 }
 
@@ -26,7 +27,10 @@ export interface CreateTranslationDTO {
   description: string;
 }
 
-export interface CreateBookDTO extends Omit<Book, "id" | "created_at" | "translations"> {
+export interface CreateBookDTO extends Omit<
+  Book,
+  "id" | "created_at" | "translations"
+> {
   translations?: CreateTranslationDTO[];
 }
 
@@ -38,6 +42,8 @@ export interface UpdateTranslationDTO {
   description?: string;
 }
 
-export interface UpdateBookDTO extends Partial<Omit<Book, "id" | "created_at" | "translations">> {
+export interface UpdateBookDTO extends Partial<
+  Omit<Book, "id" | "created_at" | "translations">
+> {
   translations?: UpdateTranslationDTO[];
 }

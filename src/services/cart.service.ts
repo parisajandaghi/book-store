@@ -52,16 +52,23 @@ export function getCart(userId: number): CartItem[] {
   });
 }
 
-export function addToCart(userId: number, bookId: number): CartItem {
-  const checkStmt = db.prepare(`
+export function addToCart(
+  userId: number,
+  bookId: number,
+  quantity: number = 1,
+) {
+  // ۱. بررسی می‌کنیم آیا این کتاب از قبل در سبد خرید کاربر هست یا نه
+  const existingStmt = db.prepare(`
     SELECT * FROM cart_items 
     WHERE user_id = ? AND book_id = ?
   `);
-
-  const existing = checkStmt.get(userId, bookId) as CartItem | undefined;
+  const existing = existingStmt.get(userId, bookId) as
+    | { id: number; quantity: number }
+    | undefined;
 
   if (existing) {
-    const newQuantity = existing.quantity + 1;
+    // ۲. اگر از قبل بود، تعداد جدید را به تعداد قبلی اضافه می‌کنیم
+    const newQuantity = existing.quantity + quantity;
     const updateStmt = db.prepare(`
       UPDATE cart_items 
       SET quantity = ? 
@@ -70,16 +77,21 @@ export function addToCart(userId: number, bookId: number): CartItem {
     updateStmt.run(newQuantity, existing.id);
 
     return { ...existing, quantity: newQuantity };
+  } else {
+    // ۳. اگر نبود، ردیف جدید با همان تعداد مشخص‌شده ایجاد می‌کنیم
+    const insertStmt = db.prepare(`
+      INSERT INTO cart_items (user_id, book_id, quantity, created_at)
+      VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+    `);
+    const result = insertStmt.run(userId, bookId, quantity);
+
+    return {
+      id: Number(result.lastInsertRowid),
+      user_id: userId,
+      book_id: bookId,
+      quantity,
+    };
   }
-
-  const insertStmt = db.prepare(`
-    INSERT INTO cart_items (user_id, book_id, quantity) 
-    VALUES (?, ?, 1)
-  `);
-  const info = insertStmt.run(userId, bookId);
-
-  const newItemStmt = db.prepare("SELECT * FROM cart_items WHERE id = ?");
-  return newItemStmt.get(Number(info.lastInsertRowid)) as unknown as CartItem; // تبدیل bigint به number
 }
 
 export function updateCartItem(

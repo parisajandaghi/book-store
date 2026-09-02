@@ -5,6 +5,7 @@ import {
   CreateBookDTO,
   UpdateBookDTO,
 } from "@/features/books/book.type";
+
 export function getBooks(
   page: number = 1,
   limit: number = 10,
@@ -12,7 +13,6 @@ export function getBooks(
   sort: string = "most_popular",
 ) {
   const offset = (page - 1) * limit;
-
   const hasSearch = search.trim().length > 0;
   let orderBy = "books.created_at DESC";
 
@@ -26,10 +26,10 @@ export function getBooks(
     case "cheapest":
       orderBy = "books.price ASC";
       break;
-
     default:
       orderBy = "books.created_at DESC";
   }
+
   let count: number;
   let booksFromDb: Book[];
 
@@ -58,7 +58,7 @@ export function getBooks(
       ON books.id = translations.book_id
       WHERE translations.title LIKE ?
       OR translations.author LIKE ?
-      ORDER BY  ${orderBy}
+      ORDER BY ${orderBy}
       LIMIT ? OFFSET ?
     `);
 
@@ -70,17 +70,13 @@ export function getBooks(
     ) as unknown as Book[];
   } else {
     const countStmt = db.prepare("SELECT COUNT(*) as count FROM books");
-
-    const countResult = countStmt.get() as {
-      count: number;
-    };
-
+    const countResult = countStmt.get() as { count: number };
     count = countResult.count;
 
     const booksStmt = db.prepare(`
       SELECT *
       FROM books
-       ORDER BY ${orderBy}
+      ORDER BY ${orderBy}
       LIMIT ? OFFSET ?
     `);
 
@@ -97,7 +93,6 @@ export function getBooks(
   }
 
   const bookIds = booksFromDb.map((book) => book.id);
-
   const placeholders = bookIds.map(() => "?").join(",");
 
   const translationsStmt = db.prepare(`
@@ -131,10 +126,10 @@ export function getBooks(
 
 type SqliteParams = Record<string, string | number | bigint | null>;
 
-export function createBook(bookData: CreateBookDTO): Book {
+export function createBook(bookData: CreateBookDTO & { stock?: number }): Book {
   const insertBook = db.prepare(`
-    INSERT INTO books (price, image_url)
-    VALUES (@price, @image_url)
+    INSERT INTO books (price, stock, image_url)
+    VALUES (@price, @stock, @image_url)
   `);
 
   const insertTranslation = db.prepare(`
@@ -148,6 +143,7 @@ export function createBook(bookData: CreateBookDTO): Book {
   try {
     const bookParams: SqliteParams = {
       price: bookData.price,
+      stock: bookData.stock ?? 0,
       image_url: bookData.image_url ?? null,
     };
 
@@ -273,11 +269,60 @@ export function getBookById(id: number | string): Book {
     .prepare("SELECT * FROM translations WHERE book_id = ?")
     .all(numericId) as unknown as Translation[];
 
-  // ✅✅✅ راه‌حل: یک آبجکت کاملاً جدید و ساده بسازید
-  const finalBook = {
-    ...bookFromDb, // آبجکت کتاب را به Plain Object تبدیل می‌کند
-    translations: translationsFromDb.map((t) => ({ ...t })), // آرایه ترجمه‌ها را به آرایه‌ای از Plain Objects تبدیل می‌کند
+  return {
+    ...bookFromDb,
+    translations: translationsFromDb.map((t) => ({ ...t })),
   };
+}
 
-  return finalBook;
+// تابع کسر موجودی هنگام ثبت سفارش نهایی
+export function deductStock(items: { book_id: number; quantity: number }[]) {
+  const checkStockStmt = db.prepare("SELECT stock FROM books WHERE id = ?");
+  const updateStockStmt = db.prepare(`
+    UPDATE books 
+    SET stock = stock - ? 
+    WHERE id = ? AND stock >= ?
+  `);
+
+  db.exec("BEGIN TRANSACTION;");
+  try {
+    for (const item of items) {
+      const book = checkStockStmt.get(item.book_id) as { stock: number } | undefined;
+      if (!book) {
+        throw new Error(`Book ${item.book_id} not found`);
+      }
+      if (book.stock < item.quantity) {
+        throw new Error(`Insufficient stock for book ID: ${item.book_id}`);
+      }
+
+      const result = updateStockStmt.run(item.quantity, item.book_id, item.quantity);
+      if (result.changes === 0) {
+        throw new Error(`Failed to deduct stock for book ID: ${item.book_id}`);
+      }
+    }
+    db.exec("COMMIT;");
+  } catch (error) {
+    db.exec("ROLLBACK;");
+    throw error;
+  }
+}
+
+// تابع بازگرداندن موجودی هنگام لغو سفارش (cancelled)
+export function restockOrderItems(items: { book_id: number; quantity: number }[]) {
+  const restockStmt = db.prepare(`
+    UPDATE books 
+    SET stock = stock + ? 
+    WHERE id = ?
+  `);
+
+  db.exec("BEGIN TRANSACTION;");
+  try {
+    for (const item of items) {
+      restockStmt.run(item.quantity, item.book_id);
+    }
+    db.exec("COMMIT;");
+  } catch (error) {
+    db.exec("ROLLBACK;");
+    throw error;
+  }
 }

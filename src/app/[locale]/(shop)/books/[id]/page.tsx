@@ -4,7 +4,7 @@ import AddToCartButton from "@/features/books/components/add-to-cart-button";
 import TrackBookView from "@/features/books/components/track-book-view";
 import { getBookById } from "@/services/book.service";
 import { getFormattedPrice, getLocalizedBook } from "@/utils/book.utils";
-import { Card, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Badge, Card, Group, Image, Stack, Text, Title } from "@mantine/core";
 import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
@@ -94,7 +94,26 @@ export default async function BookDetails({
             </Stack>
             <HorizontalDivider my="md" />
 
-            <AddToCartButton bookId={book.id} />
+            {book.stock === 0 ? (
+              <Group justify="center" align="center" mt={'xl'}>
+                <Badge
+                  color="gray"
+                  variant="light"
+                  size="xl"
+                  bd={'1px solid #7b6210'}
+                  styles={{
+                  
+                    label: {
+                      textTransform: "none",
+                    },
+                  }}
+                >
+                  <Text fz={"xs"}>{t1("OutOfStock")}</Text>
+                </Badge>
+              </Group>
+            ) : (
+              <AddToCartButton bookId={book.id} />
+            )}
           </Stack>
         </Group>
       </Card>

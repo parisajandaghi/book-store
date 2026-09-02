@@ -11,6 +11,7 @@ export default function Orders() {
   const t = useTranslations("Orders");
   const [filterStatus, setFilterStatus] = useAtom(filterStatusAtom);
   const { orders } = useOrderHistory();
+console.log('orders',orders);
 
   return (
     <>

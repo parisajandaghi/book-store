@@ -14,6 +14,8 @@ export interface Order {
   tracking_code: string | null;
   status: OrderStatus;
   created_at?: string;
+  customer_name?: string;
+  customer_email?: string;
   // فیلدهای جدیدی که در لاگ دیتابیس هستند:
   address_id?: number;
   shipping_method?: string;

@@ -1,3 +1,4 @@
+// src/features/orders/hooks/use-cancel-order.ts
 import useSWRMutation from "swr/mutation";
 import { useSWRConfig } from "swr";
 
@@ -18,7 +19,7 @@ async function cancelOrderFetcher(url: string) {
   return data;
 }
 
-export function useCancelOrder(orderId: string) {
+export function useCancelOrder(orderId: string | number) {
   const { mutate } = useSWRConfig();
 
   const { trigger, isMutating, error } = useSWRMutation(
@@ -26,10 +27,12 @@ export function useCancelOrder(orderId: string) {
     cancelOrderFetcher,
     {
       onSuccess: () => {
+        // ۱. کش خود سفارش
         mutate(`/api/orders/${orderId}`);
-
-        // اگر لیست کل سفارشات را هم در جایی رندر می‌کنی، می‌توانی کش آن را هم نامعتبر کنی:
+        // ۲. کش لیست سفارش‌ها
         mutate("/api/orders");
+        // ۳. کش کتاب‌ها (چون موجودی به انبار برگشته)
+        mutate("/api/books");
       },
     },
   );
@@ -37,6 +40,6 @@ export function useCancelOrder(orderId: string) {
   return {
     cancelOrder: trigger,
     isCancelling: isMutating,
-    error: error,
+    error,
   };
 }

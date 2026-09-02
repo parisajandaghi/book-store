@@ -11,7 +11,27 @@
     "TotalRevenue": "Total Revenue",
     "ActiveOrders": "Active Orders",
     "NewCustomers": "New Customers",
-    "BooksInStock": "Books In Stock"
+    "BooksInStock": "Books In Stock",
+    "RecentOrders": "Recent Orders",
+    "ViewAllOrders": "View All Orders",
+    "OrderId": "Order Id",
+    "Customer": "Customer",
+    "Date": "Date",
+    "Status": "Status",
+    "TotalAmount": "Total Amount",
+    "NoOrdersFound": "No Orders Found .",
+    "OrderManagment": "Order Managment",
+    "TrackingCode": "Tracking Code",
+    "Actions": "Actions",
+    "SearchOrders": "Search ",
+    "Order": "Order",
+    "CostumerInfo": "Costumer Information",
+    "UserAddress": "Address",
+    "UserMail": "E-Mail",
+    "UserPhone": "Phone",
+    "UserName": "Name",
+    "AdminActions": "Admin Actions",
+    "UpdateOrder": "Update Order"
   },
   "Header": {
     "Book": "Book",
@@ -46,7 +66,8 @@
     "AuthorBy": "by {authorName}"
   },
   "Product": {
-    "CurrencySymbol": "$"
+    "CurrencySymbol": "$",
+    "OutOfStock": "Out Of Stock"
   },
   "Orders": {
     "Title": "Order History",
@@ -99,7 +120,8 @@
     "TotalPrice": "Total Price",
     "UnitPrice": "Unit Price",
     "Qty": "Quantity",
-    "Order": "Order"
+    "Order": "Order",
+    "ReOrder": "Re-Order"
   },
   "Cart": {
     "ShoppingCart": "Shopping Cart",

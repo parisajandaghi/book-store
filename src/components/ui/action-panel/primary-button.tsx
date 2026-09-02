@@ -8,6 +8,7 @@ export default function PrimaryButton({
   type,
   isLoading,
   icon,
+  mt,
 }: ButtonProps) {
   return (
     <Button
@@ -16,10 +17,10 @@ export default function PrimaryButton({
       onClick={onClick}
       type={type}
       loading={isLoading}
-      leftSection=  {icon}
+      leftSection={icon}
+      mt={mt}
     >
       <Text fz={14}>{btnText}</Text>
-    
     </Button>
   );
 }

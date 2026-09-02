@@ -1,15 +1,15 @@
 import { useUser } from "@/features/profile/hook/use-user";
 import { CartItem } from "../cart.type";
-
 import useSWR from "swr";
-
 import { useRouter } from "@/navigation";
+import { notifications } from "@mantine/notifications";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch cart.");
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || "خطا در دریافت اطلاعات سبد خرید");
   }
 
   return response.json();
@@ -18,106 +18,171 @@ const fetcher = async (url: string) => {
 export const useCart = () => {
   const { user } = useUser();
   const router = useRouter();
+
   const {
     data: cartItems = [],
     error,
     isLoading,
     mutate,
-  } = useSWR<CartItem[]>("/api/cart", fetcher);
+  } = useSWR<CartItem[]>(user ? "/api/cart" : null, fetcher);
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
   );
+
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const addToCart = async (bookId: number) => {
-    if (!user) {
-      router.push("/login");
-      return;
+
+  const addToCart = async (
+    bookId: number,
+    quantity: number = 1,
+  ): Promise<boolean> => {
+    
+    try {
+      const res = await fetch("/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookId, quantity }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      // نمایش نوتیفیکیشن در صورت کمبود موجودی یا هر خطای دیگر
+      if (!res.ok) {
+        notifications.show({
+          color: "red",
+          title: "محدودیت موجودی",
+          message: data.error || "خطا در افزودن به سبد خرید.",
+        });
+        return false;
+      }
+
+      await mutate(); // رفرش کش
+      return true;
+    } catch (err) {
+      console.error(err);
+      notifications.show({
+        color: "red",
+        title: "خطا",
+        message: "خطا در ارتباط با سرور.",
+      });
+      return false;
     }
-    const response = await fetch("/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ bookId }),
-    });
-
-    console.log("status:", response.status);
-
-    const data = await response.json();
-
-    console.log("response:", data);
-
-    if (!response.ok) {
-      throw new Error(data.error);
-    }
-
-    await mutate();
   };
 
-  const increaseQuantity = async (itemId: number, currentQuantity: number) => {
-    const response = await fetch("/api/cart", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        itemId,
-        quantity: currentQuantity + 1,
-      }),
-    });
+  const increaseQuantity = async (
+    itemId: number,
+    currentQuantity: number,
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          itemId,
+          quantity: currentQuantity + 1,
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to update cart.");
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        notifications.show({
+          color: "red",
+          title: "محدودیت موجودی",
+          message: data.error || "امکان افزایش تعداد بیشتر وجود ندارد.",
+        });
+        return false;
+      }
+
+      await mutate();
+      return true;
+    } catch {
+      notifications.show({
+        color: "red",
+        title: "خطا",
+        message: "خطایی در به‌روزرسانی تعداد رخ داد.",
+      });
+      return false;
     }
-
-    await mutate();
   };
 
-  const decreaseQuantity = async (itemId: number, currentQuantity: number) => {
-    if (currentQuantity === 1) {
-      await removeFromCart(itemId);
-      return;
+  const decreaseQuantity = async (
+    itemId: number,
+    currentQuantity: number,
+  ): Promise<boolean> => {
+    if (currentQuantity <= 1) {
+      return await removeFromCart(itemId);
     }
 
-    const response = await fetch("/api/cart", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        itemId,
-        quantity: currentQuantity - 1,
-      }),
-    });
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          itemId,
+          quantity: currentQuantity - 1,
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to update cart.");
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        notifications.show({
+          color: "red",
+          title: "خطا",
+          message: data.error || "خطا در کاهش تعداد محصول.",
+        });
+        return false;
+      }
+
+      await mutate();
+      return true;
+    } catch {
+      notifications.show({
+        color: "red",
+        title: "خطا",
+        message: "خطا در ارتباط با سرور.",
+      });
+      return false;
     }
-
-    await mutate();
   };
 
-  const removeFromCart = async (itemId: number) => {
-    const response = await fetch(`/api/cart?id=${itemId}`, {
-      method: "DELETE",
-    });
+  const removeFromCart = async (itemId: number): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/cart?id=${itemId}`, {
+        method: "DELETE",
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to remove item.");
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        notifications.show({
+          color: "red",
+          title: "خطا",
+          message: data.error || "خطا در حذف آیتم از سبد خرید.",
+        });
+        return false;
+      }
+
+      await mutate();
+      return true;
+    } catch {
+      notifications.show({
+        color: "red",
+        title: "خطا",
+        message: "خطا در حذف آیتم.",
+      });
+      return false;
     }
-
-    await mutate();
   };
 
   return {
     cartItems,
     cartTotal,
+    cartCount,
     isLoading,
     error,
-    cartCount,
-
     addToCart,
     increaseQuantity,
     decreaseQuantity,

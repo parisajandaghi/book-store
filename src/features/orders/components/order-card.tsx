@@ -1,8 +1,10 @@
 "use client";
+import GlassPanel from "@/components/ui/glass/glass-panel";
+import { useStatusBadge } from "@/features/admin/hooks/use-status-badge";
 import { Link } from "@/navigation";
+import { filterStatusAtom } from "@/store/order-atom";
 import { getFormattedPrice } from "@/utils/book.utils";
 import {
-  Badge,
   Card,
   Center,
   Group,
@@ -15,31 +17,16 @@ import {
 import {
   IconChevronLeft,
   IconChevronRight,
-  IconCircleCheck,
-  IconCircleX,
-  IconClock,
-  IconLoader,
   IconShoppingBag,
 } from "@tabler/icons-react";
+import { useAtom } from "jotai";
 import { useLocale, useTranslations } from "next-intl";
 import { useOrderHistory } from "../hooks/use-order-history";
 import style from "../order-card.module.css";
-import { OrderStatus } from "../order.type";
-import { filterStatusAtom } from "@/store/order-atom";
-import { useAtom } from "jotai";
-import GlassPanel from "@/components/ui/glass/glass-panel";
-const statusConfig: Record<
-  OrderStatus,
-  { icon: React.ElementType; color: string }
-> = {
-  pending: { icon: IconClock, color: "surface" },
-  processing: { icon: IconLoader, color: "surface" },
-  delivered: { icon: IconCircleCheck, color: "#86A789" },
-  cancelled: { icon: IconCircleX, color: "#C5705D" },
-};
 
 export default function OrderCard() {
   const [filterStatus] = useAtom(filterStatusAtom);
+  const { getStatusBadge } = useStatusBadge();
   const t1 = useTranslations("Orders");
   const t2 = useTranslations("Product");
   const locale = useLocale();
@@ -61,7 +48,6 @@ export default function OrderCard() {
     );
   }
 
-
   const filteredOrders = orders.filter((order) => {
     if (filterStatus === "all") return true;
     return order.status === filterStatus;
@@ -71,14 +57,6 @@ export default function OrderCard() {
       {filteredOrders.length > 0 ? (
         filteredOrders.map((item) => {
           const formattedPrice = getFormattedPrice(item.total, locale);
-
-          const currentStatus = statusConfig[item.status] || {
-            icon: IconShoppingBag,
-            color: "surface",
-          };
-          const StatusIcon = currentStatus.icon;
-          console.log("item", item);
-
           return (
             <Link
               href={`/orders/${item.id}`}
@@ -172,20 +150,7 @@ export default function OrderCard() {
                       </Text>
                     </Stack>
                   </Group>
-                  <Group justify="center">
-                    <Badge
-                      variant="light"
-                      color={currentStatus.color}
-                      w={125}
-                      h={30}
-                      radius={"md"}
-                      leftSection={<StatusIcon size={16} />}
-                    >
-                      <Text size="xs" fw={"bold"}>
-                        {t1(`Status.${item.status}`)}
-                      </Text>
-                    </Badge>
-                  </Group>
+                  <Group justify="center">{getStatusBadge(item.status)}</Group>
                   <Group>
                     <ChevronIcon
                       size={20}

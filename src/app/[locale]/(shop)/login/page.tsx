@@ -47,7 +47,12 @@ export default function Login() {
 
       form.reset();
       await refetch();
-      router.push("/");
+      if (data.role === "ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
+
       router.refresh();
     } catch {
       form.setErrors({

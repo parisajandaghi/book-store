@@ -38,6 +38,7 @@ if (!global.__db) {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               price REAL NOT NULL,
               image_url TEXT NOT NULL,
+              stock INTEGER NOT NULL DEFAULT 0,
               created_at TEXT DEFAULT CURRENT_TIMESTAMP,
               views INTEGER DEFAULT 0
             );
@@ -75,31 +76,23 @@ if (!global.__db) {
           name: "orders",
           schema: `
            CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    user_id INTEGER NOT NULL,
-
-    subtotal REAL NOT NULL,
-    shipping_fee REAL DEFAULT 0,
-    total REAL NOT NULL,
-
-    recipient_name TEXT,
-    phone TEXT,
-    address TEXT,
-
-    tracking_code TEXT,
-
-    status TEXT DEFAULT 'pending',
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-
-    address_id INTEGER,
-    shipping_method TEXT,
-    delivery_date TEXT,
-    delivery_time TEXT,
-
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              user_id INTEGER NOT NULL,
+              subtotal REAL NOT NULL,
+              shipping_fee REAL DEFAULT 0,
+              total REAL NOT NULL,
+              recipient_name TEXT,
+              phone TEXT,
+              address TEXT,
+              tracking_code TEXT,
+              status TEXT DEFAULT 'pending',
+              created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+              address_id INTEGER,
+              shipping_method TEXT,
+              delivery_date TEXT,
+              delivery_time TEXT,
+              FOREIGN KEY (user_id) REFERENCES users(id)
+            );
           `,
         },
         {
@@ -119,13 +112,13 @@ if (!global.__db) {
         {
           name: "reset_tokens",
           schema: `
-        CREATE TABLE IF NOT EXISTS reset_tokens (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          email TEXT NOT NULL,
-          token TEXT NOT NULL,
-          expires_at INTEGER NOT NULL
-        );
-      `,
+            CREATE TABLE IF NOT EXISTS reset_tokens (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              email TEXT NOT NULL,
+              token TEXT NOT NULL,
+              expires_at INTEGER NOT NULL
+            );
+          `,
         },
         {
           name: "addresses",
@@ -159,6 +152,22 @@ if (!global.__db) {
     };
 
     createTables();
+
+    // یکدست‌سازی خودکار مقادیر status به حروف کوچک (مانند cancelled)
+    try {
+      db.exec(
+        "UPDATE orders SET status = LOWER(status) WHERE status IS NOT NULL;",
+      );
+      console.log("Order statuses normalized to lowercase successfully!");
+    } catch (error) {
+      console.error("Error normalizing order statuses:", error);
+    }
+
+    const makeAdmin = db.prepare(
+      `UPDATE users SET role = 'ADMIN' WHERE email = ?`,
+    );
+    makeAdmin.run("parisajandaghi6831@gmail.com");
+    console.log("User updated to ADMIN successfully!");
 
     global.__db = db;
   } catch (error) {

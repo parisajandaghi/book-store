@@ -14,7 +14,7 @@ export default function ShoppingInfo({
 }: ShoppingInfoProps) {
   const t = useTranslations("OrderDetails");
   return (
-    <GlassPanel w={"100%"} flex={1} p={"xs"} bd={'none'}>
+    <GlassPanel w={"100%"} flex={1} p={"xs"} bd={"none"}>
       <Group gap={5}>
         <IconMapPin size={18} color="var(--mantine-color-surface-9)" />
         <Text fz={"xs"} c={"textMain.3"}>

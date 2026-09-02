@@ -1,5 +1,5 @@
-import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
 import { jwtVerify } from "jose";
 
 const intlMiddleware = createMiddleware({
@@ -7,55 +7,74 @@ const intlMiddleware = createMiddleware({
   defaultLocale: "fa",
 });
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || "default_jwt_secret_key"
+);
 
-const secret = new TextEncoder().encode(JWT_SECRET);
-
-const protectedRoutes = ["/orders", "/cart", "/profile"];
-
-const guestRoutes = ["/login", "/signup"];
+const PROTECTED_ROUTES = ["/orders", "/cart", "/profile"];
+const GUEST_ROUTES = ["/login", "/signup"];
+const ADMIN_ROUTES = ["/admin"];
 
 export default async function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
+  // ۱. اجرای میدل‌ور زبان
+  const response = intlMiddleware(req);
 
-  const segments = pathname.split("/");
+  const { pathname } = req.nextUrl;
+  const segments = pathname.split("/").filter(Boolean);
+  const locale = ["fa", "en"].includes(segments[0]) ? segments[0] : "fa";
 
-  const locale = segments[1];
+  // استخراج مسیر بدون پیشوند زبان
+  const purePath = ["fa", "en"].includes(segments[0])
+    ? `/${segments.slice(1).join("/")}`
+    : pathname;
 
-  const pathWithoutLocale = "/" + segments.slice(2).join("/");
-
+  // ۲. اعتبارسنجی JWT
   const token = req.cookies.get("token")?.value;
-
-  let isLoggedIn = false;
+  let isAuthenticated = false;
+  let userRole = "USER";
 
   if (token) {
     try {
-      await jwtVerify(token, secret);
-      isLoggedIn = true;
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+      isAuthenticated = true;
+      if (payload.role) {
+        userRole = payload.role as string;
+      }
     } catch {
-      isLoggedIn = false;
+      isAuthenticated = false;
     }
   }
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathWithoutLocale.startsWith(route),
-  );
+  // ۳. بررسی نوع مسیر
+  const isProtected = PROTECTED_ROUTES.some((route) => purePath.startsWith(route));
+  const isGuest = GUEST_ROUTES.some((route) => purePath.startsWith(route));
+  const isAdmin = ADMIN_ROUTES.some((route) => purePath.startsWith(route));
 
-  const isGuest = guestRoutes.some((route) =>
-    pathWithoutLocale.startsWith(route),
-  );
+  // ۴. هدایت و پاکسازی کوکی در صورت عدم دسترسی
 
-  if (isProtected && !isLoggedIn) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+  // مسیرهای محافظت‌شده بدون لاگین معتبر
+  if (isProtected && !isAuthenticated) {
+    const redirectRes = NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+    if (token) redirectRes.cookies.delete("token");
+    return redirectRes;
   }
 
-  if (isGuest && isLoggedIn) {
+  // مسیرهای مهمان برای کاربر لاگین‌شده
+  if (isGuest && isAuthenticated) {
     return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
 
-  return intlMiddleware(req);
+  // مسیرهای ادمین برای کاربران غیرادمین
+  if (isAdmin && (!isAuthenticated || userRole !== "ADMIN")) {
+    return NextResponse.redirect(new URL(`/${locale}`, req.url));
+  }
+
+  return response;
 }
 
 export const config = {
-  matcher: ["/", "/(fa|en)/:path*"],
+  // فیلتر کردن فایل‌های استاتیک، تصاویر، آیکون‌ها و API
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

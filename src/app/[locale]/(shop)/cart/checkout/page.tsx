@@ -27,7 +27,7 @@ import {
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import style from "../../../../features/carts/cart.module.css";
+import style from "../../../../../features/carts/cart.module.css";
 import { useCart } from "@/features/carts/hooks/use-cart";
 import { SHIPPING_FEE } from "@/constants";
 import { useEffect } from "react";

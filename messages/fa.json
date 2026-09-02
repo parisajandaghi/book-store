@@ -11,7 +11,27 @@
     "TotalRevenue": "کل فروش",
     "ActiveOrders": "سفارش های فعال",
     "NewCustomers": "مشتریان جدید",
-    "BooksInStock": "کتاب های موجود"
+    "BooksInStock": "کتاب های موجود",
+    "RecentOrders": "آخرین سفارش ها",
+    "ViewAllOrders": "مشاهده همه سفارش ها",
+    "OrderId": "شماره سفارش",
+    "Customer": "مشتری",
+    "Date": "تاریخ",
+    "Status": "وضعیت",
+    "TotalAmount": "مبلغ نهایی",
+    "NoOrdersFound": "سفارشی یافت نشد .",
+    "OrderManagment": "مدیریت سفارش",
+    "TrackingCode": "کد رهگیری",
+    "Actions": "عملیات",
+    "SearchOrders": "جست و جو",
+    "Order": "سفارش",
+    "CostumerInfo": "اطلاعات کاربر",
+    "UserAddress": "آدرس",
+    "UserMail": "ایمیل",
+    "UserPhone": "شماره تماس",
+    "UserName": "نام",
+    "AdminActions": "عملیات ادمین",
+    "UpdateOrder": "به روز کردن سفارش"
   },
   "Header": {
     "Book": "کتاب ",
@@ -46,7 +66,8 @@
   },
 
   "Product": {
-    "CurrencySymbol": "تومان"
+    "CurrencySymbol": "تومان",
+    "OutOfStock": "ناموجود"
   },
   "Orders": {
     "Title": "تاریخچه سفارش ها",
@@ -99,7 +120,8 @@
     "TotalPrice": "قیمت کل",
     "UnitPrice": "قیمت واحد",
     "Qty": "تعداد",
-    "Order": "سفارش"
+    "Order": "سفارش",
+    "ReOrder": "خرید مجدد"
   },
   "Cart": {
     "ShoppingCart": "سبد خرید",

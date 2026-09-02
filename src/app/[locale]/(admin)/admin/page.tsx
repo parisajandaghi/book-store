@@ -1,25 +1,15 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
+import AdminDashboardTable from "@/features/admin/components/admin-dashboard-table";
+import { Sparkline } from "@mantine/charts";
+import { Center, Group, Stack, Text, ThemeIcon, Title } from "@mantine/core";
 import {
-  Title,
-  Text,
-  Stack,
-  Group,
-  SimpleGrid,
-  Center,
-  ThemeIcon,
-} from "@mantine/core";
-import {
-  IconBook,
   IconBooks,
   IconChartLine,
-  IconCoin,
   IconMoodSpark,
   IconPackage,
-  IconUser,
   IconUserPlus,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { Sparkline } from "@mantine/charts";
 export default function AdminDashboardPage() {
   const t = useTranslations("Admin");
   return (
@@ -35,7 +25,7 @@ export default function AdminDashboardPage() {
           </Text>
         </Group>
       </Stack>
-      <Group justify="space-around">
+      <Group w="100%" maw={1000} mx="auto" justify="space-between">
         <GlassPanel w={200} p={"md"}>
           <Group>
             <ThemeIcon variant="outline" color="#a78622" radius="xl">
@@ -133,6 +123,7 @@ export default function AdminDashboardPage() {
           </Center>
         </GlassPanel>
       </Group>
+      <AdminDashboardTable />
     </Stack>
   );
 }

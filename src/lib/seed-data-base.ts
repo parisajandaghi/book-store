@@ -2,39 +2,27 @@ import { DatabaseSync } from "node:sqlite";
 import path from "path";
 
 const dbPath = path.join(process.cwd(), "data", "bookstore.db");
-
-// اتصال به دیتابیس با node:sqlite
 const db = new DatabaseSync(dbPath);
 
-// اجرای تنظیمات PRAGMA با متد exec
+// تنظیمات PRAGMA
 db.exec(`
   PRAGMA journal_mode = WAL;
   PRAGMA foreign_keys = ON;
 `);
 
+// ایجاد کاربر تستی پیش‌فرض
 const userStmt = db.prepare(`
-INSERT OR IGNORE INTO users (
-    id,
-    name,
-    email,
-    password,
-    role
-)
-VALUES (
-    1,
-    'Test User',
-    'test@test.com',
-    '123456',
-    'user'
-)
+  INSERT OR IGNORE INTO users (id, name, email, password, role)
+  VALUES (1, 'Test User', 'test@test.com', '123456', 'user')
 `);
-
 userStmt.run();
 
+// لیست کتاب‌ها همراه با موجودی (stock) و ترجمه‌ها
 const booksSeedData = [
   {
     id: 1,
     price: 250000,
+    stock: 15,
     image_url: "/images/jonathan-livingston-seagull.jpg",
     translations: [
       {
@@ -42,20 +30,21 @@ const booksSeedData = [
         title: "جاناتان مرغ دریایی",
         author: "ریچارد باخ",
         description:
-          "داستانی تمثیلی و الهام‌بخش درباره مرغ دریایی متفاوتی که به دنبال پروازی فراتر از روزمرگی و یافتن معنای واقعی آزادی و کمال است. این کتاب به ما می‌آموزد که محدودیت‌ها تنها در ذهن ما قرار دارند.",
+          "داستانی تمثیلی و الهام‌بخش درباره مرغ دریایی متفاوتی که به دنبال پروازی فراتر از روزمرگی و یافتن معنای واقعی آزادی و کمال است.",
       },
       {
         language_code: "en",
         title: "Jonathan Livingston Seagull",
         author: "Richard Bach",
         description:
-          "An inspiring allegorical tale about a unique seagull who seeks flight beyond the ordinary, searching for the true meaning of freedom and perfection. It teaches us that limitations exist only in our minds.",
+          "An inspiring allegorical tale about a unique seagull who seeks flight beyond the ordinary, searching for the true meaning of freedom and perfection.",
       },
     ],
   },
   {
     id: 2,
     price: 300000,
+    stock: 8,
     image_url: "/images/thus-spoke-zarathustra.jpg",
     translations: [
       {
@@ -63,41 +52,43 @@ const booksSeedData = [
         title: "چنین گفت زرتشت",
         author: "فریدریش نیچه",
         description:
-          "شاهکار فلسفی و شاعرانه نیچه که در آن مفاهیم عمیقی چون «ابرانسان»، «مرگ خدا» و «بازگشت جاودان» از زبان پیامبری باستانی روایت می‌شود. اثری که پایه‌های تفکر مدرن را به چالش می‌کشد.",
+          "شاهکار فلسفی و شاعرانه نیچه که در آن مفاهیم عمیقی چون ابرانسان، اراده معطوف به قدرت و بازگشت جاودانه تبیین می‌شوند.",
       },
       {
         language_code: "en",
         title: "Thus Spoke Zarathustra",
         author: "Friedrich Nietzsche",
         description:
-          "Nietzsche's philosophical and poetic masterpiece, narrating profound concepts like the 'Übermensch', the 'death of God', and 'eternal recurrence' through an ancient prophet. A work challenging modern thought.",
+          "Nietzsche's philosophical masterpiece outlining key concepts such as the Übermensch, will to power, and eternal recurrence.",
       },
     ],
   },
   {
     id: 3,
-    price: 200000,
+    price: 210000,
+    stock: 10,
     image_url: "/images/no-mud-no-lotus.jpg",
     translations: [
       {
         language_code: "fa",
         title: "نیلوفر و مرداب",
-        author: "تیچ نات هان",
+        author: "تیک نات هان",
         description:
-          "راهنمایی آرامش‌بخش از یک استاد ذن که به ما نشان می‌دهد چگونه از رنج‌ها و دردهای زندگی برای رشد و شکوفایی استفاده کنیم، همان‌طور که گل نیلوفر برای روییدن به گل و لای مرداب نیاز دارد.",
+          "آموزه‌هایی در باب هنر دگرگون کردن رنج و تبدیل آن به آرامش و شادمانی به قلم استاد برجسته ذن.",
       },
       {
         language_code: "en",
         title: "No Mud, No Lotus",
         author: "Thich Nhat Hanh",
         description:
-          "A calming guide by a Zen master showing us how to transform suffering and pain into personal growth and flourishing, just as a lotus flower needs the mud of the swamp to bloom.",
+          "The art of transforming suffering into peace and joy by a world-renowned Zen master.",
       },
     ],
   },
   {
     id: 4,
     price: 280000,
+    stock: 5,
     image_url: "/images/On-the-Wisdom-of-Life.jpg",
     translations: [
       {
@@ -105,20 +96,21 @@ const booksSeedData = [
         title: "درباب حکمت زندگی",
         author: "آرتور شوپنهاور",
         description:
-          "رساله‌ای درخشان در فلسفه عملی که شوپنهاور در آن به بررسی عوامل موثر بر سعادت و خوشبختی انسان می‌پردازد. او اهمیت غنای درونی را بر ثروت و جایگاه اجتماعی برتری می‌دهد.",
+          "رساله‌ای درخشان در فلسفه عملی که به بررسی عوامل موثر بر سعادت و خوشبختی درون انسان می‌پردازد.",
       },
       {
         language_code: "en",
         title: "The Wisdom of Life",
         author: "Arthur Schopenhauer",
         description:
-          "A brilliant treatise in practical philosophy where Schopenhauer explores the factors contributing to human happiness. He emphasizes the importance of inner wealth over material riches and social status.",
+          "A brilliant treatise in practical philosophy exploring factors contributing to human happiness.",
       },
     ],
   },
   {
     id: 5,
     price: 450000,
+    stock: 12,
     image_url: "/images/Brothers-Karamazov.jpg",
     translations: [
       {
@@ -126,20 +118,21 @@ const booksSeedData = [
         title: "برادران کارامازوف",
         author: "فئودور داستایفسکی",
         description:
-          "رمانی حماسی و روان‌شناختی که با روایت درگیری‌های سه برادر، به عمیق‌ترین پرسش‌های بشری درباره ایمان، اراده آزاد، گناه و رستگاری می‌پردازد. این اثر نقطه اوج ادبیات کلاسیک روسیه است.",
+          "رمانی حماسی و روان‌شناختی که با روایت درگیری‌های سه برادر، به عمیق‌ترین پرسش‌های بشری می‌پردازد.",
       },
       {
         language_code: "en",
         title: "The Brothers Karamazov",
         author: "Fyodor Dostoevsky",
         description:
-          "An epic psychological novel that, through the conflicts of three brothers, delves into humanity's deepest questions about faith, free will, guilt, and redemption. The pinnacle of classic Russian literature.",
+          "An epic psychological novel delving into humanity's deepest questions about faith, morality, and redemption.",
       },
     ],
   },
   {
     id: 6,
     price: 220000,
+    stock: 10,
     image_url: "/images/Women-Who-Run-With-the-Wolves.jpg",
     translations: [
       {
@@ -147,20 +140,21 @@ const booksSeedData = [
         title: "زنانی که با گرگ ها می دوند",
         author: "کلاریسا پینکولا استس",
         description:
-          "اثری روان‌کاوانه که با واکاوی افسانه‌ها و اسطوره‌های ملل مختلف، به بازشناسی کهن‌الگوی «زن وحشی» می‌پردازد. کتابی برای بیداری غریزه، خلاقیت و قدرت درونی زنان در دنیای مدرن.",
+          "اثری روان‌کاوانه برای بیداری غریزه، خلاقیت و قدرت کهن‌الگوی زن وحشی.",
       },
       {
         language_code: "en",
         title: "Women Who Run With the Wolves",
         author: "Clarissa Pinkola Estés",
         description:
-          "A psychoanalytic work that explores myths and fairy tales across cultures to rediscover the 'Wild Woman' archetype. A book for awakening female instinct, creativity, and inner power in the modern world.",
+          "A psychoanalytic work on myths and stories to rediscover the female instinctual nature.",
       },
     ],
   },
   {
     id: 7,
     price: 180000,
+    stock: 0, // کتاب ناموجود برای تست نمایش در فرانت‌اند
     image_url: "/images/snow-in-summer.jpg",
     translations: [
       {
@@ -168,20 +162,21 @@ const booksSeedData = [
         title: "برف در تابستان",
         author: "سایاداو او جوتیکا",
         description:
-          "کتابی سرشار از خرد و آرامش که به صورت نامه‌هایی از یک راهب بودایی نوشته شده است. این اثر دعوتی است به زیستن در لحظه حال، درک عمیق زندگی و رهایی از وابستگی‌های ذهنی.",
+          "کتابی سرشار از خرد و آرامش در قالب نامه‌هایی از یک راهب بودایی در باب رهایی و زندگی در لحظه.",
       },
       {
         language_code: "en",
         title: "Snow in the Summer",
         author: "Sayadaw U Jotika",
         description:
-          "A book full of wisdom and peace, written as letters from a Buddhist monk. This work is an invitation to live in the present moment, deeply understand life, and let go of mental attachments.",
+          "A collection of letters by a Buddhist monk exploring freedom of mind and living mindfully.",
       },
     ],
   },
   {
     id: 8,
     price: 270000,
+    stock: 14,
     image_url: "/images/meditation.jpg",
     translations: [
       {
@@ -189,20 +184,21 @@ const booksSeedData = [
         title: "تاملات",
         author: "مارکوس اورلیوس",
         description:
-          "یادداشت‌های شخصی و تأملات درونی یک امپراتور قدرتمند رومی که بر پایه مکتب رواقی‌گری نوشته شده است. راهنمایی عملی برای حفظ آرامش ذهن، انجام وظیفه و مواجهه با چالش‌های زندگی.",
+          "یادداشت‌های درونی امپراتور رواقی درباره آرامش ذهن و انجام وظیفه اخلاقی.",
       },
       {
         language_code: "en",
         title: "Meditations",
         author: "Marcus Aurelius",
         description:
-          "The personal journal and inner reflections of a powerful Roman Emperor, grounded in Stoic philosophy. A practical guide for maintaining mental tranquility, fulfilling duty, and facing life's challenges.",
+          "Personal writings of the Roman Emperor setting forth private notes on Stoic philosophy.",
       },
     ],
   },
   {
     id: 9,
     price: 210000,
+    stock: 7,
     image_url: "/images/gravity-and-grace.jpg",
     translations: [
       {
@@ -210,20 +206,21 @@ const booksSeedData = [
         title: "جاذبه و رحمت",
         author: "سیمون ویل",
         description:
-          "مجموعه‌ای از یادداشت‌های درخشان و تکان‌دهنده یک فیلسوف و عارف فرانسوی. او در این کتاب به تقابل «جاذبه» (نیروهای مادی و نفسانی) و «رحمت» (نور الهی و رهایی) در وجود انسان می‌پردازد.",
+          "مجموعه تاملات فیلسوف و عارف فرانسوی پیرامون تقابل کشش‌های مادی و نور رحمت.",
       },
       {
         language_code: "en",
         title: "Gravity and Grace",
         author: "Simone Weil",
         description:
-          "A collection of brilliant and moving notes by a French philosopher and mystic. The book explores the conflict between 'gravity' (material and egoic forces) and 'grace' (divine light and liberation) in human existence.",
+          "Philosophical and mystical notes on the tension between material gravity and divine grace.",
       },
     ],
   },
   {
     id: 10,
     price: 290000,
+    stock: 9,
     image_url: "/images/guide-to-good-life.jpg",
     translations: [
       {
@@ -231,20 +228,21 @@ const booksSeedData = [
         title: "فلسفه ای برای زندگی",
         author: "ویلیام بی. اروین",
         description:
-          "بازآفرینی جذاب و کاربردی مکتب رواقی‌گری برای دنیای امروز. نویسنده تکنیک‌هایی عملی ارائه می‌دهد تا با کاهش اضطراب و نارضایتی، به آرامش روانی و شادی پایدار در زندگی دست یابیم.",
+          "راهنمای کاربردی برای به‌کارگیری مکتب رواقی در کاهش اضطراب و کسب آرامش در زندگی معاصر.",
       },
       {
         language_code: "en",
         title: "A Guide to the Good Life",
         author: "William B. Irvine",
         description:
-          "A fascinating and practical reinvention of Stoicism for the modern world. The author offers practical techniques to reduce anxiety and dissatisfaction, helping us achieve mental tranquility and lasting joy.",
+          "Practical insights from ancient Stoicism to achieve tranquility and joy in modern life.",
       },
     ],
   },
   {
     id: 11,
     price: 150000,
+    stock: 4,
     image_url: "/images/repetition.jpg",
     translations: [
       {
@@ -252,20 +250,21 @@ const booksSeedData = [
         title: "تکرار",
         author: "سورن کیرکگارد",
         description:
-          "اثری پیچیده و نوآورانه از پدر اگزیستانسیالیسم که مفهوم «تکرار» را در برابر «یادآوری» یونانی قرار می‌دهد. جستاری روان‌شناختی در باب عشق، انتخاب و امکان‌پذیری حرکت به سوی آینده.",
+          "جستاری روان‌شناختی و اگزیستانسیال در باب امکان‌پذیری حرکت به سوی آینده و تجربه تکرار.",
       },
       {
         language_code: "en",
         title: "Repetition",
         author: "Søren Kierkegaard",
         description:
-          "A complex and innovative work by the father of existentialism, contrasting the concept of 'repetition' with Greek 'recollection'. A psychological essay on love, choice, and moving towards the future.",
+          "An essay exploring existential movement, recollection, and the forward progress of life.",
       },
     ],
   },
   {
     id: 12,
     price: 260000,
+    stock: 11,
     image_url: "/images/fear-and-trembling.jpg",
     translations: [
       {
@@ -273,35 +272,37 @@ const booksSeedData = [
         title: "ترس و لرز",
         author: "سورن کیرکگارد",
         description:
-          "تحلیلی تکان‌دهنده از داستان ابراهیم و اسحاق که مرزهای میان اخلاق و ایمان را به چالش می‌کشد. کیرکگارد در این کتاب، اضطراب عمیق نهفته در انتخاب‌های ایمانی و جهش به سوی امر مطلق را بررسی می‌کند.",
+          "تحلیلی عمیق درباره ماهیت ایمان، تعلیق امر اخلاقی و اضطراب انتخاب‌های انسانی.",
       },
       {
         language_code: "en",
         title: "Fear and Trembling",
         author: "Søren Kierkegaard",
         description:
-          "A profound analysis of the story of Abraham and Isaac, challenging the boundaries between ethics and faith. Kierkegaard explores the deep anxiety in faithful choices and the leap toward the absolute.",
+          "A profound examination of faith, moral dilemmas, and the leap into the absolute.",
       },
     ],
   },
 ];
 
 const seedBooksData = () => {
-  const insertBookStmt = db.prepare(
-    `INSERT OR IGNORE INTO books (id, price, image_url,views, created_at) VALUES (?, ?, ?,?, CURRENT_TIMESTAMP)`,
-  );
-  const insertTranslationStmt = db.prepare(
-    `INSERT OR IGNORE INTO translations (book_id, language_code, title, author, description) VALUES (?, ?, ?, ?, ?)`,
-  );
+  const insertBookStmt = db.prepare(`
+    INSERT OR IGNORE INTO books (id, price, image_url, views, stock, created_at)
+    VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+  `);
 
-  // شروع تراکنش به صورت دستی
+  const insertTranslationStmt = db.prepare(`
+    INSERT OR IGNORE INTO translations (book_id, language_code, title, author, description)
+    VALUES (?, ?, ?, ?, ?)
+  `);
+
   db.exec("BEGIN TRANSACTION;");
 
   try {
-    booksSeedData.forEach((book) => {
-      insertBookStmt.run(book.id, book.price, book.image_url, 0);
+    for (const book of booksSeedData) {
+      insertBookStmt.run(book.id, book.price, book.image_url, 0, book.stock);
 
-      book.translations.forEach((translation) => {
+      for (const translation of book.translations) {
         insertTranslationStmt.run(
           book.id,
           translation.language_code,
@@ -309,26 +310,24 @@ const seedBooksData = () => {
           translation.author,
           translation.description,
         );
-      });
-    });
+      }
+    }
+
     db.exec("COMMIT;");
-    console.log("Books and their translations seeded successfully.");
+    console.log("Books and translations seeded successfully.");
   } catch (error) {
-    // در صورت بروز خطا، همه تغییرات لغو می‌شوند
     db.exec("ROLLBACK;");
-    throw error; // خطا را به بیرون می‌فرستیم تا در بلاک اصلی لاگ شود
+    throw error;
   }
 };
 
 try {
-  // حتما مطمئن شوید که اول db.ts یک بار اجرا شده و جداول ساخته شده‌اند
   seedBooksData();
 } catch (error) {
-  const errorMessage = error instanceof Error ? error.message : String(error);
-  console.error("Error seeding books table:", errorMessage);
+  const msg = error instanceof Error ? error.message : String(error);
+  console.error("Error seeding database:", msg);
 } finally {
-  const result = db.prepare("SELECT COUNT(*) as count FROM books").get();
-  console.log(result);
+  const count = db.prepare("SELECT COUNT(*) as count FROM books").get();
+  console.log("Total books in DB:", count);
   db.close();
-  console.log("Database connection closed.");
 }

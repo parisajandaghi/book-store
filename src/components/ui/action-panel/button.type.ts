@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export type ButtonProps = {
+  mt?:string,
   btnText?: string;
   width?: number | string;
   hight?: number | string;

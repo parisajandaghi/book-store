@@ -168,3 +168,55 @@ export function getOrderById(orderId: number, userId: number) {
     order_items: items,
   };
 }
+export function cancelOrder(orderId: number, userId: number) {
+  // ۱. شروع تراکنش
+  db.exec("BEGIN TRANSACTION");
+
+  try {
+    // ۲. بررسی وجود و مالکیت سفارش
+    const orderStmt = db.prepare(
+      `SELECT * FROM orders WHERE id = ? AND user_id = ?`,
+    );
+    const order = orderStmt.get(orderId, userId) as unknown as Order;
+
+    if (!order) {
+      throw new Error("سفارش یافت نشد یا متعلق به شما نیست.");
+    }
+
+    // ۳. بررسی وضعیت سفارش
+    if (order.status !== "pending") {
+      throw new Error("فقط سفارش‌های در وضعیت 'در حال بررسی' قابل لغو هستند.");
+    }
+
+    // ۴. دریافت آیتم‌های سفارش
+    const itemsStmt = db.prepare(
+      `SELECT book_id, quantity FROM order_items WHERE order_id = ?`,
+    );
+    const items = itemsStmt.all(orderId) as unknown as {
+      book_id: number;
+      quantity: number;
+    }[];
+
+    // ۵. بازگرداندن موجودی به جدول کتاب‌ها
+    const returnStockStmt = db.prepare(
+      `UPDATE books SET stock = stock + ? WHERE id = ?`,
+    );
+    for (const item of items) {
+      returnStockStmt.run(item.quantity, item.book_id);
+    }
+
+    // ۶. تغییر وضعیت سفارش به cancelled
+    const updateStatusStmt = db.prepare(
+      `UPDATE orders SET status = 'cancelled' WHERE id = ?`,
+    );
+    updateStatusStmt.run(orderId);
+
+    // ثبت نهایی تغییرات
+    db.exec("COMMIT");
+    return true;
+  } catch (error) {
+    // در صورت بروز هرگونه خطا، تغییرات لغو می‌شود
+    db.exec("ROLLBACK");
+    throw error;
+  }
+}
