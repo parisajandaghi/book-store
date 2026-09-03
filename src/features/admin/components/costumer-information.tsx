@@ -17,7 +17,10 @@ export default function CostumerInformation({
 }: CostumerInfoType) {
   const t = useTranslations("Admin");
   return (
-    <GlassPanel p={"md"}>
+    <GlassPanel p={"md"} style={{
+                width: "100%",
+                height: "100%",
+              }}>
       <Group>
         <ThemeIcon variant="outline" color="var(--mantine-color-surface-9)">
           <IconUser size={20} />

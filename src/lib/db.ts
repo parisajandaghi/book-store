@@ -27,7 +27,8 @@ if (!global.__db) {
               email TEXT NOT NULL UNIQUE,
               password TEXT NOT NULL, 
               phone TEXT,
-              role TEXT DEFAULT 'user'
+              role TEXT DEFAULT 'user',
+              created_at TEXT DEFAULT CURRENT_TIMESTAMP
             );
           `,
         },
@@ -154,6 +155,16 @@ if (!global.__db) {
     createTables();
 
     // یکدست‌سازی خودکار مقادیر status به حروف کوچک (مانند cancelled)
+    try {
+      db.exec(
+        "ALTER TABLE users ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP;",
+      );
+      console.log("Column 'created_at' added to users table.");
+    } catch (error) {
+      console.log(
+        "Note: Column 'created_at' already exists in users table, skipping.",
+      );
+    }
     try {
       db.exec(
         "UPDATE orders SET status = LOWER(status) WHERE status IS NOT NULL;",

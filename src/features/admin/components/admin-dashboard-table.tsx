@@ -90,8 +90,8 @@ export default function AdminDashboardTable() {
   });
 
   return (
-    <GlassPanel p={"md"} maw={800} mx="auto">
-      <Group justify="space-between" mb="md">
+    <GlassPanel p={"md"}  mx="auto">
+      <Group justify="space-between" mt="md">
         <Text size="lg" fw={600} c={"surface.9"}>
           {t1("RecentOrders")}
         </Text>
@@ -106,7 +106,7 @@ export default function AdminDashboardTable() {
         </Button>
       </Group>
 
-      <Table.ScrollContainer minWidth={700}>
+      <Table.ScrollContainer minWidth={700} maxHeight={170}>
         <Table
           verticalSpacing="sm"
           highlightOnHover

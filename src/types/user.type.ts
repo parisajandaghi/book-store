@@ -4,6 +4,7 @@ export interface User {
   email: string;
   role: string;
   phone: string;
+  created_at: string;
 }
 
 export interface DBUser extends User {

@@ -1,7 +1,18 @@
+"use client";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import AdminDashboardTable from "@/features/admin/components/admin-dashboard-table";
+import { useAdminMetrics } from "@/features/admin/hooks/use-admin-metrics";
+import { getFormattedPrice } from "@/utils/book.utils";
 import { Sparkline } from "@mantine/charts";
-import { Center, Group, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  Center,
+  Group,
+  Loader,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import {
   IconBooks,
   IconChartLine,
@@ -9,9 +20,44 @@ import {
   IconPackage,
   IconUserPlus,
 } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 export default function AdminDashboardPage() {
   const t = useTranslations("Admin");
+  const t2 = useTranslations("Product");
+  const locale = useLocale();
+  const { metrics, isLoading } = useAdminMetrics();
+
+  const cards = metrics
+    ? [
+        {
+          label: t("BooksInStock"),
+          icon: IconBooks,
+          value: metrics.booksInStock,
+          data: metrics.booksHistory,
+        },
+        {
+          label: t("NewCustomers"),
+          icon: IconUserPlus,
+          value: metrics.newCustomers,
+          data: metrics.customersHistory,
+        },
+        {
+          label: t("ActiveOrders"),
+          icon: IconPackage,
+          value: metrics.activeOrders,
+          data: metrics.ordersHistory,
+        },
+        {
+          label: t("TotalRevenue"),
+          icon: IconChartLine,
+          value:
+            locale === "en"
+              ? `${t2("CurrencySymbol")} ${getFormattedPrice(metrics.totalRevenue, locale)}`
+              : `${getFormattedPrice(metrics.totalRevenue, locale)} ${t2("CurrencySymbol")}`,
+          data: metrics.revenueHistory,
+        },
+      ]
+    : [];
   return (
     <Stack gap={"xl"}>
       <Stack gap={2}>
@@ -25,104 +71,42 @@ export default function AdminDashboardPage() {
           </Text>
         </Group>
       </Stack>
-      <Group w="100%" maw={1000} mx="auto" justify="space-between">
-        <GlassPanel w={200} p={"md"}>
-          <Group>
-            <ThemeIcon variant="outline" color="#a78622" radius="xl">
-              <IconBooks color="#a78622" size={20} />
-            </ThemeIcon>
-            <Text fz={"sm"} c={"#ffffffb2"}>
-              {t("BooksInStock")}
-            </Text>
-          </Group>
-          <Center>
-            <Text c={"#ffffff"}>12</Text>
-          </Center>
-          <Center>
-            <Sparkline
-              w={100}
-              h={60}
-              data={[1, 2, 4, 8]}
-              curveType="linear"
-              color="#a78622"
-              fillOpacity={0.6}
-              strokeWidth={2}
-            />
-          </Center>
-        </GlassPanel>
-        <GlassPanel w={200} p={"md"}>
-          <Group>
-            <ThemeIcon variant="outline" color="#a78622" radius="xl">
-              <IconUserPlus color="#a78622" size={20} />
-            </ThemeIcon>
-            <Text fz={"sm"} c={"#ffffffb2"}>
-              {t("NewCustomers")}
-            </Text>
-          </Group>
-          <Center>
-            <Text c={"#ffffff"}>12</Text>
-          </Center>
-          <Center>
-            <Sparkline
-              w={100}
-              h={60}
-              data={[10, 20, 40, 20, 40, 10, 50]}
-              curveType="linear"
-              color="#a78622"
-              fillOpacity={0.6}
-              strokeWidth={2}
-            />
-          </Center>
-        </GlassPanel>
-        <GlassPanel w={200} p={"md"}>
-          <Group>
-            <ThemeIcon variant="outline" color="#a78622" radius="xl">
-              <IconPackage color="#a78622" size={20} />
-            </ThemeIcon>
-            <Text fz={"sm"} c={"#ffffffb2"}>
-              {t("ActiveOrders")}
-            </Text>
-          </Group>
-          <Center>
-            <Text c={"#ffffff"}>12</Text>
-          </Center>
-          <Center>
-            <Sparkline
-              w={100}
-              h={60}
-              data={[10, 20, 40, 20, 40, 10, 50]}
-              curveType="linear"
-              color="#a78622"
-              fillOpacity={0.6}
-              strokeWidth={2}
-            />
-          </Center>
-        </GlassPanel>
-        <GlassPanel w={200} p={"md"}>
-          <Group>
-            <ThemeIcon variant="outline" color="#a78622" radius="xl">
-              <IconChartLine color="#a78622" size={20} />
-            </ThemeIcon>
-            <Text fz={"sm"} c={"#ffffffb2"}>
-              {t("TotalRevenue")}
-            </Text>
-          </Group>
-          <Center>
-            <Text c={"#ffffff"}>12</Text>
-          </Center>
-          <Center>
-            <Sparkline
-              w={100}
-              h={60}
-              data={[10, 20, 40, 20, 40, 10, 50]}
-              curveType="linear"
-              color="#a78622"
-              fillOpacity={0.6}
-              strokeWidth={2}
-            />
-          </Center>
-        </GlassPanel>
-      </Group>
+      {isLoading ? (
+        <Center h={120}>
+          <Loader size="sm" color="#a78622" />
+        </Center>
+      ) : (
+        <Group w="100%" maw={1000} mx="auto" justify="space-between">
+          {cards.map((card) => (
+            <GlassPanel key={card.label} w={200} p="md">
+              <Group>
+                <ThemeIcon variant="outline" color="#a78622" radius="xl">
+                  <card.icon color="#a78622" size={20} />
+                </ThemeIcon>
+                <Text fz="sm" c="#ffffffb2"   ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}>
+                  {card.label}
+                </Text>
+              </Group>
+              <Center>
+                <Text c="#ffffff" fw={700} fz="xl"   ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}>
+                  {card.value}
+                </Text>
+              </Center>
+              <Center>
+                <Sparkline
+                  w={100}
+                  h={60}
+                  data={card.data}
+                  curveType="linear"
+                  color="#a78622"
+                  fillOpacity={0.6}
+                  strokeWidth={2}
+                />
+              </Center>
+            </GlassPanel>
+          ))}
+        </Group>
+      )}
       <AdminDashboardTable />
     </Stack>
   );
