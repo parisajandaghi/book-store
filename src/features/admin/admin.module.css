@@ -1,0 +1,62 @@
+.inputWrapper {
+  width: 300px;
+  max-width: 300px;
+  padding: 1px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid #d4af3766;
+  backdrop-filter: blur(8px);
+}
+
+.focused {
+  border: 1px solid #d4af3766;
+}
+.input {
+  color: #fdf6eb;
+  font-size: 14px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* استایل دکمه‌های عادی پیجینیشن */
+.paginationControl {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  transition: all 0.2s ease;
+}
+
+/* حالت هاور دکمه‌های غیرفعال */
+.paginationControl:hover:not([data-active]):not([data-disabled]) {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* دکمه صفحه فعال */
+.paginationControl[data-active] {
+  background-color: var(--mantine-color-surface-9) !important;
+  color: #1F0F1F !important;
+  border-color: transparent !important;
+  font-weight: 700 !important;
+}
+
+/* هاور دکمه فعال */
+.paginationControl[data-active]:hover {
+  background-color: var(--mantine-color-surface-9) !important;
+}
+
+/* دکمه‌های غیرفعال */
+.paginationControl[data-disabled] {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+}
+
+.modalButton {
+  background-color: #1f0f1f;
+  font-size: 12px;
+  font-weight: normal;
+  border-radius: 20px;
+}
+.modalButton:hover {
+  border: 1px solid #7b6210;
+}
+

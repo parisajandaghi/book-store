@@ -31,7 +31,31 @@
     "UserPhone": "Phone",
     "UserName": "Name",
     "AdminActions": "Admin Actions",
-    "UpdateOrder": "Update Order"
+    "UpdateOrder": "Update Order",
+    "Book": {
+      "BookInventory": "Book Inventory",
+      "BookDescription": "Manage, update, and track all books in the catalog.",
+      "AddNewBook": "Add New Book",
+      "SearchBooks": "Search...",
+      "BookDetails": "BookDetails",
+      "Price": "Price",
+      "Stock": "Stock",
+      "BookTitle": "Book Title",
+      "Inventory": "Inventory",
+      "Actions": "Actions",
+      "Author": "Author",
+      "ImgUrl": "Image Url",
+      "PaginationDescription": "Showing 1 to 4 of 4 entries",
+      "NoBookFound": "No Book Found .",
+      "Confirm": "Confirm",
+      "Cancle": "Cancle",
+      "Save": "Save",
+      "ConfirmMessage": "Are You Sure You Want To Delete Book ?",
+      "EditBookDetails": "Edit Book Details",
+      "PlaceHolder": {
+        "UrlExam": "e.g : https://..."
+      }
+    }
   },
   "Header": {
     "Book": "Book",
@@ -67,7 +91,8 @@
   },
   "Product": {
     "CurrencySymbol": "$",
-    "OutOfStock": "Out Of Stock"
+    "OutOfStock": "Out Of Stock",
+    "Pcs": "Pcs"
   },
   "Orders": {
     "Title": "Order History",

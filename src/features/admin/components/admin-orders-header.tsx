@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Input, Paper, Title } from "@mantine/core";
 import { IconPackage, IconSearch } from "@tabler/icons-react";
-import style from "../admin-order.module.css";
+import style from "../admin.module.css";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { adminSearchQueryAtom } from "@/store/admin-atom";

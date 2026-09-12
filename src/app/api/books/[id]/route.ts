@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBookById } from "@/services/book.service";
+import { deleteBook, getBookById, updateBook } from "@/services/book.service";
 import { getErrorMessage } from "@/utils/error";
 
 export async function GET(
@@ -14,6 +14,39 @@ export async function GET(
     return NextResponse.json(
       { error: getErrorMessage(error) },
       { status: 404 },
+    );
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    const body = await req.json();
+    const updated = updateBook(Number(id), body);
+    return NextResponse.json(updated);
+  } catch (error: unknown) {
+    return NextResponse.json(
+      { error: getErrorMessage(error) },
+      { status: 400 },
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    deleteBook(Number(id));
+    return NextResponse.json({ success: true });
+  } catch (error: unknown) {
+    return NextResponse.json(
+      { error: getErrorMessage(error) },
+      { status: 400 },
     );
   }
 }

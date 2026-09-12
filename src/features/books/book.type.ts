@@ -19,31 +19,38 @@ export interface Book {
   stock?: number;
   translations?: Translation[];
 }
-
-export interface CreateTranslationDTO {
-  language_code: string;
+export interface BookFormValues {
   title: string;
   author: string;
   description: string;
+  price: number;
+  stock: number;
+  image_url: string;
 }
 
-export interface CreateBookDTO extends Omit<
-  Book,
-  "id" | "created_at" | "translations"
-> {
-  translations?: CreateTranslationDTO[];
+export interface CreateBookDTO {
+  price: number;
+  image_url: string;
+  stock: number;
+  translations?: Translation[];
+}
+export interface UpdateBookDTO {
+  price?: number;
+  image_url?: string;
+  stock?: number;
+  translations?: Translation[];
 }
 
-export interface UpdateTranslationDTO {
-  id?: number;
-  language_code?: string;
-  title?: string;
-  author?: string;
-  description?: string;
+export interface UseBooksParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
 }
 
-export interface UpdateBookDTO extends Partial<
-  Omit<Book, "id" | "created_at" | "translations">
-> {
-  translations?: UpdateTranslationDTO[];
+export interface BooksApiResponse {
+  data: Book[];
+  total: number;
+  page: number;
+  totalPages: number;
 }

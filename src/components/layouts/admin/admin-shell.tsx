@@ -31,7 +31,7 @@ export default function AdminShell({ children }: AdminLayoutProps) {
     { label: t("Setting"), icon: IconSettings, href: "/admin/settings" },
   ];
   return (
-    <Flex h="100vh" direction="column" bg="#1f0f1f34">
+    <Flex h="100vh" direction="column" bg="#1f0f1f34" >
       <Group
         h={70}
         px="xl"
@@ -54,7 +54,7 @@ export default function AdminShell({ children }: AdminLayoutProps) {
 
       <Flex flex={1} style={{ overflow: "hidden" }}>
         <Box
-          mt={5}
+          
           w={opened ? 260 : 0}
           bg="linear-gradient( rgba(31, 15, 31, 0.45),rgb(31, 15, 31))"
           style={{

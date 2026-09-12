@@ -31,7 +31,31 @@
     "UserPhone": "شماره تماس",
     "UserName": "نام",
     "AdminActions": "عملیات ادمین",
-    "UpdateOrder": "به روز کردن سفارش"
+    "UpdateOrder": "به روز کردن سفارش",
+    "Book": {
+      "BookInventory": "موجودی کتاب",
+      "BookDescription": "مدیریت، به‌روزرسانی و پیگیری تمامی کتاب‌های موجود در کاتالوگ.",
+      "AddNewBook": "افزودن کتاب جدید",
+      "SearchBooks": "جست و جو",
+      "BookDetails": "جزییات کناب",
+      "Price": "قیمت",
+      "BookTitle": "عنوان کتاب",
+      "Inventory": "موجودی",
+      "Author": "نویسنده",
+      "Stock": "تعداد",
+      "Actions": "عملیات",
+      "ImgUrl": "آدرس تصویر ",
+      "PaginationDescription": "نمایش ۱ تا ۴ مورد",
+      "NoBookFound": "کتابی یافت نشد .",
+      "Confirm": "تایید",
+      "Cancle": "انصراف",
+      "Save": "ذخیره",
+      "ConfirmMessage": "آیا از حذف کتاب اطمینان دارید ؟",
+      "EditBookDetails": "ویرایش مشخصات کتاب",
+      "PlaceHolder": {
+        "UrlExam": "مثال : https://..."
+      }
+    }
   },
   "Header": {
     "Book": "کتاب ",
@@ -67,7 +91,8 @@
 
   "Product": {
     "CurrencySymbol": "تومان",
-    "OutOfStock": "ناموجود"
+    "OutOfStock": "ناموجود",
+    "Pcs": "عدد"
   },
   "Orders": {
     "Title": "تاریخچه سفارش ها",

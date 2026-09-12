@@ -1,4 +1,8 @@
-import { Book } from "@/features/books/book.type";
+import {
+  Book,
+  BookFormValues,
+  CreateBookDTO,
+} from "@/features/books/book.type";
 import { CartItem } from "@/features/carts/cart.type";
 
 export const getLocalizedBook = (book: Book | CartItem, locale: string) => {
@@ -38,3 +42,49 @@ export const toEnglishDigits = (str: string | number) => {
   }
   return result;
 };
+export const toFormValues = (
+  book: Book | null,
+  locale = "fa",
+): BookFormValues => {
+  if (!book) {
+    return {
+      title: "",
+      author: "",
+      description: "",
+      price: 0,
+      stock: 0,
+      image_url: "",
+    };
+  }
+  const tr =
+    book.translations?.find((t) => t.language_code === locale) ||
+    book.translations?.[0];
+  return {
+    title: tr?.title || "",
+    author: tr?.author || "",
+    description: tr?.description || "",
+    price: book.price ?? 0,
+    stock: book.stock ?? 0,
+    image_url: book.image_url ?? "",
+  };
+};
+
+export const toCreateDTO = (
+  values: BookFormValues,
+  bookId?: number,
+  locale = "fa",
+): CreateBookDTO => ({
+  price: Number(values.price),
+  stock: Number(values.stock),
+  image_url: values.image_url,
+  translations: [
+    {
+      id: 0,
+      book_id: bookId ?? 0,
+      language_code: locale,
+      title: values.title,
+      author: values.author,
+      description: values.description,
+    },
+  ],
+});
