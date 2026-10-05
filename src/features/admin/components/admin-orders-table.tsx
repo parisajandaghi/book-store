@@ -39,7 +39,7 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
           ) : (
             <Table.Tr>
               <Table.Td colSpan={7}>
-                <Center h={300} style={{ flexDirection: "column" }}>
+                <Center h={150} style={{ flexDirection: "column" }}>
                   <IconShoppingCartOff size={80} color="#a9a9a9" stroke={1.5} />
                   <Text c="surface.6" size="lg" fw={600} mt="md">
                     {t("NoOrdersFound")}

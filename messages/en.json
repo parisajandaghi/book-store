@@ -55,6 +55,39 @@
       "PlaceHolder": {
         "UrlExam": "e.g : https://..."
       }
+    },
+    "User": {
+      "UserManagment": "User Managment",
+      "UserDescription": "Manage your bookstor user ,roles and permition.",
+      "UserDetails": "User",
+      "Role": "Role",
+      "AllRoles": "All Roles",
+      "Admin": "Admin",
+      "Customer": "User",
+      "TotalOrders": "Total Orders",
+      "JoinedDate": "Joined Date",
+      "Actions": "Actions",
+      "SearchUsers": "Search",
+      "NoUserFound": "No User Found .",
+      "Cancle": "Cancle",
+      "Save": "Save",
+      "EditRole": "Edit User Role"
+    },
+    "DashbordSetting": {
+      "SettingTitle": "Store Setting",
+      "SettingDescription": "Manage your store information and shipping rules.",
+      "StoreInformation": "Store Information",
+      "StoreDesription": "Update your store's basic information.",
+      "StoreName": "Store Name",
+      "SupportEmail": "Support Email",
+      "Phone": "Phone",
+      "ShippingRules": "ShippingRules",
+      "ShippingDescription": "Configure shipping costs and delivery options for your store.",
+      "ShippingRate": "ShippingRate",
+      "FreeShippingThreshold": "Free Shipping Thereshold",
+      "SaveChanges": "Save Changes",
+      "Reset": "Reset",
+      "SaveDescription": "Your changes will be save immediately"
     }
   },
   "Header": {

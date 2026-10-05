@@ -55,6 +55,39 @@
       "PlaceHolder": {
         "UrlExam": "مثال : https://..."
       }
+    },
+    "User": {
+      "UserManagment": "مدیریت کاربران",
+      "UserDescription": "کاربران، نقش‌ها و دسترسی‌های کتاب‌فروشی خود را مدیریت کنید.",
+      "UserDetails": "کاربر",
+      "Role": "نقش",
+      "AllRoles": "همه نقش ها",
+      "Admin": "ادمین",
+      "Customer": "مشتری",
+      "TotalOrders": "مجموع سفارشات",
+      "JoinedDate": "تاریخ عضویت",
+      "Actions": "عملیات",
+      "SearchUsers": "جست و جو",
+      "NoUserFound": "کاربری یافت نشد .",
+      "Cancle": "انصراف",
+      "Save": "ذخیره",
+      "EditRole": "ویرایش نقش کاربر"
+    },
+    "DashbordSetting": {
+      "SettingTitle": "پیکربندی فروشگاه",
+      "SettingDescription": "اطلاعات فروشگاه و قوانین ارسال را مدیریت کنید.",
+      "StoreInformation": "اطلاعات فروشگاه",
+      "StoreDesription": "اطلاعات اولیه فروشگاه خود را به‌روزرسانی کنید.",
+      "StoreName": "نام فروشگاه",
+      "SupportEmail": "ایمیل پشتیبانی",
+      "Phone": "شماره تلفن",
+      "ShippingRules": "قوانین ارسال",
+      "ShippingDescription": "هزینه‌های ارسال و گزینه‌های تحویل سفارش‌های فروشگاه خود را پیکربندی کنید.",
+      "ShippingRate": "هزینه ارسال",
+      "FreeShippingThreshold": "حداقل مبلغ برای ارسال رایگان",
+      "SaveChanges": "ذخیره تغییرات",
+      "Reset": "بازنشانی",
+      "SaveDescription": "تغییرات شما بلافاصله ذخیره خواهند شد."
     }
   },
   "Header": {

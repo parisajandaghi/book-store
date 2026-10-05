@@ -135,6 +135,21 @@ if (!global.__db) {
             );
           `,
         },
+
+        {
+          name: "store_settings",
+          schema: `
+    CREATE TABLE IF NOT EXISTS store_settings (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      store_name TEXT NOT NULL DEFAULT 'Book Store',
+      support_email TEXT NOT NULL DEFAULT 'support@bookstore.com',
+      phone TEXT DEFAULT '',
+      shipping_rate REAL NOT NULL DEFAULT 25000,
+      free_shipping_threshold REAL NOT NULL DEFAULT 200000,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `,
+        },
       ];
 
       tables.forEach((table) => {
@@ -150,6 +165,10 @@ if (!global.__db) {
           );
         }
       });
+      db.exec(`
+  INSERT OR IGNORE INTO store_settings (id, store_name, support_email, phone, shipping_rate, free_shipping_threshold)
+  VALUES (1, 'کتاب سرا', 'support@bookstore.com', '021-12345678', 35000, 300000);
+`);
     };
 
     createTables();

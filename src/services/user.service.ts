@@ -1,6 +1,6 @@
 import { hashPassword } from "@/lib/auth";
 import db from "@/lib/db";
-import { DBUser, User } from "@/types/user.type";
+import { DBUser, UpdateUserDTO, User } from "@/types/user.type";
 
 type SqliteParam = string | number | null;
 
@@ -103,3 +103,71 @@ export async function createUser(data: {
     role: "user",
   };
 }
+
+// دریافت لیست کاربران با سرچ، فیلتر نقش و صفحه‌بندی (همراه با تعداد سفارش‌ها)
+export function getAllUsers({
+  page = 1,
+  limit = 10,
+  search = "",
+  role = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  role?: string;
+}): { data: User[]; total: number; page: number; totalPages: number } {
+  const offset = (page - 1) * limit;
+  const whereClauses: string[] = [];
+  const params: SqliteParam[] = [];
+
+  if (search.trim()) {
+    whereClauses.push("(u.name LIKE ? OR u.email LIKE ? OR u.phone LIKE ?)");
+    const searchTerm = `%${search.trim()}%`;
+    params.push(searchTerm, searchTerm, searchTerm);
+  }
+
+  if (role.trim()) {
+    whereClauses.push("u.role = ?");
+    params.push(role.trim());
+  }
+
+  const whereSql =
+    whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
+
+  // شمارش کل
+  const countStmt = db.prepare(`
+    SELECT COUNT(*) as total 
+    FROM users u 
+    ${whereSql}
+  `);
+  const countResult = countStmt.get(...params) as { total: number };
+  const total = countResult?.total || 0;
+
+  // دریافت داده‌ها همراه با تعداد سفارشات کاربر
+  const dataStmt = db.prepare(`
+    SELECT 
+      u.id, 
+      u.name, 
+      u.email, 
+      u.phone, 
+      u.role, 
+      u.created_at,
+      COUNT(o.id) as orders_count
+    FROM users u
+    LEFT JOIN orders o ON u.id = o.user_id
+    ${whereSql}
+    GROUP BY u.id
+    ORDER BY u.id DESC
+    LIMIT ? OFFSET ?
+  `);
+
+  const users = dataStmt.all(...params, limit, offset) as unknown as User[];
+
+  return {
+    data: users,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit) || 1,
+  };
+}
+

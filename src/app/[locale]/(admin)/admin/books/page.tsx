@@ -64,17 +64,12 @@ export default function AdminBooksPage() {
   };
 
   const handleSearchChange = (val: string) => {
-    console.log("sdfskdfj");
-
     setSearch(val);
     setActivePage(1);
   };
 
   return (
     <Stack gap="lg">
-      {/* 1. Header Section */}
-      <Group justify="space-between" align="center" wrap="wrap"></Group>
-
       {/* 2. Filter & Search Bar */}
       <AdminBooksSearchBar
         handleOpenCreate={handleOpenCreate}
