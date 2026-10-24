@@ -1,10 +1,12 @@
+import { StyleProp } from "@mantine/core";
 import { ReactNode } from "react";
 
 export type ButtonProps = {
-  mt?:string,
+  mt?: string;
   btnText?: string;
-  width?: number | string;
-  hight?: number | string;
+  size?: string;
+  width?: StyleProp<number | string>;
+  hight?: StyleProp<number | string>;
   icon?: ReactNode;
   radius?: number;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

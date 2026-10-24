@@ -11,6 +11,7 @@ export default function GlassPanel({ children, style, ...props }: StackProps) {
 
         ...style,
       }}
+      
     >
       {children}
     </Stack>

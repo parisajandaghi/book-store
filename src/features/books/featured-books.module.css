@@ -1,25 +1,27 @@
-/* .bookCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 10px 8px 25px rgba(19, 6, 34, 0.25);
-  border: 1px solid #349a4780;
- 
-} */
-
-.featuredBook{
-  
-   background: rgba(255, 255, 255, 0);
+.featuredBook {
+  width: 100%;
+  max-width: 60rem;
+  background: rgba(255, 255, 255, 0);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   border-radius: 10px;
   padding: 10px;
 }
+
 .bookCard {
+  height: 100%;
   transition: all 0.25s ease;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .bookCard:hover {
   transform: translateY(-4px);
   border-color: #349a4780;
-  box-shadow: 10px 8px 25px rgba(19, 6, 34, 0.25)
+  box-shadow: 10px 8px 25px rgba(19, 6, 34, 0.25);
+}
+
+@media (max-width: 480px) {
+  .featuredBook {
+    padding: 8px;
+  }
 }

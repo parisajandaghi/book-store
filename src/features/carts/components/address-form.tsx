@@ -1,5 +1,13 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import { Group, Select, Stack, Text, Textarea, TextInput } from "@mantine/core";
+import {
+  Flex,
+  Group,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import {
   IconBuildingCommunity,
@@ -127,7 +135,8 @@ export default function AddressForm({
             classNames={commonClasses}
             {...form.getInputProps("phone")}
           ></TextInput>
-          <Group w={"100%"} justify="space-evenly">
+
+          <Flex w={"100%"} direction={{ base: "column", sm: "row" }} gap="xs">
             <Select
               placeholder={t("PlaceHolders.Province")}
               label={t("Province")}
@@ -153,7 +162,8 @@ export default function AddressForm({
               flex={1}
               {...form.getInputProps("city")}
             />
-          </Group>
+          </Flex>
+
           <TextInput
             placeholder={t("PlaceHolders.PostalCode")}
             leftSection={<IconMailbox size={16} />}

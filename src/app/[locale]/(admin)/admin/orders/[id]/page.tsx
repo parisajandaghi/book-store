@@ -7,6 +7,7 @@ import { useAdminOrder } from "@/features/admin/hooks/use-admin-orders";
 import { useStatusBadge } from "@/features/admin/hooks/use-status-badge";
 import OrderItems from "@/features/orders/components/order-items";
 import OrderSummary from "@/features/orders/components/order-summary";
+import { useRouter } from "@/navigation";
 import {
   ActionIcon,
   Alert,
@@ -26,10 +27,9 @@ import {
   IconEdit,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "@/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import style from "../../../../../../features/carts/cart.module.css";
-import { useParams } from "next/navigation";
 
 export default function AdminOrderDetailsPage() {
   const t = useTranslations("Admin");
@@ -59,7 +59,7 @@ export default function AdminOrderDetailsPage() {
   if (isLoading) {
     return (
       <Center h={400}>
-        <Loader size="lg" />
+        <Loader size="lg" color="surface.9" />
       </Center>
     );
   }
@@ -102,15 +102,8 @@ export default function AdminOrderDetailsPage() {
   };
 
   const isRtl = locale === "fa";
-
-  const BackIcon = isRtl
-    ? IconArrowLeft
-    : IconArrowRight;
-
-  const fontStyle =
-    locale === "en"
-      ? "system-ui, sans-serif"
-      : "inherit";
+  const BackIcon = isRtl ? IconArrowLeft : IconArrowRight;
+  const fontStyle = locale === "en" ? "system-ui, sans-serif" : "inherit";
 
   return (
     <Stack
@@ -119,21 +112,21 @@ export default function AdminOrderDetailsPage() {
       maw={1400}
       mx="auto"
       px={{
-        base: "md",
-        sm: "md",
-        md: "lg",
+        base: 0,
+        sm: "xs",
       }}
     >
       {/* ==================== ORDER HEADER ==================== */}
-
-      <GlassPanel p="md">
+      <GlassPanel p={{ base: "sm", sm: "md" }}>
         <Group
           justify="space-between"
           align="center"
+          wrap="nowrap"
         >
-          <Stack gap="sm">
+          <Stack gap={4}>
             <Text
-              size="xl"
+              size="lg"
+              fz={{ base: "md", sm: "xl" }}
               fw={700}
               c="textMain.0"
               ff={fontStyle}
@@ -141,33 +134,24 @@ export default function AdminOrderDetailsPage() {
               {t("Order")} : {orderId}
             </Text>
 
-            <Group gap="sm">
+            <Group gap="xs" wrap="wrap">
               {getStatusBadge(order.status)}
 
               <Text
-                size="sm"
+                size="xs"
+                fz={{ base: "xs", sm: "sm" }}
                 c="#ffffffd9"
                 dir="ltr"
                 ff={fontStyle}
               >
                 {order.created_at ? (
                   <>
-                    {new Date(
-                      order.created_at,
-                    ).toLocaleDateString(
-                      locale === "fa"
-                        ? "fa-IR"
-                        : "en-US",
+                    {new Date(order.created_at).toLocaleDateString(
+                      locale === "fa" ? "fa-IR" : "en-US",
                     )}
-
                     {" - "}
-
-                    {new Date(
-                      order.created_at,
-                    ).toLocaleTimeString(
-                      locale === "fa"
-                        ? "fa-IR"
-                        : "en-US",
+                    {new Date(order.created_at).toLocaleTimeString(
+                      locale === "fa" ? "fa-IR" : "en-US",
                       {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -184,69 +168,33 @@ export default function AdminOrderDetailsPage() {
           <ActionIcon
             variant="outline"
             color="var(--mantine-color-surface-9)"
-            size="md"
+            size="lg"
             onClick={() => router.back()}
           >
-            <BackIcon size={22} />
+            <BackIcon size={20} />
           </ActionIcon>
         </Group>
       </GlassPanel>
 
       {/* ==================== CONTENT GRID ==================== */}
-
-      <Grid
-        gutter="lg"
-        align="stretch"
-        style={{
-          width: "100%",
-        }}
-      >
-        {/* ==================== ROW 1 / LEFT ==================== */}
-
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 8,
-          }}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: "100%",
-              display: "flex",
-            }}
-          >
-            <OrderItems
-              items={order.order_items || []}
-            />
-          </div>
+      <Grid gutter={{ base: "md", md: "lg" }} align="stretch" w="100%">
+        {/* ROW 1 / اقلام سفارش */}
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <OrderItems items={order.order_items || []} />
         </Grid.Col>
 
-        {/* ==================== ROW 1 / RIGHT ==================== */}
-
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 4,
-          }}
-        >
+        {/* ROW 1 / فرم ویرایش وضعیت و کد رهگیری ادمین */}
+        <Grid.Col span={{ base: 12, md: 4 }}>
           <GlassPanel
-            p="lg"
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
+            p={{ base: "md", sm: "lg" }}
+            style={{ width: "100%", height: "100%" }}
           >
             <Group gap="sm" mb="md">
               <IconEdit
                 size={20}
                 color="var(--mantine-color-surface-9)"
               />
-
-              <Text
-                c="textMain.0"
-                fw={500}
-              >
+              <Text c="textMain.0" fw={500}>
                 {t("AdminActions")}
               </Text>
             </Group>
@@ -291,11 +239,7 @@ export default function AdminOrderDetailsPage() {
                   input: style.input,
                   label: style.label,
                 }}
-                onChange={(e) =>
-                  setTrackingCodeInput(
-                    e.currentTarget.value,
-                  )
-                }
+                onChange={(e) => setTrackingCodeInput(e.currentTarget.value)}
               />
 
               <PrimaryButton
@@ -314,51 +258,23 @@ export default function AdminOrderDetailsPage() {
           </GlassPanel>
         </Grid.Col>
 
-        {/* ==================== ROW 2 / LEFT ==================== */}
-
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 8,
-          }}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: "100%",
-              display: "flex",
-            }}
-          >
-            <OrderSummary
-              subtotal={order.subtotal}
-              shippingFee={order.shipping_fee}
-              totalAmount={order.total}
-            />
-          </div>
+        {/* ROW 2 / خلاصه مالی */}
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <OrderSummary
+            subtotal={order.subtotal}
+            shippingFee={order.shipping_fee}
+            totalAmount={order.total}
+          />
         </Grid.Col>
 
-        {/* ==================== ROW 2 / RIGHT ==================== */}
-
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 4,
-          }}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: "100%",
-              display: "flex",
-            }}
-          >
-            <CostumerInformation
-              address={order.address}
-              email={order.customer_email}
-              name={order.customer_name}
-              phone={order.phone}
-            />
-          </div>
+        {/* ROW 2 / اطلاعات خریدار */}
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <CostumerInformation
+            address={order.address}
+            email={order.customer_email}
+            name={order.customer_name}
+            phone={order.phone}
+          />
         </Grid.Col>
       </Grid>
     </Stack>

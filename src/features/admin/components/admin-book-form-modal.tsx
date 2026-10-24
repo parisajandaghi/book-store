@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import {
   Modal,
   TextInput,
-  NumberInput,
   Button,
   Group,
   Stack,
   Title,
+  SimpleGrid,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
@@ -19,6 +19,7 @@ import style from "../../carts/cart.module.css";
 import styles from "../admin.module.css";
 import { toCreateDTO, toFormValues } from "@/utils/book.utils";
 import { useTranslations } from "next-intl";
+
 interface BookFormModalProps {
   opened: boolean;
   onClose: () => void;
@@ -59,6 +60,8 @@ export function BookFormModal({
       opened={opened}
       onClose={onClose}
       centered
+      size="md"
+      // padding={0}
       withCloseButton={false}
       overlayProps={{
         backgroundOpacity: 0.6,
@@ -71,10 +74,10 @@ export function BookFormModal({
         },
       }}
     >
-      <GlassPanel p={"md"}>
+      <GlassPanel p={{ base: "sm", sm: "md" }}>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap={"xs"}>
-            <Title order={3} c={'textMain.0'}>
+            <Title order={3} c={"textMain.0"} fz={{ base: "h4", sm: "h3" }}>
               {isEditing ? t("Book.EditBookDetails") : t("Book.AddNewBook")}
             </Title>
             <TextInput
@@ -99,7 +102,7 @@ export function BookFormModal({
               {...form.getInputProps("author")}
             />
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
               <TextInput
                 label={t("Book.Price")}
                 withAsterisk
@@ -118,7 +121,7 @@ export function BookFormModal({
                 }}
                 {...form.getInputProps("stock")}
               />
-            </Group>
+            </SimpleGrid>
 
             <TextInput
               label={t("Book.ImgUrl")}
@@ -131,7 +134,7 @@ export function BookFormModal({
               {...form.getInputProps("cover_image")}
             />
 
-            <Group justify="center" mt="md">
+            <Group justify="center" mt="md" gap={'xs'}>
               <Button onClick={onClose} className={styles.modalButton}>
                 {t("Book.Cancle")}
               </Button>

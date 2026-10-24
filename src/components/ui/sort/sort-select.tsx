@@ -4,17 +4,19 @@ import { useRouter } from "@/navigation";
 import { Select } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import style from "./sort-select.module.css";
 
 export default function SortSelect() {
   const t = useTranslations("Books");
   const router = useRouter();
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "";
+
   return (
     <Select
       placeholder={t("Sort")}
       value={sort}
-      w={150}
+      className={style.sortSelect}
       classNames={{
         input: "custom-select-input",
         dropdown: "custom-select-dropdown",

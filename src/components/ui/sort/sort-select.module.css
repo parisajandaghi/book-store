@@ -1,0 +1,16 @@
+.sortSelect {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 450px) {
+  .sortSelect {
+    width: 130px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sortSelect {
+    width: 115px;
+  }
+}

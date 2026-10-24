@@ -71,10 +71,12 @@ export default function ShippingDatePicker() {
                 <Box
                   key={date.id}
                   style={{
-                    flex: "0 0 16.666%",
+                    // 3 اسلاید در موبایل کوچک، 4 اسلاید در تبلت، 6 اسلاید در دسکتاپ
+                    flex: "0 0 clamp(28%, 20%, 16.666%)",
                     minWidth: 0,
-                    paddingInline: 4,
+                    paddingInline: 3,
                   }}
+                  className={style.dateSlideItem} // یا اعمال استایل ریسپانسیو
                 >
                   <Box
                     onClick={() =>
@@ -86,7 +88,7 @@ export default function ShippingDatePicker() {
                     className={style.dateCard}
                     data-active={active}
                   >
-                    <Stack gap={"xs"} align="center">
+                    <Stack gap={2} align="center">
                       <Text
                         size="10px"
                         fw={500}
@@ -100,9 +102,9 @@ export default function ShippingDatePicker() {
                         {date.dayOfWeek}
                       </Text>
 
-                      <Group gap={5}>
+                      <Group gap={3}>
                         <Text
-                          size="12px"
+                          size="11px"
                           fw={500}
                           c={"textMain.0"}
                           ff={
@@ -114,7 +116,7 @@ export default function ShippingDatePicker() {
                           {date.dayOfMonth}
                         </Text>
                         <Text
-                          size="12px"
+                          size="11px"
                           fw={500}
                           c={"textMain.0"}
                           ff={
@@ -149,26 +151,36 @@ export default function ShippingDatePicker() {
         </ActionIcon>
       </Flex>
       <Group gap={10} justify="center" p={"sm"}>
-        {TIME_SLOTS.map((slot) => {
-          const isActive = deliverTime === slot.id;
+        <Group
+          gap="xs"
+          justify="center"
+          p={{ base: "xs", sm: "sm" }}
+          wrap="wrap"
+        >
+          {TIME_SLOTS.map((slot) => {
+            const isActive = deliverTime === slot.id;
 
-          return (
-            <Box
-              key={slot.id}
-              className={style.timeSlot}
-              data-active={isActive}
-              onClick={() =>
-                setCheckout((prev) => ({
-                  ...prev,
-                  deliveryTime: slot.id,
-                }))
-              }
-              ff={currentLocale === "en" ? "system-ui, sans-serif" : "inherit"}
-            >
-              {slot.label}
-            </Box>
-          );
-        })}
+            return (
+              <Box
+                key={slot.id}
+                className={style.timeSlot}
+                data-active={isActive}
+                style={{ fontSize: "12px", padding: "6px 10px" }}
+                onClick={() =>
+                  setCheckout((prev) => ({
+                    ...prev,
+                    deliveryTime: slot.id,
+                  }))
+                }
+                ff={
+                  currentLocale === "en" ? "system-ui, sans-serif" : "inherit"
+                }
+              >
+                {slot.label}
+              </Box>
+            );
+          })}
+        </Group>
       </Group>
     </Stack>
   );

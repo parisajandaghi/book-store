@@ -1,9 +1,7 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
-
 import CartItemsList from "@/features/carts/components/cart-items-list";
-
 import AddressModal from "@/features/checkout/components/address-modal";
 import AddressStep from "@/features/checkout/components/address-step";
 import PaymentStep from "@/features/checkout/components/payment-step";
@@ -14,6 +12,7 @@ import OrderSummary from "@/features/orders/components/order-summary";
 import {
   Box,
   Container,
+  Flex,
   Group,
   ScrollArea,
   Stack,
@@ -44,11 +43,13 @@ export default function Checkout() {
 
   const locale = useLocale();
   const t = useTranslations("CheckoutInfo");
+
   useEffect(() => {
     if (cartTotal === 0) {
       router.replace("/cart");
     }
   }, [cartTotal, router]);
+
   const icon =
     locale === "fa" ? (
       <IconArrowLeft size={14} />
@@ -68,15 +69,33 @@ export default function Checkout() {
         return t("Continue");
     }
   };
+
+  // داخل کامپوننت Checkout در checkout/page.tsx
+
   return (
-    <Container w={"55rem"} pt={40} pb={40}>
-      <Group w={"100%"} mb={"xl"}>
-        <Box style={{ flex: 1 }}>
+    <Container
+      w="100%"
+      maw="58rem"
+      pt={{ base: 16, sm: 40 }}
+      pb={{ base: 20, sm: 40 }}
+      px={{ base: "xs", sm: "md" }}
+    >
+      {/* بخش هدر مراحل و دکمه برگشت */}
+      <Group
+        w="100%"
+        mb={{ base: "md", sm: "xl" }}
+        justify="space-between"
+        align="center"
+        wrap="nowrap"
+        gap="sm"
+      >
+        <Box style={{ flex: 1, minWidth: 0 }}>
           <Stepper
             active={activeStep}
             onStepClick={setActiveStep}
             color="yellow.7"
-            size="xs"
+            size="sm"
+            iconSize={32}
             classNames={{
               step: style.stepWrapper,
               stepIcon: style.glassyStepIcon,
@@ -88,56 +107,44 @@ export default function Checkout() {
             <Stepper.Step
               label={t("CheckoutStepper.Address")}
               description={t("CheckoutStepper.AddressDescription")}
-              icon={
-                <IconMapPin
-                  size={22}
-                  stroke={1.5}
-                  color="#d4af37"
-                  style={{ marginTop: 5 }}
-                />
-              }
+              icon={<IconMapPin size={16} stroke={1.6} color="#d4af37"/>}
             />
             <Stepper.Step
               label={t("CheckoutStepper.Shipping")}
               description={t("CheckoutStepper.ShippingDescription")}
-              icon={
-                <IconTruckDelivery
-                  size={22}
-                  stroke={1.5}
-                  color="#d4af37"
-                  style={{ marginTop: 5 }}
-                />
-              }
+              icon={<IconTruckDelivery size={16} stroke={1.6} color="#d4af37"/>}
             />
             <Stepper.Step
               label={t("CheckoutStepper.Payment")}
               description={t("CheckoutStepper.PaymentDescription")}
-              icon={
-                <IconCreditCard
-                  size={22}
-                  stroke={1.5}
-                  color="#d4af37"
-                  style={{ marginTop: 5 }}
-                />
-              }
+              icon={<IconCreditCard size={16} stroke={1.6} color="#d4af37"/>}
             />
           </Stepper>
         </Box>
+
         {activeStep > 0 && (
           <SecondaryButton
             icon={icon}
-            width={45}
-            hight={30}
+            width={{ base: 36, sm: 40 }}
+            hight={{ base: 32, sm: 36 }}
             radius={10}
             onClick={prevStep}
           />
         )}
       </Group>
-      <Group align="stretch">
-        {activeStep === 0 && <AddressStep form={checkoutForm} />}
-        {activeStep === 1 && <ShippingStep />}
-        {activeStep === 2 && <PaymentStep form={paymentForm} />}
-        <Stack flex={1}>
+
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "stretch", md: "flex-start" }}
+        gap="md"
+      >
+        <Box flex={{ base: "1 1 auto", md: 2 }} w="100%">
+          {activeStep === 0 && <AddressStep form={checkoutForm} />}
+          {activeStep === 1 && <ShippingStep />}
+          {activeStep === 2 && <PaymentStep form={paymentForm} />}
+        </Box>
+
+        <Box flex={{ base: "1 1 auto", md: 1 }} w="100%">
           <OrderSummary
             subtotal={cartTotal}
             shippingFee={SHIPPING_FEE}
@@ -151,12 +158,16 @@ export default function Checkout() {
               />
             }
           >
-            <ScrollArea h={150} offsetScrollbars type="hover">
+            <ScrollArea
+              h={{ base: 120, sm: 150 }}
+              offsetScrollbars
+              type="hover"
+            >
               <CartItemsList compact={true} />
             </ScrollArea>
           </OrderSummary>
-        </Stack>
-      </Group>
+        </Box>
+      </Flex>
       <AddressModal form={checkoutForm} />
     </Container>
   );

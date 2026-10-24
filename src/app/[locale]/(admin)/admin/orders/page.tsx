@@ -14,10 +14,8 @@ import { useMemo } from "react";
 
 export default function AdminOrdersPage() {
   const [searchQuery] = useAtom(adminSearchQueryAtom);
-
   const { isLoading, error, orders } = useAdminOrders();
-  console.log('orders in admin',orders);
-  
+
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
     if (!searchQuery.trim()) return orders;
@@ -33,6 +31,7 @@ export default function AdminOrdersPage() {
       return idMatch || nameMatch || emailMatch || trackingMatch;
     });
   }, [orders, searchQuery]);
+
   if (isLoading) {
     return (
       <Center h="70vh">
@@ -53,10 +52,9 @@ export default function AdminOrdersPage() {
       </Alert>
     );
   }
-  console.log("order", orders);
 
   return (
-    <GlassPanel p="xl">
+    <GlassPanel p={{ base: "sm", sm: "md", md: "xl" }} w="100%" maw={1400} mx="auto">
       <AdminOrdersHeader />
       <AdminOrdersTable orders={filteredOrders} />
     </GlassPanel>

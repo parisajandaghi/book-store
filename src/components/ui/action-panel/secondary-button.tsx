@@ -8,12 +8,21 @@ export default function SecondaryButton({
   width,
   hight,
   radius,
-  onClick
+  onClick,
+  size,
 }: ButtonProps) {
   return (
-    <Button className={style.Secondary} w={width} h={hight} radius={radius} onClick={onClick}>
+    <Button
+      className={style.Secondary}
+      w={width}
+      h={hight}
+      size={size}
+      radius={radius}
+      onClick={onClick}
+      px={btnText ? undefined : 0} /* اگر فقط آیکون است، پدینگ صفر شود تا مربع و متقارن بماند */
+    >
       {icon}
-      <Text fz={14}>{btnText}</Text>
+      {btnText && <Text fz={{ base: 12, sm: 14 }}>{btnText}</Text>}
     </Button>
   );
 }

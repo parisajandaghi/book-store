@@ -23,14 +23,15 @@ export default function AdminDashboardTable() {
   const rows = recentOrders.map((order: Order) => {
     const icon =
       locale === "fa" ? (
-        <IconArrowLeft size={18} stroke={1.5} color="#d4af37" />
+        <IconArrowLeft size={16} stroke={1.5} color="#d4af37" />
       ) : (
-        <IconArrowRight size={18} stroke={1.5} color="#d4af37" />
+        <IconArrowRight size={16} stroke={1.5} color="#d4af37" />
       );
     const formattedPrice = getFormattedPrice(order.total, locale);
+
     return (
-      <Table.Tr key={order.id} c={"textMain.0"}>
-        <Table.Td ta={"center"}>
+      <Table.Tr key={order.id} c="textMain.0">
+        <Table.Td ta="center">
           <Text
             fw={500}
             size="sm"
@@ -39,12 +40,15 @@ export default function AdminDashboardTable() {
             {order.id}
           </Text>
         </Table.Td>
-        <Table.Td ta={"center"}>{order.recipient_name}</Table.Td>
+        <Table.Td ta="center" style={{ whiteSpace: "nowrap" }}>
+          {order.recipient_name}
+        </Table.Td>
 
         <Table.Td
-          ta={"center"}
+          ta="center"
           dir="ltr"
           style={{
+            whiteSpace: "nowrap",
             fontFamily:
               locale === "en"
                 ? "system-ui, -apple-system, sans-serif"
@@ -54,12 +58,12 @@ export default function AdminDashboardTable() {
           {order.created_at ? (
             <>
               {new Date(order.created_at).toLocaleDateString(
-                locale === "fa" ? "fa-IR" : "en-US",
+                locale === "fa" ? "fa-IR" : "en-US"
               )}
               {" - "}
               {new Date(order.created_at).toLocaleTimeString(
                 locale === "fa" ? "fa-IR" : "en-US",
-                { hour: "2-digit", minute: "2-digit" },
+                { hour: "2-digit", minute: "2-digit" }
               )}
             </>
           ) : (
@@ -67,20 +71,22 @@ export default function AdminDashboardTable() {
           )}
         </Table.Td>
         <Table.Td
-          ta={"center"}
+          ta="center"
+          style={{ whiteSpace: "nowrap" }}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
           {locale === "en"
             ? `${t2("CurrencySymbol")} ${formattedPrice}`
             : `${formattedPrice} ${t2("CurrencySymbol")}`}
         </Table.Td>
-        <Table.Td ta={"center"}>{getStatusBadge(order.status)}</Table.Td>
-        <Table.Td ta={"center"}>
+        <Table.Td ta="center">{getStatusBadge(order.status)}</Table.Td>
+        <Table.Td ta="center">
           <ActionIcon
             component={Link}
             href={`/admin/orders/${order.id}`}
             variant="filled"
             color="#d4af3731"
+            size="sm"
           >
             {icon}
           </ActionIcon>
@@ -90,9 +96,9 @@ export default function AdminDashboardTable() {
   });
 
   return (
-    <GlassPanel p={"md"}  mx="auto">
-      <Group justify="space-between" mt="md">
-        <Text size="lg" fw={600} c={"surface.9"}>
+    <GlassPanel p={{ base: "sm", sm: "md" }} w="100%">
+      <Group justify="space-between" mb="md" gap="xs">
+        <Text size="md" fw={600} c="surface.9">
           {t1("RecentOrders")}
         </Text>
         <Button
@@ -106,7 +112,7 @@ export default function AdminDashboardTable() {
         </Button>
       </Group>
 
-      <Table.ScrollContainer minWidth={700} maxHeight={170}>
+      <Table.ScrollContainer minWidth={600}>
         <Table
           verticalSpacing="sm"
           highlightOnHover
@@ -114,13 +120,13 @@ export default function AdminDashboardTable() {
           highlightOnHoverColor="rgba(255, 255, 255, 0.04)"
         >
           <Table.Thead>
-            <Table.Tr c={"textMain.0"} fz={"xs"}>
-              <Table.Th ta={"center"}>{t1("OrderId")}</Table.Th>
-              <Table.Th ta={"center"}>{t1("Customer")}</Table.Th>
-              <Table.Th ta={"center"}>{t1("Date")}</Table.Th>
-              <Table.Th ta={"center"}>{t1("TotalAmount")}</Table.Th>
-              <Table.Th ta={"center"}>{t1("Status")}</Table.Th>
-              <Table.Th ta={"center"}></Table.Th>
+            <Table.Tr c="textMain.0" fz="xs">
+              <Table.Th ta="center">{t1("OrderId")}</Table.Th>
+              <Table.Th ta="center">{t1("Customer")}</Table.Th>
+              <Table.Th ta="center">{t1("Date")}</Table.Th>
+              <Table.Th ta="center">{t1("TotalAmount")}</Table.Th>
+              <Table.Th ta="center">{t1("Status")}</Table.Th>
+              <Table.Th ta="center"></Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>

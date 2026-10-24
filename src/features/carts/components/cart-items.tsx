@@ -3,7 +3,14 @@ import SecondaryButton from "@/components/ui/action-panel/secondary-button";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import OrderSummary from "@/features/orders/components/order-summary";
 import { Link } from "@/navigation";
-import { Container, Group, ScrollArea, Stack, Title } from "@mantine/core";
+import {
+  Container,
+  Flex,
+  Group,
+  ScrollArea,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import CartItemsList from "./cart-items-list";
@@ -31,20 +38,44 @@ export default function CartItems() {
         color="var(--mantine-color-surface-9)"
       />
     );
+
   return (
-    <Container w={"55rem"} pt={40} pb={40}>
-      <Stack>
-        <Group justify="space-between">
-          <Title c={"textMain.0"}>{t2("ShoppingCart")}</Title>
+    <Container
+      size="lg"
+      w="100%"
+      maw="58rem"
+      pt={{ base: 20, sm: 40 }}
+      pb={{ base: 20, sm: 40 }}
+      px={{ base: "xs", sm: "md" }}
+    >
+      <Stack gap="lg">
+        <Group justify="space-between" wrap="wrap" gap="sm">
+          <Title
+            order={2}
+            fz={{ base: "1.25rem", sm: "1.6rem" }}
+            c={"textMain.0"}
+          >
+            {t2("ShoppingCart")}
+          </Title>
           <SecondaryButton
             btnText={t2("ContinueShopping")}
             icon={icon}
             radius={20}
+            size="xs" // سایز متناسب برای موبایل و دسکتاپ
           />
         </Group>
-        <Group align="flex-start">
-          <GlassPanel flex={2} p={"md"}>
-            <ScrollArea h={400} offsetScrollbars type="hover">
+
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          align={{ base: "stretch", md: "flex-start" }}
+          gap="md"
+        >
+          <GlassPanel flex={{ base: "1 1 auto", md: 2 }} p={"md"} w="100%">
+            <ScrollArea
+              h={{ base: 320, sm: 400 }}
+              offsetScrollbars
+              type="hover"
+            >
               <CartItemsList />
             </ScrollArea>
           </GlassPanel>
@@ -62,7 +93,7 @@ export default function CartItems() {
               </Link>
             }
           />
-        </Group>
+        </Flex>
       </Stack>
     </Container>
   );

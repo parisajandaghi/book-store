@@ -3,7 +3,7 @@ import BookCard from "@/features/books/components/book-card";
 import { getBooks } from "@/services/book.service";
 import { SimpleGrid, Group, Title, Container } from "@mantine/core";
 import { getTranslations } from "next-intl/server";
-
+import style from "./page.module.css";
 export default async function Books({
   searchParams,
 }: {
@@ -15,22 +15,34 @@ export default async function Books({
 console.log('books',books);
 
   return (
-    <Container size={"55rem"} pt={40} pb={40}>
-      <Group justify="space-between" align="center" mb="xl">
-        <Title order={2} c="textMain.2">
-          {t("AllBooks")}
-        </Title>
-        <SortSelect />
-      </Group>
-      <SimpleGrid
-        cols={{ base: 2, sm: 2, md: 3, lg: 4 }}
-        spacing="xl"
-        verticalSpacing="xl"
-      >
-        {books?.map((book) => (
-          <BookCard key={book.id} book={book} />
-        ))}
-      </SimpleGrid>
-    </Container>
-  );
+  <Container
+    size="55rem"
+    pt={40}
+    pb={40}
+    className={style.booksContainer}
+  >
+    <Group
+      justify="space-between"
+      align="center"
+      mb="xl"
+      className={style.booksHeader}
+    >
+      <Title order={2} c="textMain.2">
+        {t("AllBooks")}
+      </Title>
+
+      <SortSelect />
+    </Group>
+
+    <SimpleGrid
+      cols={{ base: 1, xs: 2, md: 3, lg: 4 }}
+      spacing="xl"
+      verticalSpacing="xl"
+    >
+      {books?.map((book) => (
+        <BookCard key={book.id} book={book} />
+      ))}
+    </SimpleGrid>
+  </Container>
+);;
 }

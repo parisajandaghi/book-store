@@ -1,13 +1,38 @@
 .header {
   width: 100%;
-  height: 55px;
+  min-height: 55px;
   padding-inline: 30px;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(rgb(31, 15, 31), rgba(31, 15, 31, 0.45));
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 1000;
+}
+
+.headerLeft {
+  min-width: 0;
+}
+
+.navigation {
+  flex-wrap: nowrap;
+}
+
+.headerActions {
+  flex-wrap: nowrap;
+}
+
+.authSection {
+  flex-wrap: nowrap;
+}
+
+.authLoader {
+  width: 145px;
+  height: 36px;
+}
+
+.authLink {
+  text-decoration: none;
 }
 
 .cartWrapper {
@@ -27,11 +52,11 @@
   align-items: center;
   justify-content: center;
 }
+
 .dropDown {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   height: 25px;
   background-color: #1f0f1f;
   border-radius: 6px;
@@ -39,6 +64,7 @@
   gap: 0;
   cursor: pointer;
 }
+
 .login {
   display: flex;
   align-items: center;
@@ -73,27 +99,37 @@
   background-color: #3a1f3a;
   margin: 0 3px;
 }
+
 .paper {
   position: absolute;
-
-  top: 100%;
-  right: 0px;
+  top: calc(100% + 4px); /* فاصله دقیق ۴ پیکسلی زیر دکمه */
+  left: 0;               /* چسبیدن به ابتدای دکمه */
+  right: auto;
   border-radius: 6px;
-  padding: 2px 0px;
-  min-width: 50px;
-  z-index: 999;
-  overflow-y: hidden;
-  transition: all 0.2s ease;
+  padding: 2px 0;
+  min-width: 50px;       /* هم‌اندازه شدن دقیق با عرض دکمه */
+  z-index: 1050;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
+
+/* برای سازگاری کامل با زبان فارسی و انگلیسی */
+[dir="rtl"] .paper {
+  left: auto;
+  right: 0;
+}
+
 .title {
   position: relative;
   text-decoration: none;
+  flex-shrink: 0;
 }
+
 .link {
   position: relative;
   text-decoration: none;
   padding: 12px 8px;
-  border-radius: 4px 4px 0px 0px;
+  border-radius: 4px 4px 0 0;
   transition:
     background 0.25s ease,
     color 0.25s ease;
@@ -107,7 +143,7 @@
   position: relative;
   text-decoration: none;
   padding: 13px 9px;
-  border-radius: 4px 4px 0px 0px;
+  border-radius: 4px 4px 0 0;
   background: rgba(225, 222, 227, 0.06);
   transition: background 0.25s ease;
 }
@@ -121,7 +157,6 @@
   width: 100%;
   background-color: #d4af3766;
   border-radius: 2px;
-
   transform: scaleX(0);
   transform-origin: left;
   animation: underlineSlide 0.25s ease forwards;
@@ -130,5 +165,202 @@
 @keyframes underlineSlide {
   to {
     transform: scaleX(1);
+  }
+}
+
+/* Mobile menu trigger */
+.mobileBurger {
+  display: none;
+}
+
+/* Mobile drawer */
+.mobileDrawer {
+  background: linear-gradient(
+    180deg,
+    #1f0f1f,
+    #170b17
+  );
+  border-inline: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobileDrawerHeader {
+  background: linear-gradient(
+    180deg,
+    #1f0f1f,
+    rgba(31, 15, 31, 0.92)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobileDrawerTitle {
+  color: #fdf6eb;
+}
+
+.mobileDrawerClose {
+  color: #fdf6eb;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mobileDrawerClose:hover {
+  background: rgba(225, 222, 227, 0.06);
+  color: #d4af37;
+}
+
+.mobileDrawer {
+  background: linear-gradient(
+    180deg,
+    #1f0f1f,
+    #170b17
+  );
+  border-inline: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobileDrawerBody {
+  padding: 60px 14px 14px !important;
+}
+
+.mobileLink,
+.mobileActiveLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.mobileLink:hover {
+  background: rgba(225, 222, 227, 0.05);
+}
+
+.mobileActiveLink {
+  background: rgba(225, 222, 227, 0.06);
+}
+
+.mobileActiveLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background-color: #d4af3766;
+  border-radius: 2px;
+}
+
+.mobileLanguage {
+  position: relative;
+  width: 100%;
+  padding: 6px 12px;
+}
+
+.mobileLanguage > div {
+  width: 100%;
+}
+
+.mobileLanguage :global(button) {
+  width: 100%;
+}
+
+.mobileDivider {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0;
+  background-color: #3a1f3a;
+}
+
+.mobileAuth {
+  width: 100%;
+  padding-top: 4px;
+}
+
+.mobileAuthLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .header {
+    padding-inline: 20px;
+    gap: 12px;
+  }
+
+  .headerLeft {
+    gap: 8px;
+  }
+
+  .navigation {
+    gap: 4px;
+  }
+
+  .link {
+    padding-inline: 6px;
+  }
+
+  .activeLink {
+    padding-inline: 7px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .header {
+    min-height: 55px;
+    height: 55px;
+    padding: 8px 16px;
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .headerLeft {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .navigation {
+    display: none;
+  }
+
+  .headerActions {
+    flex-shrink: 0;
+    width: auto;
+    margin-left: auto;
+    gap: 10px;
+  }
+
+  .authSection {
+    display: none;
+  }
+
+  .mobileBurger {
+    display: block;
+    flex-shrink: 0;
+  }
+
+ 
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .header {
+    padding-inline: 12px;
+  }
+
+  .headerActions {
+    gap: 7px;
+  }
+
+  .mobileDrawerBody {
+    padding: 12px;
   }
 }

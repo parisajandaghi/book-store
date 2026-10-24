@@ -4,7 +4,6 @@ import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import {
   Book,
-  BookFormValues,
   CreateBookDTO,
 } from "@/features/books/book.type";
 import { useBooks } from "@/features/books/hooks/use-books";
@@ -17,8 +16,6 @@ import style from "../../../../../features/admin/admin.module.css";
 
 import AdminBooksSearchBar from "@/features/admin/components/admin-books-search-bar";
 import AdminBooksTable from "@/features/admin/components/admin-books-table";
-import { bookIdAtom } from "@/store/admin-atom";
-import { useAtom } from "jotai";
 import { BookFormModal } from "@/features/admin/components/admin-book-form-modal";
 
 export default function AdminBooksPage() {
@@ -27,15 +24,12 @@ export default function AdminBooksPage() {
   const [debouncedSearch] = useDebouncedValue(search, 300);
 
   const [activePage, setActivePage] = useState(1);
-  const [, setBookId] = useAtom(bookIdAtom);
 
   const {
     books,
     totalPages,
-    total,
     isLoading,
     createBook,
-
     updateBook,
   } = useBooks({
     page: activePage,
@@ -77,7 +71,7 @@ export default function AdminBooksPage() {
         search={search}
       />
       {/* 3. Books Table */}
-      <GlassPanel p={"lg"}>
+      <GlassPanel p={{ base: "xs", sm: "lg" }}>
         <AdminBooksTable
           books={books}
           isLoading={isLoading}
@@ -85,7 +79,7 @@ export default function AdminBooksPage() {
         />
         <HorizontalDivider my="xs" />
         {/* 4. Table Pagination Footer */}
-        <Group justify="flex-end" wrap="wrap">
+        <Group justify='center' wrap="wrap">
           {totalPages > 1 && (
             <Pagination
               total={totalPages}

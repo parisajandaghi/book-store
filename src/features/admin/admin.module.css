@@ -1,5 +1,5 @@
 .inputWrapper {
-  width: 300px;
+  width: 100%;
   max-width: 300px;
   padding: 1px;
   border-radius: 999px;
@@ -7,7 +7,6 @@
   border: 1px solid #d4af3766;
   backdrop-filter: blur(8px);
 }
-
 .focused {
   border: 1px solid #d4af3766;
 }
@@ -55,6 +54,7 @@
   font-size: 12px;
   font-weight: normal;
   border-radius: 20px;
+  padding: 10px;
 }
 .modalButton:hover {
   border: 1px solid #7b6210;

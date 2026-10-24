@@ -1,4 +1,4 @@
-import { Group, Radio, Stack, Text } from "@mantine/core";
+import { Box, Group, Radio, Stack, Text } from "@mantine/core";
 import {
   IconCalendarWeek,
   IconClock,
@@ -46,7 +46,7 @@ export default function ShippingStep() {
   const shippingCards = shippingMethods.map((item) => (
     <Radio.Card className={style.root} value={item.id.toString()} key={item.id}>
       <Group wrap="nowrap" align="center" justify="space-between" w="100%">
-        <Group wrap="nowrap" align="flex-start">
+        <Group wrap="nowrap" align="flex-start" gap="xs">
           <Radio.Indicator
             variant="outline"
             size="xs"
@@ -55,10 +55,12 @@ export default function ShippingStep() {
           />
 
           <div>
-            <Text className={style.label}>{item.title}</Text>
+            <Text className={style.label} fz={{ base: "xs", sm: "sm" }}>
+              {item.title}
+            </Text>
             <Text className={style.description}>{item.description}</Text>
-            <Group gap={"xs"}>
-              <IconClock size={16} color="#9b7d1b" style={{ marginTop: 5 }} />
+            <Group gap={4}>
+              <IconClock size={14} color="#9b7d1b" style={{ marginTop: 3 }} />
               <Text
                 className={style.description}
                 ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
@@ -68,18 +70,22 @@ export default function ShippingStep() {
             </Group>
           </div>
         </Group>
-        <Text
-          c="#d4af37"
-          fz={"sm"}
-          ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
-        >
-          {renderPrice(item.price)}
-        </Text>
 
-        <div>{item.icon}</div>
+        <Group wrap="nowrap" gap="xs" align="center">
+          <Text
+            c="#d4af37"
+            fz={{ base: "xs", sm: "sm" }}
+            fw="bold"
+            ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
+          >
+            {renderPrice(item.price)}
+          </Text>
+          <Box visibleFrom="xs">{item.icon}</Box>
+        </Group>
       </Group>
     </Radio.Card>
   ));
+
   return (
     <Stack flex={2}>
       <Stack gap={5}>

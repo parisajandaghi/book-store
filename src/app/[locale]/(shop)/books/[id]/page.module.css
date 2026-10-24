@@ -1,0 +1,87 @@
+.pageWrapper {
+  flex: 1;
+  padding: 40px 20px;
+}
+
+.bookDetailsCard {
+  width: 700px;
+  height: 450px;
+}
+
+.bookDetailsContent {
+  width: 100%;
+  height: 100%;
+  flex-wrap: nowrap;
+}
+
+.imageWrapper {
+  flex: 2;
+  min-width: 0;
+}
+
+.bookImage {
+  width: 100%;
+}
+
+.bookInfo {
+  flex: 3;
+  height: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 400px) {
+  .pageWrapper {
+    padding: 30px 16px;
+  }
+
+  .bookDetailsCard {
+    width: 100%;
+    height: auto;
+    max-width: 550px;
+  }
+
+  .bookDetailsContent {
+    height: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    flex: none;
+    justify-content: center;
+  }
+
+  .bookImage {
+    width: 100%;
+    max-height: 300px;
+  }
+
+  .bookInfo {
+    width: 100%;
+    height: auto;
+    flex: none;
+  }
+
+  .bookDetailsContent > :global(.mantine-Divider-root) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 20px 12px;
+  }
+
+  .bookDetailsCard {
+    width: 100%;
+  }
+
+  .bookImage {
+    max-height: 240px;
+  }
+
+  .bookInfo {
+    width: 100%;
+  }
+}

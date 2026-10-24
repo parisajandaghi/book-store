@@ -14,3 +14,20 @@
   background: rgba(212, 175, 55, 0.15);
   border-color: #d4af37;
 }
+.booksContainer {
+  width: 100%;
+}
+
+.booksHeader {
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 450px) {
+  .booksHeader {
+    gap: 10px;
+  }
+
+  .booksHeader h2 {
+    font-size: 20px;
+  }
+}

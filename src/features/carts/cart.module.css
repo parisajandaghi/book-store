@@ -17,13 +17,13 @@
   font-size: 12px;
   margin-bottom: 8px;
 }
-.dropDown{
+.dropDown {
   background-color: #1f0f1f;
-  
+
   border: 1px solid #7b6210c0;
 }
-.option{
-font-size: 12;
+.option {
+  font-size: 12;
   color: #fefaf4;
 }
 .modalButton {
@@ -36,38 +36,97 @@ font-size: 12;
   border: 1px solid #7b6210;
 }
 
+/* ================= Stepper Styles ================= */
+
+/* آیکون مراحل */
 .glassyStepIcon {
-  background-color: #1f0f1fa8 !important;
-  border: 1px solid #1f0f1fa8 !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  background-color: rgba(31, 15, 31, 0.7) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+  padding: 0 !important;
 }
 
+/* مرحله در حال انجام (Active) */
 .glassyStepIcon[data-progress] {
-  border-color: #d4af3766 !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.45) !important;
+  transform: scale(1.05);
 }
+
+/* مرحله تکمیل‌شده (Completed) */
 .glassyStepIcon[data-completed] {
   background-color: #d4af37 !important;
   border-color: #d4af37 !important;
+  color: #1a0b1a !important;
 }
+
+.glassyStepIcon[data-completed] svg {
+  color: #1a0b1a !important;
+}
+
+/* خطوط اتصال بین مراحل */
 .separator {
-  background-color: #1f0f1f !important;
-  transition: background-color 0.5s ease;
+  height: 2px !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  transition: background-color 0.4s ease;
+  margin-inline: 8px !important;
 }
 
 .separator[data-active] {
   background-color: #d4af37 !important;
 }
+
+/* عناوین */
 .Label {
-  color: #ffffff;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: rgba(254, 250, 244, 0.55);
+  transition: color 0.2s ease;
 }
 
-.stepWrapper[data-completed] .Label {
+.Description {
+  font-size: 11px !important;
+  color: rgba(254, 250, 244, 0.35);
+  margin-top: 2px;
+}
+
+.stepWrapper[data-progress] .Label {
   color: #d4af37 !important;
 }
 
-.stepWrapper[data-completed] .Description {
-  display: none;
+.stepWrapper[data-completed] .Label {
+  color: #fefaf4 !important;
+}
+
+@media (max-width: 600px) {
+  .stepWrapper {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 0 !important;
+    gap: 4px !important;
+  }
+
+  .Label {
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .Description {
+    display: none !important;
+  }
+
+  .separator {
+    margin-inline: 4px !important;
+    margin-top: 14px !important;
+  }
 }
 
 .dateCard {
@@ -113,4 +172,13 @@ font-size: 12;
   background: #d9a93d;
   color: #1a0b1a;
   border-color: #d9a93d;
+}
+/* مخفی کردن توضیحات استپر در موبایل برای جلوگیری از به‌هم‌ریختگی */
+@media (max-width: 600px) {
+  .Description {
+    display: none !important;
+  }
+  .Label {
+    font-size: 11px !important;
+  }
 }

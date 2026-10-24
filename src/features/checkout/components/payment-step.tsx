@@ -1,5 +1,5 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import { Group, Stack, Text, TextInput } from "@mantine/core";
+import { Flex, Group, Stack, Text, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import {
   IconCalendarTime,
@@ -18,11 +18,11 @@ export default function PaymentStep({ form }: paymentFormProps) {
   const t = useTranslations("CheckoutInfo");
 
   return (
-    <Stack flex={2} gap={"xl"}>
-      <Text fz={"h4"} c={"textMain.0"}>
+    <Stack flex={2} gap={"md"}>
+      <Text fz={{ base: "h5", sm: "h4" }} c={"textMain.0"}>
         {t("CheckoutStepper.Payment")}
       </Text>
-      <GlassPanel p={"xl"} gap={"xl"}>
+      <GlassPanel p={{ base: "md", sm: "xl" }} gap="md">
         <TextInput
           label={t("CardInfo.CardHolderName")}
           leftSection={<IconUser size={16} />}
@@ -31,9 +31,7 @@ export default function PaymentStep({ form }: paymentFormProps) {
             label: style.label,
           }}
           styles={{
-            root: {
-              minHeight: 85,
-            },
+            root: { minHeight: 75 },
           }}
           {...form.getInputProps("cardHolderName")}
         />
@@ -45,14 +43,12 @@ export default function PaymentStep({ form }: paymentFormProps) {
             label: style.label,
           }}
           styles={{
-            root: {
-              minHeight: 85,
-            },
+            root: { minHeight: 75 },
           }}
           maxLength={19}
           {...form.getInputProps("cardNumber")}
         />
-        <Group justify="space-between">
+        <Flex gap="sm" direction={{ base: "column", xs: "row" }}>
           <TextInput
             placeholder="MM/YY"
             label={t("CardInfo.ExpiryDate")}
@@ -62,11 +58,8 @@ export default function PaymentStep({ form }: paymentFormProps) {
               label: style.label,
             }}
             styles={{
-              root: {
-                minHeight: 85,
-              },
+              root: { minHeight: 75, flex: 1 },
             }}
-            flex={1}
             {...form.getInputProps("expiryDate")}
           />
           <TextInput
@@ -77,16 +70,14 @@ export default function PaymentStep({ form }: paymentFormProps) {
               label: style.label,
             }}
             styles={{
-              root: {
-                minHeight: 85,
-              },
+              root: { minHeight: 75, flex: 1 },
             }}
             maxLength={4}
-            flex={1}
             {...form.getInputProps("cvv2")}
           />
-        </Group>
+        </Flex>
       </GlassPanel>
     </Stack>
   );
 }
+

@@ -12,6 +12,7 @@ import {
   Box,
   Center,
   Container,
+  Flex,
   Group,
   ScrollArea,
   Stack,
@@ -31,70 +32,128 @@ export default function Profile() {
   const locale = useLocale();
 
   return (
-    <Container w={"100%"}>
-      <GlassPanel py={"lg"} px={"xl"}>
-        <Group>
-          <Avatar color="var(--mantine-color-surface-9)" size={70} />
-          <Group justify="space-between" flex={2}>
-            <Stack gap={5}>
-              <Text fz={"h3"} c={"textMain.2"}>
+    <Container w="100%" px={{ base: "xs", sm: "md" }}>
+      <GlassPanel py={{ base: "md", sm: "lg" }} px={{ base: "md", sm: "xl" }}>
+        {/* بخش اطلاعات کاربر */}
+        <Flex
+          direction={{ base: "column", sm: "row" }}
+          align={{ base: "center", sm: "flex-start" }}
+          gap="md"
+          w="100%"
+        >
+          <Avatar
+            color="var(--mantine-color-surface-9)"
+            size={70}
+            style={{ flexShrink: 0 }}
+          />
+
+          <Flex
+            direction={{ base: "column", sm: "row" }}
+            justify="space-between"
+            align={{ base: "stretch", sm: "center" }}
+            gap="md"
+            style={{ flex: 1, width: "100%" }}
+          >
+            <Flex
+              direction="column"
+              gap={6}
+              align={{ base: "center", sm: "flex-start" }}
+            >
+              <Text
+                fz={{ base: "h4", sm: "h3" }}
+                fw={600}
+                c="textMain.2"
+                ta={{ base: "center", sm: "start" }}
+              >
                 {user?.name}
               </Text>
-              <Group>
-                <IconMail color="var(--mantine-color-surface-9)" />
+
+              <Group gap="xs" justify="center" wrap="nowrap">
+                <IconMail
+                  size={18}
+                  color="var(--mantine-color-surface-9)"
+                  style={{ flexShrink: 0 }}
+                />
                 <Text
-                  fz={"h6"}
-                  c={"textMain.2"}
+                  fz={{ base: "xs", sm: "sm" }}
+                  c="textMain.2"
                   ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
                 >
                   {user?.email}
                 </Text>
               </Group>
-              <Group>
-                <IconPhone color="var(--mantine-color-surface-9)" />
+
+              <Group gap="xs" justify="center" wrap="nowrap">
+                <IconPhone
+                  size={18}
+                  color="var(--mantine-color-surface-9)"
+                  style={{ flexShrink: 0 }}
+                />
                 <Text
-                  fz={"h6"}
-                  c={"textMain.2"}
+                  fz={{ base: "xs", sm: "sm" }}
+                  c="textMain.2"
                   ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
                 >
                   {user?.phone}
                 </Text>
               </Group>
-            </Stack>
-            <PrimaryButton
-              onClick={() => setIsInfoModalOpen(true)}
-              btnText={t("InfoEdit")}
-              icon={
-                <IconPencil size={18} color="var(--mantine-color-surface-9)" />
-              }
-              width={160}
-            />
-          </Group>
-        </Group>
-        <HorizontalDivider />
+            </Flex>
+
+            <Box
+              w={{ base: "fit-content", sm: "auto" }}
+              mx={{ base: "auto", sm: 0 }}
+            >
+              <PrimaryButton
+                onClick={() => setIsInfoModalOpen(true)}
+                btnText={t("InfoEdit")}
+                icon={
+                  <IconPencil
+                    size={18}
+                    color="var(--mantine-color-surface-9)"
+                  />
+                }
+                width="100%"
+              />
+            </Box>
+          </Flex>
+        </Flex>
+
+        <HorizontalDivider my="md" />
+
+        {/* لیست سفارش‌ها */}
         {orders.length !== 0 ? (
-          <>
-            {" "}
-            <Group>
-              <Box w={70} h={70} />
-              <Text fz={"h4"} c={"textMain.2"}>
+          <Flex justify="center" w="100%">
+            {/* ظرف مشترک تایتل و کارت تا دقیقاً هم‌تراز بمانند */}
+            <Box w={{ base: "100%", sm: "fit-content" }}>
+              <Text
+                fz={{ base: "h5", sm: "h4" }}
+                fw={600}
+                c="textMain.2"
+                ta="start"
+                mb="md"
+              >
                 {t("MyOrders")}
               </Text>
-            </Group>
-            <Center>
-              <ScrollArea h={300}>
+
+              <ScrollArea h={{ base: 360, sm: 300 }} offsetScrollbars>
                 <OrderCard />
               </ScrollArea>
-            </Center>
-          </>
+            </Box>
+          </Flex>
         ) : (
-          <Center my={"xl"}>
-            <Title order={3} c="var(--mantine-color-surface-9)">
+          <Center my="xl">
+            <Title
+              order={3}
+              fz={{ base: "md", sm: "h3" }}
+              c="var(--mantine-color-surface-9)"
+              ta="center"
+            >
               {t1("EmptyState.Description")}
             </Title>
           </Center>
         )}
       </GlassPanel>
+
       <UserInformationModal />
     </Container>
   );

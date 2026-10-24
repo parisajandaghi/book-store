@@ -1,7 +1,7 @@
 import { Divider } from "@mantine/core";
 type DividerProp = {
   my?: string;
-  width?: number;
+  width?: number | string;
 };
 export default function HorizontalDivider({ my, width }: DividerProp) {
   return (

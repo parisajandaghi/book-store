@@ -39,13 +39,15 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
               paddingBottom: compact ? "8px" : undefined,
             }}
           >
-            <Grid.Col span={compact ? 5 : 5}>
-              <Group wrap="nowrap" gap={compact ? "xs" : "md"}>
+            {/* عنوان و عکس کتاب */}
+            <Grid.Col span={compact ? 5 : { base: 12, xs: 5 }}>
+              <Group wrap="nowrap" gap={compact ? "xs" : "sm"}>
                 <Image
                   src={item.image_url}
                   w={compact ? 28 : 40}
                   h={compact ? 42 : 60}
-                   alt={localizedBook?.title ?? ""}
+                  alt={localizedBook?.title ?? ""}
+                  fit="contain"
                 />
 
                 <Center
@@ -54,6 +56,7 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
                     flexDirection: "column",
                     gap: compact ? 2 : 5,
                     alignItems: "flex-start",
+                    overflow: "hidden",
                   }}
                 >
                   <Text fz={compact ? 10 : "xs"} c={"textMain.3"} lineClamp={1}>
@@ -66,7 +69,8 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
               </Group>
             </Grid.Col>
 
-            <Grid.Col span={compact ? 3 : 2}>
+            {/* قیمت */}
+            <Grid.Col span={compact ? 3 : { base: 4, xs: 2 }}>
               <Center h={"100%"}>
                 <Text
                   fz={compact ? 10 : "xs"}
@@ -80,7 +84,8 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
               </Center>
             </Grid.Col>
 
-            <Grid.Col span={compact ? 4 : 3}>
+            {/* شمارنده تعداد */}
+            <Grid.Col span={compact ? 4 : { base: 5, xs: 3 }}>
               <Center h={"100%"}>
                 <NumberInput
                   itemId={item.id}
@@ -90,8 +95,9 @@ export default function CartItemsList({ compact = false }: CartItemsListProps) {
               </Center>
             </Grid.Col>
 
+            {/* آیکون حذف */}
             {!compact && (
-              <Grid.Col span={2}>
+              <Grid.Col span={{ base: 3, xs: 2 }}>
                 <Center h={"100%"} onClick={() => removeFromCart(item.id)}>
                   <IconTrash
                     size={18}
