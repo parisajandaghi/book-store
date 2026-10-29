@@ -1,7 +1,6 @@
 import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css"; // اگر استفاده می‌کنید
+import "@mantine/notifications/styles.css";
 
-// سپس استایل‌های گلوبال شما (تا روی استایل‌های منتاین بازنویسی شوند)
 import "@/styles/globals.css";
 
 import { theme } from "@/styles/theme";
@@ -80,7 +79,11 @@ export default async function RootLayout({
               fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",
             }}
           >
-            <Notifications position="top-center" zIndex={2000} autoClose={4000} />
+            <Notifications
+              position="top-center"
+              zIndex={2000}
+              autoClose={4000}
+            />
             {children}
           </MantineProvider>
         </NextIntlClientProvider>
