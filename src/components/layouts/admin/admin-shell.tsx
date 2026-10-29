@@ -96,7 +96,6 @@ export default function AdminShell({ children }: AdminLayoutProps) {
 
   return (
     <Flex h="100vh" direction="column" bg="#1f0f1f34">
-      {/* Header */}
       <Group
         h={65}
         px={{ base: "xs", sm: "xl" }}
@@ -130,7 +129,6 @@ export default function AdminShell({ children }: AdminLayoutProps) {
       </Group>
 
       <Flex flex={1} style={{ overflow: "hidden", position: "relative" }}>
-        {/* Mobile Drawer Navigation */}
         {isMobile ? (
           <Drawer
             opened={opened}
@@ -152,7 +150,6 @@ export default function AdminShell({ children }: AdminLayoutProps) {
             {renderNavLinks()}
           </Drawer>
         ) : (
-          /* Desktop Collapsible Sidebar */
           <Box
             w={opened ? 260 : 0}
             bg="linear-gradient(rgba(31, 15, 31, 0.45), rgb(31, 15, 31))"
@@ -167,7 +164,6 @@ export default function AdminShell({ children }: AdminLayoutProps) {
           </Box>
         )}
 
-        {/* Main Content Area */}
         <Box
           flex={1}
           p={{ base: "xs", sm: "xl" }}

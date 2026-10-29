@@ -1,4 +1,53 @@
 {
+  "Notifications": {
+    "SearchFailed": "خطا در جستجو",
+    "BookCreated": "کتاب با موفقیت ایجاد شد .",
+    "BookUpdated": "کتاب با موفقیت ویرایش شد .",
+    "BookDeleted": "کتاب با موفقیت حذف شد .",
+    "SomethingWentWrong": "مشکلی رخ داده است.",
+    "NoResultsFound": "موردی یافت نشد!",
+    "LoginError": "ایمیل و یا رمزعبور نامعتبر است .",
+    "RegisterSuccess": "حساب کاربری با موفقیت ایجاد شد.",
+    "CreateAccount": " ایجاد حساب کاربری",
+    "RecoveryPasswordMessage": "لینک بازیابی رمز عبور به ایمیل شما ارسال شد.",
+    "RecoveryPassword": "بازیابی رمز عبور",
+    "ResetPassword": "تعریف رمز عبور جدید",
+    "ResetPasswordMessage": "رمز عبور شما با موفقیت تغییر کرد.",
+    "ResetPasswordExpiredMessage": "خطایی در تغییر رمز رخ داد. ممکن است لینک منقضی شده باشد.",
+    "FetchingOrderMessage": " مشکلی در دریافت اطلاعات سفارش‌ها به وجود آمده است.",
+    "SuccessTitle": "موفقیت‌آمیز",
+    "ErrorTitle": "خطا",
+    "UpdateOrderSuccess": "سفارش با موفقیت به‌روزرسانی شد.",
+    "UpdateOrderError": "خطا در به‌روزرسانی سفارش.",
+    "CreateBookFaild": "خطا در ثبت کتاب .",
+    "UpdateBookFaild": "خطا در ویرایش کتاب .",
+    "Books": "کتاب ها",
+    "User": "کاربر",
+    "Setting": "پیکربندی",
+    "UserRoleUpdateFailed": "خطا در بروزرسانی نقش کاربر!",
+    "UserRoleUpdatedSuccessfully": "نقش کاربر با موفقیت به روز رسانی شد.",
+    "BookStoreSettingUpdatedSuccessfully": "تنظیمات فروشگاه با موفقیت به‌روزرسانی شد.",
+    "BookStoreSettingUpdatedFaild": "خطا در بروز رسانی تنظیمات !",
+    "WarningTitle": "محدودیت موجودی",
+    "AddedSuccess": "کتاب با موفقیت به سبد خرید اضافه شد.",
+    "IncreaseSuccess": "تعداد با موفقیت افزایش یافت.",
+    "DecreaseSuccess": "تعداد با موفقیت کاهش یافت.",
+    "RemoveSuccess": "محصول از سبد خرید حذف شد.",
+    "StockLimit": "امکان افزودن تعداد بیشتر از موجودی انبار وجود ندارد.",
+    "DecreaseError": "خطا در کاهش تعداد محصول.",
+    "RemoveError": "خطا در حذف آیتم از سبد خرید.",
+    "NetworkError": "خطا در برقراری ارتباط با سرور.",
+    "AddressSavedSuccess": "آدرس با موفقیت ثبت شد",
+    "AddressSaveError": "خطایی در ثبت آدرس رخ داد",
+    "SelectAddressWarning": "لطفاً ابتدا یک آدرس را انتخاب یا ثبت کنید.",
+    "SelectShippingWarning": "لطفاً روش ارسال، تاریخ و زمان تحویل را مشخص کنید.",
+    "OrderPlacedSuccess": "سفارش شما با موفقیت ثبت شد",
+    "OrderPlacedError": "خطایی در ثبت سفارش رخ داد",
+    "CancelSuccess": "سفارش با موفقیت لغو شد.",
+    "CancelError": "خطا در لغو سفارش. لطفاً دوباره تلاش کنید.",
+    "ReorderSuccess": "آیتم‌های سفارش با موفقیت به سبد خرید اضافه شدند.",
+    "ReorderError": "خطا در ثبت مجدد سفارش."
+  },
   "Admin": {
     "BookStoreDashboard": "پیشخوان کتاب سرا",
     "Dashboard": "پیشخوان",
@@ -88,6 +137,16 @@
       "SaveChanges": "ذخیره تغییرات",
       "Reset": "بازنشانی",
       "SaveDescription": "تغییرات شما بلافاصله ذخیره خواهند شد."
+    },
+    "Modal": {
+      "BookTitleValidation": "عنوان کتاب نمی‌تواند خالی باشد.",
+      "AuthorNameValidation": "نام نویسنده الزامی است.",
+      "PriceValidation": "لطفاً قیمت را وارد کنید.",
+      "Price": "قیمت باید بزرگ‌تر از صفر باشد.",
+      "StockValidation": "لطفاً موجودی را وارد کنید.",
+      "Stock": "موجودی نمی‌تواند منفی باشد.",
+      "ImageUrlValidation": "آدرس تصویر الزامی است.",
+      "ImageUrl": "لطفاً یک آدرس اینترنتی یا مسیر معتبر وارد کنید"
     }
   },
   "Header": {
@@ -179,7 +238,8 @@
     "UnitPrice": "قیمت واحد",
     "Qty": "تعداد",
     "Order": "سفارش",
-    "ReOrder": "خرید مجدد"
+    "ReOrder": "خرید مجدد",
+    "OrderNotFound": "سفارشی یافت نشد ."
   },
   "Cart": {
     "ShoppingCart": "سبد خرید",
@@ -193,14 +253,7 @@
   "Search": {
     "NotFound": "موردی یافت نشد."
   },
-  "Notifications": {
-    "SearchFailed": "خطا در جستجو",
-    "bookCreated": "کتاب با موفقیت ایجاد شد",
-    "bookUpdated": "کتاب با موفقیت ویرایش شد",
-    "bookDeleted": "کتاب با موفقیت حذف شد",
-    "somethingWentWrong": "مشکلی رخ داد",
-    "noResultsFound": "موردی یافت نشد!"
-  },
+
   "CheckoutInfo": {
     "Name": "نام و نام خانوادگی",
     "Mobile": "شماره موبایل",
@@ -211,12 +264,19 @@
     "ShippingInfo": "اطلاعات ارسال",
     "ModalTitle": "آدرس جدید",
     "PlaceHolders": {
-      "Phone": "مثال : 0912408426",
+      "Phone": "مثال : 09124080426",
       "Name": "مثال : سارا احمدی",
       "Province": "انتخاب استان",
       "City": "انتخاب شهر",
       "PostalCode": "مثال : 1678532349"
     },
+    "ContinueToPayment": "ادامه پرداخت",
+    "ConfirmAndSelectShipping": "انتخاب زمان ارسال",
+    "ConfirmAndContinueToPayment": "ادامه پرداخت",
+    "FinalPayment": "پرداخت نهایی",
+    "Continue": "ادامه",
+    "AddNewAddress": "افزودن آدرس جدید",
+    "SaveAddress": "ذخیره آدرس",
     "AddressForm": {
       "Validation": {
         "NameMinLength": "نام گیرنده باید حداقل ۳ حرف باشد",
@@ -227,13 +287,14 @@
         "RequiredCity": "لطفاً شهر را انتخاب کنید"
       }
     },
-    "ContinueToPayment": "ادامه پرداخت",
-    "ConfirmAndSelectShipping": "انتخاب زمان ارسال",
-    "ConfirmAndContinueToPayment": "ادامه پرداخت",
-    "FinalPayment": "پرداخت نهایی",
-    "Continue": "ادامه",
-    "AddNewAddress": "افزودن آدرس جدید",
-    "SaveAddress": "ذخیره آدرس",
+    "PaymentForm": {
+      "Validation": {
+        "CardHolderName": "نام دارنده کارت باید حداقل ۳ حرف باشد",
+        "CardNumber": "شماره کارت باید ۱۶ رقم باشد",
+        "ExpiryDate": "تاریخ انقضا باید به فرمت ماه/سال (MM/YY) باشد",
+        "Cvv2": "کد CVV2 باید ۳ یا ۴ رقم باشد"
+      }
+    },
     "CheckoutStepper": {
       "Address": "آدرس",
       "AddressDescription": "انتخاب آدرس تحویل",
@@ -289,11 +350,11 @@
     "ConfirmPassword": "تکرار رمز عبور",
     "AlreadyHaveAccount": "حساب کاربری دارید؟",
     "SignIn": "وارد شوید",
-    "NameRequired": "نام را وارد کنید",
-    "InvalidEmail": "ایمیل معتبر نیست",
-    "InvalidPhoneNumber": "شماره موبایل معتبر نیست",
-    "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
-    "PasswordNotMatch": "رمز عبور و تکرار آن یکسان نیست"
+    "NameRequired": "نام را وارد کنید.",
+    "InvalidEmail": "ایمیل معتبر نیست.",
+    "InvalidPhoneNumber": "شماره موبایل معتبر نیست.",
+    "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+    "PasswordNotMatch": "رمز عبور و تکرار آن یکسان نیست."
   },
   "Profile": {
     "Logout": "خروج از حساب کاربری",

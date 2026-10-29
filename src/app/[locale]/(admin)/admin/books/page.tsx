@@ -2,10 +2,7 @@
 
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import {
-  Book,
-  CreateBookDTO,
-} from "@/features/books/book.type";
+import { Book, CreateBookDTO } from "@/features/books/book.type";
 import { useBooks } from "@/features/books/hooks/use-books";
 
 import { Group, Pagination, Stack } from "@mantine/core";
@@ -14,9 +11,9 @@ import { useLocale } from "next-intl";
 import { useState } from "react";
 import style from "../../../../../features/admin/admin.module.css";
 
+import { BookFormModal } from "@/features/admin/components/admin-book-form-modal";
 import AdminBooksSearchBar from "@/features/admin/components/admin-books-search-bar";
 import AdminBooksTable from "@/features/admin/components/admin-books-table";
-import { BookFormModal } from "@/features/admin/components/admin-book-form-modal";
 
 export default function AdminBooksPage() {
   const locale = useLocale();
@@ -25,13 +22,7 @@ export default function AdminBooksPage() {
 
   const [activePage, setActivePage] = useState(1);
 
-  const {
-    books,
-    totalPages,
-    isLoading,
-    createBook,
-    updateBook,
-  } = useBooks({
+  const { books, totalPages, isLoading, createBook, updateBook } = useBooks({
     page: activePage,
     limit: 4,
     search: debouncedSearch,
@@ -64,13 +55,12 @@ export default function AdminBooksPage() {
 
   return (
     <Stack gap="lg">
-      {/* 2. Filter & Search Bar */}
       <AdminBooksSearchBar
         handleOpenCreate={handleOpenCreate}
         handleSearchChange={handleSearchChange}
         search={search}
       />
-      {/* 3. Books Table */}
+
       <GlassPanel p={{ base: "xs", sm: "lg" }}>
         <AdminBooksTable
           books={books}
@@ -78,8 +68,8 @@ export default function AdminBooksPage() {
           handleOpenEdit={handleOpenEdit}
         />
         <HorizontalDivider my="xs" />
-        {/* 4. Table Pagination Footer */}
-        <Group justify='center' wrap="wrap">
+
+        <Group justify="center" wrap="wrap">
           {totalPages > 1 && (
             <Pagination
               total={totalPages}

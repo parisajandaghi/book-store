@@ -38,7 +38,11 @@ export default function ShoppingInfo({
             <Text fz="xs" c="textMain.3">
               {t("ContactNumber")} :
             </Text>
-            <Text fz="xs" c="textMain.3" dir="ltr" ta="left">
+            <Text
+              fz="xs"
+              c="textMain.3"
+              style={{ direction: "ltr", textAlign: "start", width: "fit-content" }}
+            >
               {phone_number}
             </Text>
           </Stack>
@@ -58,7 +62,11 @@ export default function ShoppingInfo({
             <Text fz="xs" c="textMain.3">
               {t("TrackingCode")} :
             </Text>
-            <Text fz="xs" c="textMain.3" dir="ltr" ta="left">
+            <Text
+              fz="xs"
+              c="textMain.3"
+              style={{ direction: "ltr", textAlign: "start", width: "fit-content" }}
+            >
               {tracking_code || "---"}
             </Text>
           </Stack>

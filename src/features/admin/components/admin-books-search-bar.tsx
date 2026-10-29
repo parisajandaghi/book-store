@@ -41,14 +41,12 @@ export default function AdminBooksSearchBar({
           </Text>
         </Stack>
 
-        {/* سطر دکمه و اینپوت سرچ (در موبایل و دسکتاپ همواره در یک سطر) */}
         <Group
           gap="xs"
           wrap="nowrap"
           w={{ base: "100%", sm: "auto" }}
           style={{ flexGrow: 1, justifyContent: "flex-end" }}
         >
-          {/* اینپوت سرچ که در موبایل کش می‌آید تا فضا را پر کند */}
           <Paper
             className={`${style.inputWrapper} ${focused ? style.focused : ""}`}
             style={{ flex: 1 }}
@@ -82,7 +80,6 @@ export default function AdminBooksSearchBar({
             />
           </Paper>
 
-          {/* در دسکتاپ دکمه کامل با متن نمایش داده می‌شود */}
           <Box display={{ base: "none", sm: "block" }}>
             <PrimaryButton
               btnText={t("Book.AddNewBook")}
@@ -93,7 +90,6 @@ export default function AdminBooksSearchBar({
             />
           </Box>
 
-          {/* در موبایل دکمه پلاس شیک و جمع‌وجور بدون متن */}
           <Box display={{ base: "block", sm: "none" }}>
             <ActionIcon
               size={36}

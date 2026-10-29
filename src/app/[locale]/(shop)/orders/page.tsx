@@ -3,14 +3,7 @@ import EmptyOrderState from "@/features/orders/components/empty-order-state";
 import OrderCard from "@/features/orders/components/order-card";
 import { useOrderHistory } from "@/features/orders/hooks/use-order-history";
 import { filterStatusAtom } from "@/store/order-atom";
-import {
-  Container,
-  Group,
-  ScrollArea,
-  Select,
-  Stack,
-  Title,
-} from "@mantine/core";
+import { Container, Group, Select, Stack, Title } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 
@@ -25,9 +18,9 @@ export default function Orders() {
         <Container
           size="md"
           w="100%"
-          // pt={{ base: 20, sm: 40 }}
-          // pb={{ base: 20, sm: 40 }}
-          // px={{ base: "xs", sm: "md" }}
+          pt={{ base: 16, sm: 32 }}
+          pb={{ base: 24, sm: 40 }}
+          px={{ base: "xs", sm: "md" }}
         >
           <Group
             justify="space-between"
@@ -54,7 +47,7 @@ export default function Orders() {
                 { value: "delivered", label: t("Status.delivered") },
                 { value: "cancelled", label: t("Status.cancelled") },
               ]}
-              w={{ base: 110, sm: 150 }}
+              w={{ base: 130, sm: 160 }}
               classNames={{
                 input: "custom-select-input",
                 dropdown: "custom-select-dropdown",
@@ -63,11 +56,9 @@ export default function Orders() {
             />
           </Group>
 
-          <ScrollArea offsetScrollbars scrollbarSize={6} w="100%">
-            <Stack align="center" w="100%" pb="xs" >
-              <OrderCard />
-            </Stack>
-          </ScrollArea>
+          <Stack align="stretch" w="100%">
+            <OrderCard />
+          </Stack>
         </Container>
       ) : (
         <EmptyOrderState />

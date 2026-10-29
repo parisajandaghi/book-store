@@ -21,7 +21,7 @@ import { Link, useRouter } from "../../../navigation";
 import SecondaryButton from "../action-panel/secondary-button";
 import SearchDropdown from "./search-dropdown";
 import { SearchBoxProps } from "./search.type";
-import { showErrorNotification } from "@/utils/notification";
+
 
 export default function Search({
   placeholder,
@@ -39,7 +39,7 @@ export default function Search({
 
   useEffect(() => {
     if (error) {
-      showErrorNotification(t1("SearchFailed"));
+      // showErrorNotification(t1("SearchFailed"));
     }
   }, [error, t1]);
   const handleSearch = () => {

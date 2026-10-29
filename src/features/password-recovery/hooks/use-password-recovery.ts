@@ -1,8 +1,11 @@
 "use client";
 import { forgotPassword, resetPassword } from "@/services/auth";
+import { notify } from "@/utils/notification";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export const usePasswordRecovery = () => {
+  const t = useTranslations("Notifications");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -17,16 +20,26 @@ export const usePasswordRecovery = () => {
 
       if (response?.error) {
         setError(response.error);
+        notify.error({
+          title: t("RecoveryPassword"),
+          message: t("SomethingWentWrong"),
+        });
         return false;
       }
+      notify.success({
+        title: t("RecoveryPassword"),
+        message: t("RecoveryPasswordMessage"),
+      });
 
-      setSuccess("لینک بازیابی رمز عبور به ایمیل شما ارسال شد.");
       return true;
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("خطایی در ارتباط با سرور رخ داد.");
+        notify.error({
+          title: t("RecoveryPassword"),
+          message: t("SomethingWentWrong"),
+        });
       }
       return false;
     } finally {
@@ -43,17 +56,26 @@ export const usePasswordRecovery = () => {
       const response = await resetPassword(token, newPassword);
 
       if (response?.error) {
-        setError(response.error);
+        notify.error({
+          title: t("ResetPassword"),
+          message: t("SomethingWentWrong"),
+        });
         return false;
       }
 
-      setSuccess("رمز عبور شما با موفقیت تغییر کرد.");
+      notify.success({
+        title: t("ResetPassword"),
+        message: t("ResetPasswordMessage"),
+      });
       return true;
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("خطایی در تغییر رمز رخ داد. ممکن است لینک منقضی شده باشد.");
+        notify.error({
+          title: t("ResetPassword"),
+          message: t("ResetPasswordExpiredMessage"),
+        });
       }
       return false;
     } finally {

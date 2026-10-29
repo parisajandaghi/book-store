@@ -3,6 +3,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import { useTranslations } from "next-intl";
+import { notify } from "@/utils/notification";
 
 interface UsersResponse {
   data: (User & { orders_count?: number })[];
@@ -15,7 +16,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export function useUsers() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const t = useTranslations("Admin");
+  const t = useTranslations("Notifications");
 
   const queryParams = new URLSearchParams({
     page: page.toString(),
@@ -39,20 +40,18 @@ export function useUsers() {
 
       if (!res.ok) throw new Error("Failed to update user");
 
-      // notifications.show({
-      //   title: t("Success"),
-      //   message: t("UserRoleUpdatedSuccessfully"),
-      //   color: "teal",
-      // });
+      notify.success({
+        title: t("User"),
+        message: t("UserRoleUpdatedSuccessfully"),
+      });
 
       mutate();
       return true;
     } catch {
-      // notifications.show({
-      //   title: t("Error"),
-      //   message: t("UserRoleUpdateFailed"),
-      //   color: "red",
-      // });
+      notify.error({
+        title: t("User"),
+        message: t("UserRoleUpdatedSuccessfully"),
+      });
       return false;
     }
   };

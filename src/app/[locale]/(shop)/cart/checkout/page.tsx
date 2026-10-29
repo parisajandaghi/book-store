@@ -1,7 +1,9 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
+import { SHIPPING_FEE } from "@/constants";
 import CartItemsList from "@/features/carts/components/cart-items-list";
+import { useCart } from "@/features/carts/hooks/use-cart";
 import AddressModal from "@/features/checkout/components/address-modal";
 import AddressStep from "@/features/checkout/components/address-step";
 import PaymentStep from "@/features/checkout/components/payment-step";
@@ -9,13 +11,13 @@ import ShippingStep from "@/features/checkout/components/shipping-step";
 import { useCheckoutForms } from "@/features/checkout/hooks/use-checkout-forms";
 import { useCheckoutStepper } from "@/features/checkout/hooks/use-checkout-stepper";
 import OrderSummary from "@/features/orders/components/order-summary";
+import { useRouter } from "@/navigation";
 import {
   Box,
   Container,
   Flex,
   Group,
   ScrollArea,
-  Stack,
   Stepper,
 } from "@mantine/core";
 import {
@@ -26,18 +28,15 @@ import {
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import style from "../../../../../features/carts/cart.module.css";
-import { useCart } from "@/features/carts/hooks/use-cart";
-import { SHIPPING_FEE } from "@/constants";
 import { useEffect } from "react";
-import { useRouter } from "@/navigation";
+import style from "../../../../../features/carts/cart.module.css";
 
 export default function Checkout() {
   const router = useRouter();
   const { checkoutForm, paymentForm } = useCheckoutForms();
   const { activeStep, isProcessing, nextStep, prevStep, setActiveStep } =
     useCheckoutStepper({ paymentForm });
-  const { cartTotal } = useCart();
+  const { cartTotal, isLoading } = useCart();
 
   const totalAmount = cartTotal + SHIPPING_FEE;
 
@@ -45,11 +44,10 @@ export default function Checkout() {
   const t = useTranslations("CheckoutInfo");
 
   useEffect(() => {
-    if (cartTotal === 0) {
+    if (!isLoading && cartTotal === 0) {
       router.replace("/cart");
     }
-  }, [cartTotal, router]);
-
+  }, [cartTotal, isLoading, router]);
   const icon =
     locale === "fa" ? (
       <IconArrowLeft size={14} />
@@ -70,8 +68,6 @@ export default function Checkout() {
     }
   };
 
-  // داخل کامپوننت Checkout در checkout/page.tsx
-
   return (
     <Container
       w="100%"
@@ -80,7 +76,6 @@ export default function Checkout() {
       pb={{ base: 20, sm: 40 }}
       px={{ base: "xs", sm: "md" }}
     >
-      {/* بخش هدر مراحل و دکمه برگشت */}
       <Group
         w="100%"
         mb={{ base: "md", sm: "xl" }}
@@ -107,17 +102,19 @@ export default function Checkout() {
             <Stepper.Step
               label={t("CheckoutStepper.Address")}
               description={t("CheckoutStepper.AddressDescription")}
-              icon={<IconMapPin size={16} stroke={1.6} color="#d4af37"/>}
+              icon={<IconMapPin size={16} stroke={1.6} color="#d4af37" />}
             />
             <Stepper.Step
               label={t("CheckoutStepper.Shipping")}
               description={t("CheckoutStepper.ShippingDescription")}
-              icon={<IconTruckDelivery size={16} stroke={1.6} color="#d4af37"/>}
+              icon={
+                <IconTruckDelivery size={16} stroke={1.6} color="#d4af37" />
+              }
             />
             <Stepper.Step
               label={t("CheckoutStepper.Payment")}
               description={t("CheckoutStepper.PaymentDescription")}
-              icon={<IconCreditCard size={16} stroke={1.6} color="#d4af37"/>}
+              icon={<IconCreditCard size={16} stroke={1.6} color="#d4af37" />}
             />
           </Stepper>
         </Box>

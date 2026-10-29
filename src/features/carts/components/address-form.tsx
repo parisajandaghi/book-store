@@ -31,6 +31,8 @@ import {
   checkoutAtom,
 } from "@/store/checkout-atom";
 import { useAtom } from "jotai";
+import { notify } from "@/utils/notification";
+import { useAddresses } from "@/features/profile/hook/use-address";
 
 type CheckoutAddressFormProps = {
   form: UseFormReturnType<CheckoutAddressFormValues>;
@@ -46,7 +48,9 @@ export default function AddressForm({
   children,
 }: CheckoutAddressFormProps) {
   const t = useTranslations("CheckoutInfo");
+  const t1 = useTranslations("Notifications");
   const locale = useLocale();
+  const { mutate } = useAddresses();
   const currentLang = locale === "en" ? "en" : "fa";
   const [, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
@@ -72,6 +76,9 @@ export default function AddressForm({
       }
 
       const newAddress = await response.json();
+      await mutate((current) => [...(current || []), newAddress], {
+        revalidate: false,
+      });
 
       setAddresses((prev) => [...prev, newAddress]);
 
@@ -82,11 +89,21 @@ export default function AddressForm({
         phone: newAddress.phone,
         address: newAddress.address,
       }));
+      notify.success({
+        id: "address-saved",
+        title: t1("SuccessTitle"),
+        message: t1("AddressSavedSuccess"),
+      });
 
       form.reset();
       setIsAddressModalOpen(false);
     } catch (error) {
       console.error("Error saving address:", error);
+      notify.error({
+        id: "address-error",
+        title: t1("ErrorTitle"),
+        message: t1("AddressSaveError"),
+      });
     }
   };
   const commonClasses = {

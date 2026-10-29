@@ -80,7 +80,7 @@ export default async function RootLayout({
               fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",
             }}
           >
-            <Notifications position="top-left" />
+            <Notifications position="top-center" zIndex={2000} autoClose={4000} />
             {children}
           </MantineProvider>
         </NextIntlClientProvider>

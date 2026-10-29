@@ -1,8 +1,8 @@
 import { useUser } from "@/features/profile/hook/use-user";
-import { CartItem } from "../cart.type";
+import { notify } from "@/utils/notification";
+import { useTranslations } from "next-intl";
 import useSWR from "swr";
-import { useRouter } from "@/navigation";
-import { notifications } from "@mantine/notifications";
+import { CartItem } from "../cart.type";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -16,15 +16,21 @@ const fetcher = async (url: string) => {
 };
 
 export const useCart = () => {
-  const { user } = useUser();
-  const router = useRouter();
-
+  const { user, isLoading: isUserLoading } = useUser();
+  const t = useTranslations("Notifications");
   const {
-    data: cartItems = [],
+    data,
     error,
-    isLoading,
+    isLoading: isCartLoading,
     mutate,
   } = useSWR<CartItem[]>(user ? "/api/cart" : null, fetcher);
+
+  const cartItems = data || [];
+
+  const isLoading =
+    isUserLoading ||
+    (!!user && isCartLoading) ||
+    (!!user && data === undefined && !error);
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -37,7 +43,6 @@ export const useCart = () => {
     bookId: number,
     quantity: number = 1,
   ): Promise<boolean> => {
-    
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -45,26 +50,25 @@ export const useCart = () => {
         body: JSON.stringify({ bookId, quantity }),
       });
 
-      const data = await res.json().catch(() => ({}));
-
-      // نمایش نوتیفیکیشن در صورت کمبود موجودی یا هر خطای دیگر
       if (!res.ok) {
-        notifications.show({
-          color: "red",
-          title: "محدودیت موجودی",
-          message: data.error || "خطا در افزودن به سبد خرید.",
+        notify.warning({
+          title: t("WarningTitle"),
+          message: t("StockLimit"),
         });
         return false;
       }
 
-      await mutate(); // رفرش کش
+      await mutate();
+      notify.success({
+        title: t("SuccessTitle"),
+        message: t("AddedSuccess"),
+      });
       return true;
     } catch (err) {
       console.error(err);
-      notifications.show({
-        color: "red",
-        title: "خطا",
-        message: "خطا در ارتباط با سرور.",
+      notify.error({
+        title: t("ErrorTitle"),
+        message: t("NetworkError"),
       });
       return false;
     }
@@ -84,24 +88,21 @@ export const useCart = () => {
         }),
       });
 
-      const data = await response.json().catch(() => ({}));
-
       if (!response.ok) {
-        notifications.show({
-          color: "red",
-          title: "محدودیت موجودی",
-          message: data.error || "امکان افزایش تعداد بیشتر وجود ندارد.",
+        notify.warning({
+          title: t("WarningTitle"),
+          message: t("StockLimit"),
         });
         return false;
       }
 
       await mutate();
+
       return true;
     } catch {
-      notifications.show({
-        color: "red",
-        title: "خطا",
-        message: "خطایی در به‌روزرسانی تعداد رخ داد.",
+      notify.error({
+        title: t("ErrorTitle"),
+        message: t("NetworkError"),
       });
       return false;
     }
@@ -125,24 +126,21 @@ export const useCart = () => {
         }),
       });
 
-      const data = await response.json().catch(() => ({}));
-
       if (!response.ok) {
-        notifications.show({
-          color: "red",
-          title: "خطا",
-          message: data.error || "خطا در کاهش تعداد محصول.",
+        notify.error({
+          title: t("ErrorTitle"),
+          message: t("DecreaseError"),
         });
         return false;
       }
 
       await mutate();
+
       return true;
     } catch {
-      notifications.show({
-        color: "red",
-        title: "خطا",
-        message: "خطا در ارتباط با سرور.",
+      notify.error({
+        title: t("ErrorTitle"),
+        message: t("NetworkError"),
       });
       return false;
     }
@@ -154,24 +152,24 @@ export const useCart = () => {
         method: "DELETE",
       });
 
-      const data = await response.json().catch(() => ({}));
-
       if (!response.ok) {
-        notifications.show({
-          color: "red",
-          title: "خطا",
-          message: data.error || "خطا در حذف آیتم از سبد خرید.",
+        notify.error({
+          title: t("ErrorTitle"),
+          message: t("RemoveError"),
         });
         return false;
       }
 
       await mutate();
+      notify.success({
+        title: t("SuccessTitle"),
+        message: t("RemoveSuccess"),
+      });
       return true;
     } catch {
-      notifications.show({
-        color: "red",
-        title: "خطا",
-        message: "خطا در حذف آیتم.",
+      notify.error({
+        title: t("ErrorTitle"),
+        message: t("NetworkError"),
       });
       return false;
     }
@@ -183,6 +181,7 @@ export const useCart = () => {
     cartCount,
     isLoading,
     error,
+
     addToCart,
     increaseQuantity,
     decreaseQuantity,

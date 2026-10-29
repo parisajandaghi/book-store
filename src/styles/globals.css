@@ -81,6 +81,18 @@ body,
 .store-back-link:hover {
   background-color: #7b62101a !important;
   color: #bc982a !important;
-  /* اگر می‌خواهی کلاً هیچ رنگ پس‌زمینه‌ای در هاور نداشته باشد، خط بالا را پاک کن و خط پایین را از کامنت در بیاور: */
-  /* background-color: transparent !important; */
+}
+.mantine-Notification-closeButton {
+  color: #d4af37 !important;
+}
+
+@media (hover: hover) {
+  .mantine-Notification-closeButton:hover {
+    background-color: rgba(212, 175, 55, 0.1) !important;
+    color: #d4af37 !important;
+  }
+}
+
+.mantine-Notification-closeButton:active {
+  background-color: rgba(212, 175, 55, 0.1) !important;
 }

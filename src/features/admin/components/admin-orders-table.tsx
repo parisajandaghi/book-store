@@ -11,7 +11,6 @@ interface AdminOrdersTableProps {
 export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
   const t = useTranslations("Admin");
 
-  // اگر لیست خالی است، جدول را رندر نکن و فقط پیام خالی بودن را نشان بده
   if (orders.length === 0) {
     return (
       <Center h={250} style={{ flexDirection: "column" }}>
@@ -23,7 +22,6 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
     );
   }
 
-  // در غیر این صورت، جدول را نمایش بده
   return (
     <Table.ScrollContainer minWidth={850}>
       <Table

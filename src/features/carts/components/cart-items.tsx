@@ -16,10 +16,11 @@ import { useLocale, useTranslations } from "next-intl";
 import CartItemsList from "./cart-items-list";
 import { useCart } from "../hooks/use-cart";
 import { SHIPPING_FEE } from "@/constants";
+import { useRouter } from "next/navigation";
 
 export default function CartItems() {
   const { cartTotal } = useCart();
-
+const router=useRouter()
   const totalAmount = cartTotal + SHIPPING_FEE;
   const t2 = useTranslations("Cart");
   const locale = useLocale();
@@ -61,7 +62,8 @@ export default function CartItems() {
             btnText={t2("ContinueShopping")}
             icon={icon}
             radius={20}
-            size="xs" // سایز متناسب برای موبایل و دسکتاپ
+            size="xs"
+            onClick={()=>router.push('/books')}
           />
         </Group>
 

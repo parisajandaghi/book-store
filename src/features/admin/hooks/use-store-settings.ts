@@ -3,10 +3,15 @@ import useSWR from "swr";
 import { useState } from "react";
 import { getErrorMessage } from "@/utils/error";
 import type { StoreSettings } from "@/services/store-setting.service";
+import { useTranslations } from "next-intl";
+import { notify } from "@/utils/notification";
 
 export type { StoreSettings };
 
-export type UpdateStoreSettingsInput = Omit<StoreSettings, "id" | "updated_at"> & {
+export type UpdateStoreSettingsInput = Omit<
+  StoreSettings,
+  "id" | "updated_at"
+> & {
   id?: number;
 };
 
@@ -28,6 +33,7 @@ const fetcher = async (url: string): Promise<StoreSettings> => {
 };
 
 export function useStoreSettings() {
+  const t = useTranslations("Notifications");
   const { data, error, isLoading, mutate } = useSWR<StoreSettings>(
     "/api/admin/settings",
     fetcher,
@@ -58,8 +64,16 @@ export function useStoreSettings() {
 
       const result = (await res.json()) as { data: StoreSettings };
       await mutate(result.data, false);
+      notify.success({
+        title: t("Setting"),
+        message: t("BookStoreSettingUpdatedSuccessfully"),
+      });
       return { success: true };
     } catch (err: unknown) {
+        notify.error({
+        title: t("Setting"),
+        message: t("BookStoreSettingUpdatedFaild"),
+      });
       return { success: false, error: getErrorMessage(err) };
     } finally {
       setIsUpdating(false);

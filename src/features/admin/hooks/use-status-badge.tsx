@@ -3,7 +3,10 @@ import { useTranslations } from "next-intl";
 
 export function useStatusBadge() {
   const t2 = useTranslations("Orders");
-  const getStatusBadge = (status: string) => {
+
+  const getStatusBadge = (status?: string) => {
+    if (!status) return null;
+
     switch (status.toUpperCase()) {
       case "PENDING":
         return (
@@ -37,7 +40,16 @@ export function useStatusBadge() {
             </Text>
           </Badge>
         );
+      default:
+        return (
+          <Badge color="gray" variant="light">
+            <Text fz={"xs"} fw={"bold"} mt={2}>
+              {status}
+            </Text>
+          </Badge>
+        );
     }
   };
+
   return { getStatusBadge };
 }

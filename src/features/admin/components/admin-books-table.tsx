@@ -63,10 +63,20 @@ export default function AdminBooksTable({
               {t("Book.BookDetails")}
             </Table.Th>
 
-            <Table.Th ta={"center"} c="dimmed" fw={600} style={{ width: "20%" }}>
+            <Table.Th
+              ta={"center"}
+              c="dimmed"
+              fw={600}
+              style={{ width: "20%" }}
+            >
               {t("Book.Price")}
             </Table.Th>
-            <Table.Th ta={"center"} c="dimmed" fw={600} style={{ width: "20%" }}>
+            <Table.Th
+              ta={"center"}
+              c="dimmed"
+              fw={600}
+              style={{ width: "20%" }}
+            >
               {t("Book.Stock")}
             </Table.Th>
 
@@ -91,7 +101,6 @@ export default function AdminBooksTable({
                   borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
                 }}
               >
-                {/* Title & Author & Cover */}
                 <Table.Td>
                   <Group gap="xs" wrap="nowrap">
                     <Image
@@ -114,7 +123,6 @@ export default function AdminBooksTable({
                   </Group>
                 </Table.Td>
 
-                {/* Price */}
                 <Table.Td ta={"center"}>
                   <Text
                     size="sm"
@@ -128,7 +136,6 @@ export default function AdminBooksTable({
                   </Text>
                 </Table.Td>
 
-                {/* Stock Count */}
                 <Table.Td ta={"center"}>
                   <Text
                     size="sm"

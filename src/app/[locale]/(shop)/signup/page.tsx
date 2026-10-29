@@ -3,14 +3,22 @@ import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import { Link, useRouter } from "@/navigation";
-import { Box, Group, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Box,
+  Group,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { useTranslations } from "next-intl";
 import style from "../../../../features/carts/cart.module.css";
-import { useForm } from "@mantine/form";
 
 export default function Signup() {
   const t = useTranslations("Register");
   const t1 = useTranslations("Login");
+  const t2 = useTranslations("Notifications");
   const router = useRouter();
 
   const form = useForm({
@@ -55,9 +63,10 @@ export default function Signup() {
         return;
       }
       form.reset();
+
       router.push("/login");
     } catch {
-      form.setFieldError("email", "Something went wrong");
+      form.setFieldError("email", t2("SomethingWentWrong"));
     }
   };
 
@@ -84,11 +93,7 @@ export default function Signup() {
             {t("Title")}
           </Text>
 
-          <Box
-            component="form"
-            onSubmit={form.onSubmit(handleSubmit)}
-            w="100%"
-          >
+          <Box component="form" onSubmit={form.onSubmit(handleSubmit)} w="100%">
             <Stack gap="sm" w="100%">
               <TextInput
                 placeholder={t("Name")}
@@ -127,6 +132,7 @@ export default function Signup() {
                 classNames={{
                   input: style.input,
                   label: style.label,
+                  innerInput: style.innerInput,
                 }}
                 {...form.getInputProps("password")}
               />
@@ -137,6 +143,7 @@ export default function Signup() {
                 classNames={{
                   input: style.input,
                   label: style.label,
+                  innerInput: style.innerInput,
                 }}
                 {...form.getInputProps("confirmPassword")}
               />
@@ -145,6 +152,7 @@ export default function Signup() {
                 btnText={t1("CreateAccount")}
                 width="100%"
                 type="submit"
+                mt="md"
               />
             </Stack>
           </Box>

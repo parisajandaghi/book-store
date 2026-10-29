@@ -25,7 +25,7 @@ import {
   IconTruck,
   IconTruckDelivery,
 } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import style from "../../../../../features/carts/cart.module.css";
 import { StoreSettings } from "@/services/store-setting.service";
 import { useStoreSettings } from "@/features/admin/hooks/use-store-settings";
@@ -40,12 +40,11 @@ function SettingsForm({
   isUpdating: boolean;
 }) {
   const t = useTranslations("Admin");
-  const [form, setForm] = useState<StoreSettings>(initialData);
-
+  const [form, setForm] = useState<StoreSettings>({ ...initialData });
+  const locale = useLocale();
   const handleReset = () => {
-    setForm(initialData);
+    setForm({ ...initialData });
   };
-
   const handleSave = async () => {
     await onSave(form);
   };
@@ -60,7 +59,6 @@ function SettingsForm({
   return (
     <GlassPanel p={{ base: "sm", sm: "md", md: "lg" }}>
       <Stack gap="md">
-        {/* Store Info Header */}
         <Group align="flex-start" wrap="nowrap" gap="sm">
           <IconBook
             size={26}
@@ -77,7 +75,6 @@ function SettingsForm({
           </Stack>
         </Group>
 
-        {/* Store Info Inputs */}
         <SimpleGrid
           cols={{ base: 1, sm: 2, lg: 3 }}
           spacing="md"
@@ -87,7 +84,9 @@ function SettingsForm({
             {...inputProps}
             label={t("DashbordSetting.StoreName")}
             value={form.store_name}
-            onChange={(e) => setForm({ ...form, store_name: e.target.value })}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, store_name: e.target.value }))
+            }
             leftSection={<IconBuildingStore size={15} />}
           />
           <TextInput
@@ -95,7 +94,7 @@ function SettingsForm({
             label={t("DashbordSetting.SupportEmail")}
             value={form.support_email}
             onChange={(e) =>
-              setForm({ ...form, support_email: e.target.value })
+              setForm((prev) => ({ ...prev, support_email: e.target.value }))
             }
             leftSection={<IconMail size={15} />}
           />
@@ -103,14 +102,21 @@ function SettingsForm({
             {...inputProps}
             label={t("DashbordSetting.Phone")}
             value={form.phone ?? ""}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, phone: e.target.value }))
+            }
+            styles={{
+              input: {
+                fontFamily:
+                  locale === "en" ? "system-ui, sans-serif" : "inherit",
+              },
+            }}
             leftSection={<IconPhone size={15} />}
           />
         </SimpleGrid>
 
         <HorizontalDivider my="xs" />
 
-        {/* Shipping Header */}
         <Group align="flex-start" wrap="nowrap" gap="sm">
           <IconTruck
             size={26}
@@ -127,7 +133,6 @@ function SettingsForm({
           </Stack>
         </Group>
 
-        {/* Shipping Inputs */}
         <SimpleGrid
           cols={{ base: 1, sm: 2, lg: 3 }}
           spacing="md"
@@ -138,8 +143,17 @@ function SettingsForm({
             label={t("DashbordSetting.ShippingRate")}
             value={form.shipping_rate}
             onChange={(val) =>
-              setForm({ ...form, shipping_rate: Number(val) || 0 })
+              setForm((prev) => ({
+                ...prev,
+                shipping_rate: typeof val === "number" ? val : Number(val) || 0,
+              }))
             }
+            styles={{
+              input: {
+                fontFamily:
+                  locale === "en" ? "system-ui, sans-serif" : "inherit",
+              },
+            }}
             min={0}
             hideControls
             leftSection={<IconTruckDelivery size={15} />}
@@ -149,8 +163,18 @@ function SettingsForm({
             label={t("DashbordSetting.FreeShippingThreshold")}
             value={form.free_shipping_threshold}
             onChange={(val) =>
-              setForm({ ...form, free_shipping_threshold: Number(val) || 0 })
+              setForm((prev) => ({
+                ...prev,
+                free_shipping_threshold:
+                  typeof val === "number" ? val : Number(val) || 0,
+              }))
             }
+            styles={{
+              input: {
+                fontFamily:
+                  locale === "en" ? "system-ui, sans-serif" : "inherit",
+              },
+            }}
             min={0}
             hideControls
             leftSection={<IconReceiptTax size={15} />}
@@ -159,7 +183,6 @@ function SettingsForm({
 
         <HorizontalDivider my="xs" />
 
-        {/* Footer Actions */}
         <Group
           justify="space-between"
           align="center"
@@ -169,6 +192,7 @@ function SettingsForm({
         >
           <Group gap="xs" w={{ base: "100%", sm: "auto" }}>
             <Button
+              type="button"
               size="sm"
               className={styles.modalButton}
               onClick={handleReset}

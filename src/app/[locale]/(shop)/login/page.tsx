@@ -8,9 +8,11 @@ import { useRouter, Link } from "@/navigation";
 import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import { useForm } from "@mantine/form";
 import { useUser } from "@/features/profile/hook/use-user";
+import { notify } from "@/utils/notification";
 
 export default function Login() {
   const t = useTranslations("Login");
+  const t1 = useTranslations("Notifications");
   const locale = useLocale();
   const router = useRouter();
   const form = useForm({
@@ -40,7 +42,11 @@ export default function Login() {
 
       if (!res.ok) {
         form.setErrors({
-          email: data.error,
+          email: t1("LoginError"),
+        });
+        notify.error({
+          title: t("SignIn"),
+          message: t1("LoginError"),
         });
         return;
       }
@@ -56,7 +62,11 @@ export default function Login() {
       router.refresh();
     } catch {
       form.setErrors({
-        email: t("SomethingWentWrong"),
+        email: t1("SomethingWentWrong"),
+      });
+      notify.error({
+        title: t("SignIn"),
+        message: t1("SomethingWentWrong"),
       });
     }
   };

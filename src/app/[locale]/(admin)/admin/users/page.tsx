@@ -37,7 +37,6 @@ export default function AdminUserPage() {
 
   return (
     <Stack gap="md">
-      {/* Search Bar */}
       <AdminUserSearchBar
         handleSearchChange={(val) => {
           setSearch(val);
@@ -46,7 +45,6 @@ export default function AdminUserPage() {
         search={search}
       />
 
-      {/* Table Section */}
       <GlassPanel p={{ base: "xs", sm: "lg" }}>
         <AdminUserTable
           users={users}
@@ -54,7 +52,6 @@ export default function AdminUserPage() {
           handleOpenEdit={handleOpenEdit}
         />
 
-        {/* Pagination Footer */}
         {totalPages > 1 && (
           <>
             <HorizontalDivider my="md" />

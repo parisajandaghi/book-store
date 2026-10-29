@@ -7,6 +7,8 @@ import {
   UseBooksParams,
 } from "../book.type";
 import { notifications } from "@mantine/notifications";
+import { notify } from "@/utils/notification";
+import { useTranslations } from "next-intl";
 
 const fetcher = async (url: string): Promise<BooksApiResponse> => {
   const res = await fetch(url);
@@ -23,6 +25,7 @@ export function useBooks({
   search = "",
   sort = "most_popular",
 }: UseBooksParams = {}) {
+  const t = useTranslations("Notifications");
   const queryParams = new URLSearchParams({
     page: page.toString(),
     limit: limit.toString(),
@@ -50,16 +53,16 @@ export function useBooks({
 
       await mutate();
 
-      notifications.show({
-        color: "green",
-        message: "کتاب با موفقیت افزوده شد",
+      notify.success({
+        title: t("Books"),
+        message: t("BookCreated"),
       });
 
       return true;
     } catch {
-      notifications.show({
-        color: "red",
-        message: "خطا در ثبت کتاب",
+      notify.error({
+        title: t("Books"),
+        message: t("CreateBookFaild"),
       });
 
       return false;
@@ -80,16 +83,16 @@ export function useBooks({
 
       await mutate();
 
-      notifications.show({
-        color: "green",
-        message: "تغییرات ذخیره شد",
+      notify.success({
+        title: t("Books"),
+        message: t("BookUpdated"),
       });
 
       return true;
     } catch {
-      notifications.show({
-        color: "red",
-        message: "خطا در ویرایش کتاب",
+      notify.error({
+        title: t("Books"),
+        message: t("UpdateBookFaild"),
       });
 
       return false;

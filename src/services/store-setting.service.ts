@@ -25,7 +25,7 @@ export function getStoreSettings(): StoreSettings {
     // در صورتی که دیتابیس تازه ساخته شده باشد و ردیف 1 نبود
     db.exec(`
       INSERT OR IGNORE INTO store_settings (id, store_name, support_email, phone, shipping_rate, free_shipping_threshold)
-      VALUES (1, 'کتاب سرا', 'support@bookstore.com', '', 35000, 300000);
+      VALUES (1, 'bookstore', 'support@bookstore.com', '', 35000, 300000);
     `);
     return db
       .prepare(`SELECT * FROM store_settings WHERE id = 1`)

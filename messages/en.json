@@ -1,4 +1,53 @@
 {
+  "Notifications": {
+    "SearchFailed": "Search failed",
+    "BookCreated": "Book created successfully",
+    "BookUpdated": "Book updated successfully",
+    "BookDeleted": "Book deleted successfully",
+    "SomethingWentWrong": "Something went wrong",
+    "NoResultsFound": "No results found!",
+    "LoginError": "Invalid email or password.",
+    "RegisterSuccess": "Account created successfully.",
+    "CreateAccount": "Create Account",
+    "RecoveryPasswordMessage": "Recovery password link sent to your email.",
+    "RecoveryPassword": "RecoveryPassword",
+    "ResetPassword": "Reset Password",
+    "ResetPasswordMessage": "Your password reset successfully.",
+    "ResetPasswordExpiredMessage": "Password reset failed. Link may be expired",
+    "FetchingOrderMessage": "Failed to fetch order details.",
+    "SuccessTitle": "Success",
+    "ErrorTitle": "Error",
+    "UpdateOrderSuccess": "Order updated successfully.",
+    "UpdateOrderError": "Failed to update the order.",
+    "CreateBookFaild": "Create Book Faild .",
+    "UpdateBookFaild": "Edit Book Faild .",
+    "Books": "Books",
+    "User": "User",
+    "Setting": "Setting",
+    "UserRoleUpdateFailed": "User Role Update Failed.",
+    "UserRoleUpdatedSuccessfully": "User Role Updated Successfully .",
+    "BookStoreSettingUpdatedSuccessfully": "Book Store Setting Updated Successfully",
+    "BookStoreSettingUpdatedFaild": "Book Store Setting Updated Faild",
+    "WarningTitle": "Stock Limit",
+    "AddedSuccess": "Book successfully added to cart.",
+    "IncreaseSuccess": "Quantity increased successfully.",
+    "DecreaseSuccess": "Quantity decreased successfully.",
+    "RemoveSuccess": "Item removed from cart.",
+    "StockLimit": "Cannot add more than the available inventory.",
+    "DecreaseError": "Failed to decrease item quantity.",
+    "RemoveError": "Failed to remove item from cart.",
+    "NetworkError": "Network connection error.",
+    "AddressSavedSuccess": "Address saved successfully",
+    "AddressSaveError": "An error occurred while saving the address",
+    "SelectAddressWarning": "Please select or create an address first.",
+    "SelectShippingWarning": "Please select shipping method, delivery date, and time.",
+    "OrderPlacedSuccess": "Your order has been placed successfully",
+    "OrderPlacedError": "An error occurred while placing the order",
+    "CancelSuccess": "Order has been successfully cancelled.",
+    "CancelError": "Failed to cancel order. Please try again.",
+    "ReorderSuccess": "Order items added to cart successfully.",
+    "ReorderError": "Failed to reorder items."
+  },
   "Admin": {
     "BookStoreDashboard": "Book Store Dashboard",
     "Dashboard": "Dashboard",
@@ -88,6 +137,16 @@
       "SaveChanges": "Save Changes",
       "Reset": "Reset",
       "SaveDescription": "Your changes will be save immediately"
+    },
+    "Modal": {
+      "BookTitleValidation": "Book title cannot be empty.",
+      "AuthorNameValidation": "Author name is required.",
+      "PriceValidation": "Please enter the price .",
+      "Price": "Price must be greater than zero .",
+      "StockValidation": " Please enter the stock quantity.",
+      "Stock": "Stock cannot be negative .",
+      "ImageUrlValidation": "Image URL is required .",
+      "ImageUrl": "Please enter url address ."
     }
   },
   "Header": {
@@ -179,7 +238,8 @@
     "UnitPrice": "Unit Price",
     "Qty": "Quantity",
     "Order": "Order",
-    "ReOrder": "Re-Order"
+    "ReOrder": "Re-Order",
+    "OrderNotFound": "Order Not Found"
   },
   "Cart": {
     "ShoppingCart": "Shopping Cart",
@@ -268,14 +328,7 @@
   "Search": {
     "NotFound": "No Results Found."
   },
-  "Notifications": {
-    "SearchFailed": "Search failed",
-    "bookCreated": "Book created successfully",
-    "bookUpdated": "Book updated successfully",
-    "bookDeleted": "Book deleted successfully",
-    "somethingWentWrong": "Something went wrong",
-    "noResultsFound": "No results found!"
-  },
+
   "Login": {
     "Email": "Email",
     "Password": "Password",
@@ -298,11 +351,11 @@
     "CreateAccount": "Create Account",
     "AlreadyHaveAccount": "Have an account?",
     "SignIn": "Sign In",
-    "NameRequired": "Please enter your name",
-    "InvalidEmail": "Invalid email address",
-    "InvalidPhoneNumber": "Invalid phone number",
-    "PasswordTooShort": "Password must be at least 6 characters long",
-    "PasswordNotMatch": "Passwords do not match"
+    "NameRequired": "Please enter your name.",
+    "InvalidEmail": "Invalid email address.",
+    "InvalidPhoneNumber": "Invalid phone number.",
+    "PasswordTooShort": "Password must be at least 6 characters long.",
+    "PasswordNotMatch": "Passwords do not match."
   },
   "Profile": {
     "Logout": "Logout",

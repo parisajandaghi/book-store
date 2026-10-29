@@ -1,66 +1,81 @@
 import { notifications } from "@mantine/notifications";
 import {
-  IconCheck,
   IconAlertTriangle,
+  IconCheck,
+  IconInfoCircle,
   IconX,
 } from "@tabler/icons-react";
+import React from "react";
 
-const baseStyles = {
-  root: {
-    backdropFilter: "blur(20px)",
-    boxShadow: "0 8px 32px rgba(0,0,0,.35)",
-    width: 320,
+interface NotifyOptions {
+  id?: string;
+  title?: string;
+  message: string;
+  autoClose?: number | boolean;
+}
+
+export const notify = {
+  success: ({
+    id,
+    title = "success",
+    message,
+    autoClose = 3500,
+  }: NotifyOptions) => {
+    notifications.show({
+      id,
+      title,
+      message,
+      color: "toastSuccess.5",
+      icon: React.createElement(IconCheck, { size: 18 }),
+      autoClose,
+    });
   },
-  description: {
-    color: "#f5f5f5",
+
+  error: ({
+    id,
+    title = "error",
+    message,
+    autoClose = 5000,
+  }: NotifyOptions) => {
+    notifications.show({
+      id,
+      title,
+      message,
+      color: "toastError.5",
+      icon: React.createElement(IconX, { size: 18 }),
+      autoClose,
+    });
+  },
+
+  warning: ({
+    id,
+    title = "warning",
+    message,
+    autoClose = 4000,
+  }: NotifyOptions) => {
+    notifications.show({
+      id,
+      title,
+      message,
+      color: "toastWarning.5",
+      icon: React.createElement(IconAlertTriangle, { size: 18 }),
+      autoClose,
+    });
+  },
+
+  info: ({
+    id,
+    title = "information",
+    message,
+    autoClose = 3500,
+  }: NotifyOptions) => {
+    notifications.show({
+      id,
+      title,
+      message,
+      color: "toastInfo.5",
+      icon: React.createElement(IconInfoCircle, { size: 18 }),
+      autoClose,
+    });
   },
 };
-
-export function showSuccessNotification(message: string) {
-  notifications.show({
-    id: "success",
-    message,
-    icon: <IconCheck size={18} />,
-    styles: {
-      ...baseStyles,
-      root: {
-        ...baseStyles.root,
-        background: "rgba(16, 37, 23, 0.95)",
-        border: "1px solid rgba(81, 207, 102, 0.4)",
-      },
-    },
-  });
-}
-
-export function showErrorNotification(message: string) {
-  notifications.show({
-    id: "error",
-    message,
-    icon: <IconX size={18} />,
-    styles: {
-      ...baseStyles,
-      root: {
-        ...baseStyles.root,
-        background: "rgba(42, 17, 17, 0.43)",
-        border: "1px solid #ff4d4f66",
-        marginTop:50
-      },
-    },
-  });
-}
-
-export function showWarningNotification(message: string) {
-  notifications.show({
-    id: "warning",
-    message,
-    icon: <IconAlertTriangle size={18} />,
-    styles: {
-      ...baseStyles,
-      root: {
-        ...baseStyles.root,
-        background: "rgba(42, 36, 18, 0.95)",
-        border: "1px solid rgba(245, 194, 66, 0.4)",
-      },
-    },
-  });
-}

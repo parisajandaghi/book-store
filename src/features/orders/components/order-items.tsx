@@ -39,8 +39,8 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
       </Group>
       <HorizontalDivider />
 
-      <ScrollArea w="100%" type="auto" offsetScrollbars>
-        <Box miw={420}>
+      <ScrollArea w="100%" type="auto" offsetScrollbars scrollbarSize={6}>
+        <Box miw={520}>
           <Grid px="md">
             <Grid.Col span={5}>
               <Stack>
@@ -72,7 +72,7 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
             </Grid.Col>
           </Grid>
 
-          <ScrollArea h={200} offsetScrollbars p="xs" type="hover">
+          <ScrollArea h={220} offsetScrollbars p="xs" type="hover">
             <Stack gap="xs">
               {items.map((item) => (
                 <Grid
@@ -157,7 +157,7 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
               {items.length === 0 && (
                 <Center p="md">
                   <Text fz="sm" c="dimmed">
-                    هیچ آیتمی یافت نشد.
+                    {t("OrderNotFound")}
                   </Text>
                 </Center>
               )}

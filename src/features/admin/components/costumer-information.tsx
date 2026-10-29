@@ -41,7 +41,6 @@ export default function CostumerInformation({
         </Group>
 
         <Stack gap="sm">
-          {/* نام کاربر */}
           <Group justify="space-between" align="center" wrap="nowrap">
             <Group gap={8} wrap="nowrap">
               <IconUser size={16} color="#fefaf4" style={{ flexShrink: 0 }} />
@@ -59,7 +58,6 @@ export default function CostumerInformation({
             </Text>
           </Group>
 
-          {/* ایمیل کاربر */}
           <Group justify="space-between" align="center" wrap="nowrap">
             <Group gap={8} wrap="nowrap">
               <IconMail size={16} color="#fefaf4" style={{ flexShrink: 0 }} />
@@ -77,7 +75,6 @@ export default function CostumerInformation({
             </Text>
           </Group>
 
-          {/* تلفن کاربر */}
           <Group justify="space-between" align="center" wrap="nowrap">
             <Group gap={8} wrap="nowrap">
               <IconPhone size={16} color="#fefaf4" style={{ flexShrink: 0 }} />

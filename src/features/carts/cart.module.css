@@ -7,9 +7,16 @@
 .input:focus {
   border-color: #7b6210;
 }
-.input::placeholder {
+.input::placeholder,
+.innerInput::placeholder {
+  color: rgba(254, 250, 244, 0.38) !important;
+  font-size: 12px !important;
+  letter-spacing: normal !important;
+}
+
+.innerInput {
   color: #d1d5db;
-  opacity: 0.3;
+
   font-size: 12;
 }
 .label {
@@ -36,9 +43,6 @@
   border: 1px solid #7b6210;
 }
 
-/* ================= Stepper Styles ================= */
-
-/* آیکون مراحل */
 .glassyStepIcon {
   background-color: rgba(31, 15, 31, 0.7) !important;
   border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
@@ -53,14 +57,12 @@
   padding: 0 !important;
 }
 
-/* مرحله در حال انجام (Active) */
 .glassyStepIcon[data-progress] {
   border-color: #d4af37 !important;
   box-shadow: 0 0 14px rgba(212, 175, 55, 0.45) !important;
   transform: scale(1.05);
 }
 
-/* مرحله تکمیل‌شده (Completed) */
 .glassyStepIcon[data-completed] {
   background-color: #d4af37 !important;
   border-color: #d4af37 !important;
@@ -71,7 +73,6 @@
   color: #1a0b1a !important;
 }
 
-/* خطوط اتصال بین مراحل */
 .separator {
   height: 2px !important;
   background-color: rgba(255, 255, 255, 0.08) !important;
@@ -83,7 +84,6 @@
   background-color: #d4af37 !important;
 }
 
-/* عناوین */
 .Label {
   font-size: 13px !important;
   font-weight: 600 !important;
@@ -159,7 +159,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #e0e0e0;
   font-size: 13px;
-  /* font-weight: 500; */
+
   transition: all 0.2s ease;
 }
 
@@ -173,7 +173,7 @@
   color: #1a0b1a;
   border-color: #d9a93d;
 }
-/* مخفی کردن توضیحات استپر در موبایل برای جلوگیری از به‌هم‌ریختگی */
+
 @media (max-width: 600px) {
   .Description {
     display: none !important;

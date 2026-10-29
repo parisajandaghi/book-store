@@ -5,11 +5,12 @@ import { Link } from "@/navigation";
 import { filterStatusAtom } from "@/store/order-atom";
 import { getFormattedPrice } from "@/utils/book.utils";
 import {
+  Box,
   Card,
   Center,
   Group,
   Loader,
-  SimpleGrid,
+  ScrollArea,
   Stack,
   Text,
   ThemeIcon,
@@ -32,6 +33,7 @@ export default function OrderCard() {
   const locale = useLocale();
   const ChevronIcon = locale === "fa" ? IconChevronLeft : IconChevronRight;
   const { orders, isLoading, error } = useOrderHistory();
+
   if (isLoading) {
     return (
       <Center h={200}>
@@ -52,124 +54,144 @@ export default function OrderCard() {
     if (filterStatus === "all") return true;
     return order.status === filterStatus;
   });
-  return (
-    <SimpleGrid cols={{ base: 1 }}>
-      {filteredOrders.length > 0 ? (
-        filteredOrders.map((item) => {
-          const formattedPrice = getFormattedPrice(item.total, locale);
-          return (
-            <Link
-              href={`/orders/${item.id}`}
-              key={item.id}
-              style={{ textDecoration: "none" }}
-            >
-              <Card
-                shadow="sm"
-                radius="md"
-                w={700}
-                h={100}
-                className={style.card}
-              >
-                <Group w={"100%"} align="center" justify="space-around">
-                  <Group>
-                    <ThemeIcon
-                      size={35}
-                      radius="md"
-                      variant="light"
-                      color="surface"
-                    >
-                      <IconShoppingBag
-                        size={23}
-                        color="var(--mantine-color-surface-8)"
-                      />
-                    </ThemeIcon>
-                  </Group>
-                  <Group flex={1}>
-                    <Stack justify="center" align="center">
-                      <Text size="sm" c={"surface.9"}>
-                        {t1("TableHeaders.OrderId")}
-                      </Text>
-                      <Text
-                        size="sm"
-                        c={"textMain.2"}
-                        style={{
-                          fontFamily:
-                            locale === "en"
-                              ? "system-ui, -apple-system, sans-serif"
-                              : undefined,
-                        }}
-                      >
-                        {item.id}
-                      </Text>
-                    </Stack>
-                    <Stack flex={2} justify="center" align="center">
-                      <Text size="sm" c={"surface.9"}>
-                        {t1("TableHeaders.Date")}
-                      </Text>
-                      <Text
-                        size="sm"
-                        c={"textMain.2"}
-                        dir="ltr"
-                        style={{
-                          fontFamily:
-                            locale === "en"
-                              ? "system-ui, -apple-system, sans-serif"
-                              : undefined,
-                        }}
-                      >
-                        {item.created_at ? (
-                          <>
-                            {new Date(item.created_at).toLocaleDateString(
-                              locale === "fa" ? "fa-IR" : "en-US",
-                            )}
-                            {" - "}
-                            {new Date(item.created_at).toLocaleTimeString(
-                              locale === "fa" ? "fa-IR" : "en-US",
-                              { hour: "2-digit", minute: "2-digit" },
-                            )}
-                          </>
-                        ) : (
-                          "---"
-                        )}
-                      </Text>
-                    </Stack>
-                    <Stack flex={1} justify="center" align="center">
-                      <Text size="sm" c={"surface.9"}>
-                        {t1("TableHeaders.Total")}
-                      </Text>
-                      <Text
-                        size="sm"
-                        c={"textMain.2"}
-                        ff={
-                          locale === "en" ? "system-ui, sans-serif" : "inherit"
-                        }
-                      >
-                        {locale === "en"
-                          ? `${t2("CurrencySymbol")} ${formattedPrice}`
-                          : `${formattedPrice} ${t2("CurrencySymbol")}`}
-                      </Text>
-                    </Stack>
-                  </Group>
-                  <Group justify="center">{getStatusBadge(item.status)}</Group>
-                  <Group>
-                    <ChevronIcon
-                      size={20}
-                      color="var(--mantine-color-surface-9)"
-                      cursor={"pointer"}
-                    />
-                  </Group>
-                </Group>
-              </Card>
-            </Link>
-          );
-        })
-      ) : (
-        <GlassPanel h={100} w={500} justify="center" align="center" p={"md"}>
-          <Text c="surface.6" size="xl" fw={"bold"}>
+
+  if (filteredOrders.length === 0) {
+    return (
+      <Center w="100%">
+        <GlassPanel
+          h={100}
+          w="100%"
+          maw={500}
+          justify="center"
+          align="center"
+          p="md"
+        >
+          <Text c="surface.6" size="xl" fw="bold" ta="center">
             {t1("Sort.NoOrdersFound")}
           </Text>
         </GlassPanel>
-      )}
-    </SimpleGrid>
+      </Center>
+    );
+  }
+
+  return (
+    <ScrollArea w="100%" type="auto" offsetScrollbars scrollbarSize={6}>
+      <Box miw={700} pb="xs">
+        <Stack gap="sm">
+          {filteredOrders.map((item) => {
+            const formattedPrice = getFormattedPrice(item.total, locale);
+            return (
+              <Link
+                href={`/orders/${item.id}`}
+                key={item.id}
+                style={{ textDecoration: "none" }}
+              >
+                <Card
+                  shadow="sm"
+                  radius="md"
+                  w="100%"
+                  h={100}
+                  className={style.card}
+                >
+                  <Group w="100%" align="center" justify="space-around">
+                    <Group>
+                      <ThemeIcon
+                        size={35}
+                        radius="md"
+                        variant="light"
+                        color="surface"
+                      >
+                        <IconShoppingBag
+                          size={23}
+                          color="var(--mantine-color-surface-8)"
+                        />
+                      </ThemeIcon>
+                    </Group>
+                    <Group flex={1}>
+                      <Stack justify="center" align="center">
+                        <Text size="sm" c="surface.9">
+                          {t1("TableHeaders.OrderId")}
+                        </Text>
+                        <Text
+                          size="sm"
+                          c="textMain.2"
+                          style={{
+                            fontFamily:
+                              locale === "en"
+                                ? "system-ui, -apple-system, sans-serif"
+                                : undefined,
+                          }}
+                        >
+                          {item.id}
+                        </Text>
+                      </Stack>
+                      <Stack flex={2} justify="center" align="center">
+                        <Text size="sm" c="surface.9">
+                          {t1("TableHeaders.Date")}
+                        </Text>
+                        <Text
+                          size="sm"
+                          c="textMain.2"
+                          dir="ltr"
+                          style={{
+                            fontFamily:
+                              locale === "en"
+                                ? "system-ui, -apple-system, sans-serif"
+                                : undefined,
+                          }}
+                        >
+                          {item.created_at ? (
+                            <>
+                              {new Date(item.created_at).toLocaleDateString(
+                                locale === "fa" ? "fa-IR" : "en-US",
+                              )}
+                              {" - "}
+                              {new Date(item.created_at).toLocaleTimeString(
+                                locale === "fa" ? "fa-IR" : "en-US",
+                                { hour: "2-digit", minute: "2-digit" },
+                              )}
+                            </>
+                          ) : (
+                            "---"
+                          )}
+                        </Text>
+                      </Stack>
+                      <Stack flex={1} justify="center" align="center">
+                        <Text size="sm" c="surface.9">
+                          {t1("TableHeaders.Total")}
+                        </Text>
+                        <Text
+                          size="sm"
+                          c="textMain.2"
+                          ff={
+                            locale === "en"
+                              ? "system-ui, sans-serif"
+                              : "inherit"
+                          }
+                        >
+                          {locale === "en"
+                            ? `${t2("CurrencySymbol")} ${formattedPrice}`
+                            : `${formattedPrice} ${t2("CurrencySymbol")}`}
+                        </Text>
+                      </Stack>
+                    </Group>
+                    <Group justify="center">
+                      {getStatusBadge(item.status)}
+                    </Group>
+                    <Group>
+                      <ChevronIcon
+                        size={20}
+                        color="var(--mantine-color-surface-9)"
+                        cursor="pointer"
+                      />
+                    </Group>
+                  </Group>
+                </Card>
+              </Link>
+            );
+          })}
+        </Stack>
+      </Box>
+    </ScrollArea>
   );
 }

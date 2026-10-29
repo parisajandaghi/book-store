@@ -103,11 +103,11 @@
 .paper {
   position: absolute;
   top: calc(100% + 4px); /* فاصله دقیق ۴ پیکسلی زیر دکمه */
-  left: 0;               /* چسبیدن به ابتدای دکمه */
+  left: 0; /* چسبیدن به ابتدای دکمه */
   right: auto;
   border-radius: 6px;
   padding: 2px 0;
-  min-width: 50px;       /* هم‌اندازه شدن دقیق با عرض دکمه */
+  min-width: 50px; /* هم‌اندازه شدن دقیق با عرض دکمه */
   z-index: 1050;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
@@ -175,20 +175,12 @@
 
 /* Mobile drawer */
 .mobileDrawer {
-  background: linear-gradient(
-    180deg,
-    #1f0f1f,
-    #170b17
-  );
+  background: linear-gradient(180deg, #1f0f1f, #170b17);
   border-inline: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .mobileDrawerHeader {
-  background: linear-gradient(
-    180deg,
-    #1f0f1f,
-    rgba(31, 15, 31, 0.92)
-  );
+  background: linear-gradient(180deg, #1f0f1f, rgba(31, 15, 31, 0.92));
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -209,11 +201,7 @@
 }
 
 .mobileDrawer {
-  background: linear-gradient(
-    180deg,
-    #1f0f1f,
-    #170b17
-  );
+  background: linear-gradient(180deg, #1f0f1f, #170b17);
   border-inline: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -277,8 +265,10 @@
 }
 
 .mobileAuth {
+  display: flex;
+  justify-content: flex-start; /* یا start متناسب با جهت */
+  margin-inline: 10px;
   width: 100%;
-  padding-top: 4px;
 }
 
 .mobileAuthLink {
@@ -346,8 +336,6 @@
     display: block;
     flex-shrink: 0;
   }
-
- 
 }
 
 /* Small mobile */
@@ -363,4 +351,43 @@
   .mobileDrawerBody {
     padding: 12px;
   }
+}
+
+.root {
+  --sc-padding: 2px;
+  --sc-radius: 9999px;
+  --sc-font-size: 0.72rem;
+
+  background-color: rgba(31, 15, 31, 0.75);
+  border: 1px solid var(--mantine-color-surface-2);
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+}
+
+.indicator {
+  background-color: var(--mantine-color-surface-7);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border-radius: 9999px;
+}
+
+.label {
+  color: var(--mantine-color-textMain-2);
+  font-weight: 500;
+  padding: 3px 10px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+.label[data-active] {
+  color: #1f0f1f !important;
+  font-weight: 700;
+}
+
+.label:hover:not([data-active]) {
+  color: var(--mantine-color-surface-4);
 }

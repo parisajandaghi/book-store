@@ -1,24 +1,24 @@
-import { useEffect } from "react";
-import {
-  Modal,
-  TextInput,
-  Button,
-  Group,
-  Stack,
-  Title,
-  SimpleGrid,
-} from "@mantine/core";
-import { useForm } from "@mantine/form";
+import GlassPanel from "@/components/ui/glass/glass-panel";
 import {
   Book,
   BookFormValues,
   CreateBookDTO,
 } from "@/features/books/book.type";
-import GlassPanel from "@/components/ui/glass/glass-panel";
+import { toCreateDTO, toFormValues } from "@/utils/book.utils";
+import {
+  Button,
+  Group,
+  Modal,
+  SimpleGrid,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 import style from "../../carts/cart.module.css";
 import styles from "../admin.module.css";
-import { toCreateDTO, toFormValues } from "@/utils/book.utils";
-import { useTranslations } from "next-intl";
 
 interface BookFormModalProps {
   opened: boolean;
@@ -37,15 +37,61 @@ export function BookFormModal({
   const t = useTranslations("Admin");
   const form = useForm<BookFormValues>({
     initialValues: toFormValues(initialData),
+    validateInputOnBlur: true,
     validate: {
-      title: (val) => (!val.trim() ? "عنوان کتاب الزامی است" : null),
-      price: (val) => (val < 0 ? "قیمت نمی‌تواند منفی باشد" : null),
+      title: (val) => {
+        const trimmed = (val ?? "").trim();
+        if (!trimmed) return t("Modal.BookTitleValidation");
+        return null;
+      },
+      author: (val) => {
+        const trimmed = (val ?? "").trim();
+        if (!trimmed) return t("Modal.AuthorNameValidation");
+        return null;
+      },
+      price: (val) => {
+        if (
+          val === null ||
+          val === undefined ||
+          val === ("" as unknown as number) ||
+          Number.isNaN(Number(val))
+        ) {
+          return t("Modal.PriceValidation");
+        }
+        const num = Number(val);
+        if (num <= 0) return t("Modal.Price");
+        return null;
+      },
+      stock: (val) => {
+        if (
+          val === null ||
+          val === undefined ||
+          val === ("" as unknown as number) ||
+          Number.isNaN(Number(val))
+        ) {
+          return t("Modal.StockValidation");
+        }
+        const num = Number(val);
+
+        if (num < 0) return t("Modal.Stock");
+        return null;
+      },
+      image_url: (val) => {
+        const trimmed = (val ?? "").trim();
+        if (!trimmed) return t("Modal.ImageUrlValidation");
+
+        const isValidUrl =
+          trimmed.startsWith("/") || /^https?:\/\/.+\..+/i.test(trimmed);
+        if (!isValidUrl) return t("Modal.ImageUrl");
+        return null;
+      },
     },
   });
 
   useEffect(() => {
     if (opened) {
       form.setValues(toFormValues(initialData));
+      form.clearErrors();
       form.resetDirty();
     }
   }, [opened, initialData]);
@@ -61,7 +107,6 @@ export function BookFormModal({
       onClose={onClose}
       centered
       size="md"
-      // padding={0}
       withCloseButton={false}
       overlayProps={{
         backgroundOpacity: 0.6,
@@ -131,10 +176,10 @@ export function BookFormModal({
                 input: style.input,
                 label: style.label,
               }}
-              {...form.getInputProps("cover_image")}
+              {...form.getInputProps("image_url")}
             />
 
-            <Group justify="center" mt="md" gap={'xs'}>
+            <Group justify="center" mt="md" gap={"xs"}>
               <Button onClick={onClose} className={styles.modalButton}>
                 {t("Book.Cancle")}
               </Button>

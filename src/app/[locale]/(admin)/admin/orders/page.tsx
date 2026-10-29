@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Center, Loader } from "@mantine/core";
+import { Center, Loader } from "@mantine/core";
 
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import AdminOrdersHeader from "@/features/admin/components/admin-orders-header";
@@ -8,14 +8,16 @@ import { AdminOrdersTable } from "@/features/admin/components/admin-orders-table
 import { useAdminOrders } from "@/features/admin/hooks/use-admin-orders";
 import { Order } from "@/features/orders/order.type";
 import { adminSearchQueryAtom } from "@/store/admin-atom";
-import { IconAlertCircle } from "@tabler/icons-react";
+import { notify } from "@/utils/notification";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 export default function AdminOrdersPage() {
   const [searchQuery] = useAtom(adminSearchQueryAtom);
   const { isLoading, error, orders } = useAdminOrders();
-
+  const t = useTranslations("Admin");
+  const t1 = useTranslations("Notifications");
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
     if (!searchQuery.trim()) return orders;
@@ -41,20 +43,19 @@ export default function AdminOrdersPage() {
   }
 
   if (error) {
-    return (
-      <Alert
-        icon={<IconAlertCircle size={16} />}
-        title="خطا"
-        color="red"
-        variant="light"
-      >
-        مشکلی در دریافت اطلاعات سفارش‌ها به وجود آمد.
-      </Alert>
-    );
+    return notify.error({
+      title: t("Orders"),
+      message: t1("FetchingOrderMessage"),
+    });
   }
 
   return (
-    <GlassPanel p={{ base: "sm", sm: "md", md: "xl" }} w="100%" maw={1400} mx="auto">
+    <GlassPanel
+      p={{ base: "sm", sm: "md", md: "xl" }}
+      w="100%"
+      maw={1400}
+      mx="auto"
+    >
       <AdminOrdersHeader />
       <AdminOrdersTable orders={filteredOrders} />
     </GlassPanel>

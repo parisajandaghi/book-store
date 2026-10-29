@@ -10,7 +10,6 @@ import OrderSummary from "@/features/orders/components/order-summary";
 import { useRouter } from "@/navigation";
 import {
   ActionIcon,
-  Alert,
   Center,
   Grid,
   Group,
@@ -34,27 +33,22 @@ import style from "../../../../../../features/carts/cart.module.css";
 export default function AdminOrderDetailsPage() {
   const t = useTranslations("Admin");
   const t1 = useTranslations("Orders");
-
+  const t2 = useTranslations("Notifications");
   const locale = useLocale();
   const router = useRouter();
   const params = useParams();
 
   const orderId = params.id as string;
 
-  const {
-    order,
-    error,
-    isLoading,
-    updateOrder,
-  } = useAdminOrder(orderId);
+  const { order, error, isLoading, updateOrder } = useAdminOrder(orderId);
 
   const { getStatusBadge } = useStatusBadge();
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [trackingCodeInput, setTrackingCodeInput] =
-    useState<string | null>(null);
-  const [, setUpdateError] = useState<string | null>(null);
+  const [trackingCodeInput, setTrackingCodeInput] = useState<string | null>(
+    null,
+  );
 
   if (isLoading) {
     return (
@@ -66,21 +60,42 @@ export default function AdminOrderDetailsPage() {
 
   if (error || !order) {
     return (
-      <Alert color="red">
-        {error || t("OrderNotFound")}
-      </Alert>
+      <Center h={400}>
+        <GlassPanel p="xl" style={{ textAlign: "center", maxWidth: 400 }}>
+          <Stack align="center" gap="sm">
+            <Text fw={600} size="lg" c="red.4">
+              {t2("SomethingWentWrong")}
+            </Text>
+            <Text size="sm" c="dimmed">
+              {t1("OrderNotFound") || t("Order")}
+            </Text>
+          </Stack>
+        </GlassPanel>
+      </Center>
     );
   }
 
-  const currentStatus =
-    selectedStatus ?? order.status ?? "pending";
+  const currentStatus = (
+    selectedStatus ??
+    order.status ??
+    "pending"
+  ).toLowerCase();
+  const originalStatus = (order.status ?? "pending").toLowerCase();
 
-  const currentTrackingCode =
-    trackingCodeInput ?? order.tracking_code ?? "";
+  const currentTrackingCode = (
+    trackingCodeInput ??
+    order.tracking_code ??
+    ""
+  ).trim();
+  const originalTrackingCode = (order.tracking_code ?? "").trim();
 
+  const hasChanges =
+    currentStatus !== originalStatus ||
+    currentTrackingCode !== originalTrackingCode;
   const handleUpdateOrder = async () => {
+    if (!hasChanges) return;
+
     setIsUpdating(true);
-    setUpdateError(null);
 
     try {
       await updateOrder({
@@ -90,17 +105,11 @@ export default function AdminOrderDetailsPage() {
 
       setSelectedStatus(null);
       setTrackingCodeInput(null);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setUpdateError(err.message);
-      } else {
-        setUpdateError("خطایی رخ داد");
-      }
+    } catch {
     } finally {
       setIsUpdating(false);
     }
   };
-
   const isRtl = locale === "fa";
   const BackIcon = isRtl ? IconArrowLeft : IconArrowRight;
   const fontStyle = locale === "en" ? "system-ui, sans-serif" : "inherit";
@@ -116,13 +125,8 @@ export default function AdminOrderDetailsPage() {
         sm: "xs",
       }}
     >
-      {/* ==================== ORDER HEADER ==================== */}
       <GlassPanel p={{ base: "sm", sm: "md" }}>
-        <Group
-          justify="space-between"
-          align="center"
-          wrap="nowrap"
-        >
+        <Group justify="space-between" align="center" wrap="nowrap">
           <Stack gap={4}>
             <Text
               size="lg"
@@ -176,24 +180,18 @@ export default function AdminOrderDetailsPage() {
         </Group>
       </GlassPanel>
 
-      {/* ==================== CONTENT GRID ==================== */}
       <Grid gutter={{ base: "md", md: "lg" }} align="stretch" w="100%">
-        {/* ROW 1 / اقلام سفارش */}
         <Grid.Col span={{ base: 12, md: 8 }}>
           <OrderItems items={order.order_items || []} />
         </Grid.Col>
 
-        {/* ROW 1 / فرم ویرایش وضعیت و کد رهگیری ادمین */}
         <Grid.Col span={{ base: 12, md: 4 }}>
           <GlassPanel
             p={{ base: "md", sm: "lg" }}
             style={{ width: "100%", height: "100%" }}
           >
             <Group gap="sm" mb="md">
-              <IconEdit
-                size={20}
-                color="var(--mantine-color-surface-9)"
-              />
+              <IconEdit size={20} color="var(--mantine-color-surface-9)" />
               <Text c="textMain.0" fw={500}>
                 {t("AdminActions")}
               </Text>
@@ -206,22 +204,10 @@ export default function AdminOrderDetailsPage() {
                 value={currentStatus}
                 onChange={setSelectedStatus}
                 data={[
-                  {
-                    value: "Pending",
-                    label: t1("Status.pending"),
-                  },
-                  {
-                    value: "Processing",
-                    label: t1("Status.processing"),
-                  },
-                  {
-                    value: "Delivered",
-                    label: t1("Status.delivered"),
-                  },
-                  {
-                    value: "Cancelled",
-                    label: t1("Status.cancelled"),
-                  },
+                  { value: "pending", label: t1("Status.pending") },
+                  { value: "processing", label: t1("Status.processing") },
+                  { value: "delivered", label: t1("Status.delivered") },
+                  { value: "cancelled", label: t1("Status.cancelled") },
                 ]}
                 classNames={{
                   dropdown: "custom-select-dropdown",
@@ -245,10 +231,7 @@ export default function AdminOrderDetailsPage() {
               <PrimaryButton
                 btnText={t("UpdateOrder")}
                 icon={
-                  <IconCheck
-                    size={18}
-                    color="var(--mantine-color-surface-9)"
-                  />
+                  <IconCheck size={18} color="var(--mantine-color-surface-9)" />
                 }
                 isLoading={isUpdating}
                 onClick={handleUpdateOrder}
@@ -258,7 +241,6 @@ export default function AdminOrderDetailsPage() {
           </GlassPanel>
         </Grid.Col>
 
-        {/* ROW 2 / خلاصه مالی */}
         <Grid.Col span={{ base: 12, md: 8 }}>
           <OrderSummary
             subtotal={order.subtotal}
@@ -267,7 +249,6 @@ export default function AdminOrderDetailsPage() {
           />
         </Grid.Col>
 
-        {/* ROW 2 / اطلاعات خریدار */}
         <Grid.Col span={{ base: 12, md: 4 }}>
           <CostumerInformation
             address={order.address}
