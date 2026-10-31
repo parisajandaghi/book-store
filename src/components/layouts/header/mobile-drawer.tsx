@@ -1,3 +1,4 @@
+"use client";
 import { Link, useRouter } from "@/navigation";
 import {
   Button,
