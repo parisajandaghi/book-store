@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NEXT_CPU_COUNT=1 NODE_OPTIONS=\"--max-old-space-size=1024\" next build --no-lint",
     "start": "next start",
     "lint": "eslint"
   },
