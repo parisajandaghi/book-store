@@ -36,7 +36,7 @@ function Header() {
   const t1 = useTranslations("Login");
   const pathName = usePathname();
 
-  const [mobileMenuOpened, { open, close }] = useDisclosure(false);
+  const [mobileMenuOpened, handlers] = useDisclosure(false);
 
   const isActive = (path: string) => {
     if (path === "/") return pathName === "/";
@@ -44,7 +44,7 @@ function Header() {
   };
 
   const handleNavigation = () => {
-    close();
+    handlers.close();
   };
 
   return (
@@ -157,7 +157,7 @@ function Header() {
 
           <Burger
             opened={mobileMenuOpened}
-            onClick={mobileMenuOpened ? close : open}
+            onClick={handlers.toggle}
             className={style.mobileBurger}
             size="sm"
             color="var(--mantine-color-surface-9)"
