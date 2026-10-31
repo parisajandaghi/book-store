@@ -9,10 +9,25 @@ declare global {
 
 const dbPath = path.join(process.cwd(), "data", "bookstore.db");
 
+// شیء ساختگی برای زمان بیلد جهت جلوگیری از درگیر شدن پروسه‌های موازی با فایل دیتابیس
+const dummyDb = {
+  prepare: () => ({
+    all: () => [],
+    get: () => undefined,
+    run: () => ({ changes: 0, lastInsertRowid: 0 }),
+  }),
+  exec: () => {},
+  close: () => {},
+} as unknown as DatabaseSync;
+
 function getDbInstance(): DatabaseSync {
+  // اگر در حال بیلد پروداکشن Next.js هستیم، هیچ اتصالی به SQLite برقرار نکن
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return dummyDb;
+  }
+
   if (!global.__db) {
     try {
-      // اطمینان از وجود پوشه data
       const dataDir = path.dirname(dbPath);
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
@@ -22,7 +37,7 @@ function getDbInstance(): DatabaseSync {
       console.log(`Successfully connected to SQLite database at: ${dbPath}`);
 
       instance.exec("PRAGMA journal_mode = WAL;");
-      instance.exec("PRAGMA busy_timeout = 10000;");
+      instance.exec("PRAGMA busy_timeout = 15000;");
       instance.exec("PRAGMA foreign_keys = ON;");
 
       if (!global.__dbInitialized) {
@@ -155,7 +170,7 @@ function initDatabase(instance: DatabaseSync) {
   }
 }
 
-// استفاده از Proxy برای Lazy Loading واقعی دیتابیس
+// استفاده از Proxy برای دسترسی به دیتابیس
 const db = new Proxy({} as DatabaseSync, {
   get(_target, prop) {
     const realDb = getDbInstance();
