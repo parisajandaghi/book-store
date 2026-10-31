@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { deleteBook, getBookById, updateBook } from "@/services/book.service";
 import { getErrorMessage } from "@/utils/error";

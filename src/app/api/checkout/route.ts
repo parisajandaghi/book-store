@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { checkout } from "@/services/checkout.service";
 import { CheckoutRequest } from "@/features/carts/cart.type";

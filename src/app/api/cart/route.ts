@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import {
@@ -41,12 +42,12 @@ export async function POST(req: Request) {
   try {
     // ۱. دریافت اطلاعات کتاب برای بررسی موجودی
     const book = getBookById(Number(bookId));
-    
+
     // ۲. بررسی تعداد فعلی این کتاب در سبد خرید کاربر
     const cart = getCart(user.id);
-    const existingItem = cart.find(item => item.book_id === Number(bookId));
+    const existingItem = cart.find((item) => item.book_id === Number(bookId));
     const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
-    
+
     // ۳. محاسبه تعداد کل درخواستی (موجودی داخل سبد + تعداد جدید)
     const totalRequestedQuantity = currentQuantityInCart + Number(quantity);
 
@@ -68,7 +69,6 @@ export async function POST(req: Request) {
     );
   }
 }
-
 
 export async function PUT(req: NextRequest) {
   try {

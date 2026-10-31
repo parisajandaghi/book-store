@@ -1,4 +1,4 @@
-// src/app/api/orders/[id]/cancel/route.ts
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { cancelOrder } from "@/services/order.service";

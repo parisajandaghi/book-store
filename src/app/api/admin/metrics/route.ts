@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { AdminMetricsService } from "@/services/admin-metrics.service";
 import { NextResponse } from "next/server";
 

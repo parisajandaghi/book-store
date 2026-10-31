@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { getErrorMessage } from "@/utils/error";
 import { getOrderHistory } from "@/services/order.service";
