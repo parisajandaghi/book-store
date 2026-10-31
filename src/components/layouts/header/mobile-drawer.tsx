@@ -32,7 +32,7 @@ export default function MobileDrawer({
   return (
     <Drawer
       opened={mobileMenuOpened}
-      onClose={close}
+      onClose={handleNavigation}
       position={locale === "fa" ? "right" : "left"}
       size="min(82vw, 320px)"
       withCloseButton={false}
