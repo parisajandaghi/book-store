@@ -52,24 +52,42 @@ export default function BookCard({ book }: BookCardProps) {
           },
         }}
       >
-        <Card.Section p={"sm"}>
-          <Image src={book.image_url} h={200} fit="fill" alt={book.image_url} />
+        <Card.Section
+          p="xs"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.15)",
+            height: 200,
+          }}
+        >
+          <Image
+            src={book.image_url}
+            h="100%"
+            w="auto"
+            fit="contain"
+            alt={localizedBook.title}
+          />
         </Card.Section>
 
-        <Stack gap={3}>
-          {" "}
+        <Stack gap={4} mt="xs" className={style.bookCardContent}>
           <Text fw={600} c="dimmed" lineClamp={1} size="sm">
             {localizedBook.title}
           </Text>
-          <Text fw={400} c="dimmed" lineClamp={1} size="xs">
+          <Text fw={400} c="dimmed" lineClamp={1} size="xs" opacity={0.85}>
             {localizedBook.author}
           </Text>
-          <Group justify="space-between" c="rgba(212, 175, 55, 0.6)">
+          <Group
+            justify="space-between"
+            wrap="nowrap"
+            c="rgba(212, 175, 55, 0.6)"
+            mt={2}
+          >
             <Text
-              size="xs"
+              size="11px"
               ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
             >
-              {" "}
               {locale === "en"
                 ? `${t("CurrencySymbol")} ${formattedPrice}`
                 : `${formattedPrice} ${t("CurrencySymbol")}`}
@@ -91,6 +109,7 @@ export default function BookCard({ book }: BookCardProps) {
                 size={18}
                 color="rgba(212, 175, 55, 0.6)"
                 onClick={handleAddToCart}
+                style={{ cursor: "pointer" }}
               />
             )}
           </Group>

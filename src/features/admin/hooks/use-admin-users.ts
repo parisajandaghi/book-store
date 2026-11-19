@@ -50,7 +50,7 @@ export function useUsers() {
     } catch {
       notify.error({
         title: t("User"),
-        message: t("UserRoleUpdatedSuccessfully"),
+        message: t("UserRoleUpdateFailed"),
       });
       return false;
     }

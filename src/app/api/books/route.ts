@@ -8,7 +8,6 @@ import {
 } from "@/services/book.service";
 import { getErrorMessage } from "@/utils/error";
 
-// چون هیچ عملیات ناهمگامی نداریم، کلمه async می‌تواند حذف شود (یا بماند، فرقی در Next.js ندارد)
 export function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -17,9 +16,10 @@ export function GET(req: Request) {
     const limit = Number(searchParams.get("limit")) || 10;
     const search = searchParams.get("search") ?? "";
     const sort = searchParams.get("sort") || "most_popular";
+    // دریافت زبان از ریکوئست فرانت (اختیاری)
+    const locale = searchParams.get("locale") || undefined;
 
-    // حذف await
-    const result = getBooks(page, limit, search, sort);
+    const result = getBooks(page, limit, search, sort, locale);
 
     return NextResponse.json(result, { status: 200 });
   } catch (error: unknown) {
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // حذف await
     const book = createBook(body);
 
     return NextResponse.json(book, { status: 201 });
@@ -58,7 +57,6 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // حذف await
     const updated = updateBook(id, updates);
 
     return NextResponse.json(updated, { status: 200 });
@@ -82,7 +80,6 @@ export function DELETE(req: NextRequest) {
       );
     }
 
-    // حذف await
     deleteBook(id);
 
     return NextResponse.json(

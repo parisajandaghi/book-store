@@ -43,6 +43,14 @@ export const useCart = () => {
     bookId: number,
     quantity: number = 1,
   ): Promise<boolean> => {
+    if (!user) {
+      notify.warning({
+        id: "auth-required",
+        title: t("LoginRequiredTitle"),
+        message: t("LoginRequired"),
+      });
+      return false;
+    }
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -51,7 +59,16 @@ export const useCart = () => {
       });
 
       if (!res.ok) {
+        if (res.status === 401) {
+          notify.warning({
+            id: "auth-required",
+            title: t("LoginRequiredTitle"),
+            message: t("LoginRequired"),
+          });
+          return false;
+        }
         notify.warning({
+          id: "warning",
           title: t("WarningTitle"),
           message: t("StockLimit"),
         });
@@ -60,6 +77,7 @@ export const useCart = () => {
 
       await mutate();
       notify.success({
+        id: "add-successfully",
         title: t("SuccessTitle"),
         message: t("AddedSuccess"),
       });
@@ -67,6 +85,7 @@ export const useCart = () => {
     } catch (err) {
       console.error(err);
       notify.error({
+        id: "network-error",
         title: t("ErrorTitle"),
         message: t("NetworkError"),
       });
@@ -181,7 +200,7 @@ export const useCart = () => {
     cartCount,
     isLoading,
     error,
-
+    mutate,
     addToCart,
     increaseQuantity,
     decreaseQuantity,

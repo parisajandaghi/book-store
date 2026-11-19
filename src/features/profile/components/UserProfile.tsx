@@ -28,6 +28,7 @@ export default function UserProfile() {
       <Menu.Dropdown
         bg="transparent"
         p={0}
+        mt={'xs'}
         style={{ border: "1px solid #7b6210", boxShadow: "none" }}
       >
         <GlassPanel p={"sm"}>

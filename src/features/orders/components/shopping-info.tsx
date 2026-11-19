@@ -16,7 +16,7 @@ export default function ShoppingInfo({
     <GlassPanel w="100%" flex={1} p="xs" bd="none">
       <Group gap={5}>
         <IconMapPin size={18} color="var(--mantine-color-surface-9)" />
-        <Text fz="xs" c="textMain.3">
+        <Text fw={500} c="textMain.0">
           {t("ShippingInfo")} :
         </Text>
       </Group>
@@ -41,7 +41,11 @@ export default function ShoppingInfo({
             <Text
               fz="xs"
               c="textMain.3"
-              style={{ direction: "ltr", textAlign: "start", width: "fit-content" }}
+              style={{
+                direction: "ltr",
+                textAlign: "start",
+                width: "fit-content",
+              }}
             >
               {phone_number}
             </Text>
@@ -52,7 +56,12 @@ export default function ShoppingInfo({
             <Text fz="xs" c="textMain.3">
               {t("FullAddress")} :
             </Text>
-            <Text fz="xs" c="textMain.3">
+            <Text
+              fz="xs"
+              c="textMain.3"
+              lineClamp={2}
+              style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
+            >
               {address}
             </Text>
           </Stack>
@@ -65,7 +74,11 @@ export default function ShoppingInfo({
             <Text
               fz="xs"
               c="textMain.3"
-              style={{ direction: "ltr", textAlign: "start", width: "fit-content" }}
+              style={{
+                direction: "ltr",
+                textAlign: "start",
+                width: "fit-content",
+              }}
             >
               {tracking_code || "---"}
             </Text>

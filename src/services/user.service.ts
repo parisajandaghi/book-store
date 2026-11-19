@@ -21,23 +21,44 @@ export function getProfile(userId: number): User {
   return safeUser;
 }
 
-export function updateProfile(userId: number, updates: Partial<User>): User {
+export async function updateProfile(
+  userId: number,
+  updates: Partial<User & { password?: string }>,
+): Promise<User> {
   const updateFields: string[] = [];
   const values: SqliteParam[] = [];
 
   if (updates.name !== undefined) {
     updateFields.push("name = ?");
-    values.push(updates.name);
+    values.push(updates.name.trim());
   }
 
   if (updates.email !== undefined) {
+    const normalizedEmail = updates.email.trim().toLowerCase();
+
+    // بررسی اینکه ایمیل جدید تکراری نباشد
+    const existing = db
+      .prepare("SELECT id FROM users WHERE LOWER(email) = ? AND id != ?")
+      .get(normalizedEmail, userId);
+
+    if (existing) {
+      throw new Error("این ایمیل قبلاً توسط کاربر دیگری ثبت شده است.");
+    }
+
     updateFields.push("email = ?");
-    values.push(updates.email);
+    values.push(normalizedEmail);
   }
 
   if (updates.phone !== undefined) {
     updateFields.push("phone = ?");
-    values.push(updates.phone);
+    values.push(updates.phone ? updates.phone.trim() : null);
+  }
+
+  // هش و ذخیره رمز عبور جدید (در صورتی که ارسال شده باشد)
+  if (updates.password && updates.password.trim().length >= 6) {
+    const hashedPassword = await hashPassword(updates.password.trim());
+    updateFields.push("password = ?");
+    values.push(hashedPassword);
   }
 
   if (updateFields.length === 0) {
@@ -60,10 +81,10 @@ export function updateProfile(userId: number, updates: Partial<User>): User {
 export function getUserByEmail(email: string): DBUser | null {
   const stmt = db.prepare(`
     SELECT * FROM users
-    WHERE email = ?
+    WHERE LOWER(email) = ?
   `);
 
-  const user = stmt.get(email) as DBUser | undefined;
+  const user = stmt.get(email.trim().toLowerCase()) as DBUser | undefined;
 
   return user ?? null;
 }
@@ -74,7 +95,8 @@ export async function createUser(data: {
   password: string;
   phone: string;
 }) {
-  const hashedPassword = await hashPassword(data.password);
+  const hashedPassword = await hashPassword(data.password.trim());
+  const normalizedEmail = data.email.trim().toLowerCase();
 
   const stmt = db.prepare(`
     INSERT INTO users (
@@ -88,17 +110,17 @@ export async function createUser(data: {
   `);
 
   const result = stmt.run(
-    data.name,
-    data.email,
+    data.name.trim(),
+    normalizedEmail,
     hashedPassword,
-    data.phone || null,
+    data.phone ? data.phone.trim() : null,
     "user",
   );
 
   return {
     id: Number(result.lastInsertRowid),
     name: data.name,
-    email: data.email,
+    email: normalizedEmail,
     phone: data.phone,
     role: "user",
   };
@@ -121,9 +143,11 @@ export function getAllUsers({
   const params: SqliteParam[] = [];
 
   if (search.trim()) {
-    whereClauses.push("(u.name LIKE ? OR u.email LIKE ? OR u.phone LIKE ?)");
-    const searchTerm = `%${search.trim()}%`;
-    params.push(searchTerm, searchTerm, searchTerm);
+    whereClauses.push(
+      "(u.name LIKE ? OR LOWER(u.email) LIKE ? OR u.phone LIKE ?)",
+    );
+    const searchTerm = `%${search.trim().toLowerCase()}%`;
+    params.push(`%${search.trim()}%`, searchTerm, `%${search.trim()}%`);
   }
 
   if (role.trim()) {
@@ -170,4 +194,3 @@ export function getAllUsers({
     totalPages: Math.ceil(total / limit) || 1,
   };
 }
-

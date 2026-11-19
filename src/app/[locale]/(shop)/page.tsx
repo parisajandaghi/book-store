@@ -6,8 +6,15 @@ import { Stack } from "@mantine/core";
 import { getTranslations } from "next-intl/server";
 import style from "./page.module.css";
 
-export default async function Page() {
-  const { data: books } = getBooks(1, 5);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  const { data: rawBooks } = getBooks(1, 5, "", "most_popular", locale);
+  const books = JSON.parse(JSON.stringify(rawBooks));
   const t = await getTranslations("Home");
 
   return (

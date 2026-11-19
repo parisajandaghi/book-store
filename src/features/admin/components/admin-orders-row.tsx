@@ -19,7 +19,7 @@ export function AdminOrderRow({ order }: AdminOrderRowProps) {
   const fontStyle = locale === "en" ? "system-ui, sans-serif" : "inherit";
 
   return (
-    <Table.Tr>
+    <Table.Tr style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.04)" }}>
       <Table.Td ta={"center"}>
         <Text size="sm" fw={500} c="#ffffffd9">
           {order.id}

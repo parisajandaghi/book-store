@@ -20,7 +20,13 @@ export class AdminMetricsService {
   }
 
   static getDashboardMetrics() {
+    // تعداد کل جلدها (موجودی انبار)
     const books = db.prepare(`SELECT SUM(stock) AS total FROM books`).get() as {
+      total: number;
+    };
+    
+    // تعداد کل عناوین کتاب (اضافه شده)
+    const booksCount = db.prepare(`SELECT COUNT(*) AS total FROM books`).get() as {
       total: number;
     };
 
@@ -98,6 +104,7 @@ export class AdminMetricsService {
 
     return {
       booksInStock: books?.total || 0,
+      totalTitles: booksCount?.total || 0, // اینجا اضافه شد
       newCustomers: customers?.total || 0,
       activeOrders: active?.total || 0,
       totalRevenue: revenue?.total || 0,

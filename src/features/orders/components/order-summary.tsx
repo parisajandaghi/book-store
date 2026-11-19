@@ -24,10 +24,10 @@ export default function OrderSummary({
       : `${formattedPrice} ${t1("CurrencySymbol")}`;
   };
   return (
-    <GlassPanel flex={{ base: "1 1 auto", md: 1 }} w={{ base: "100%", md: "auto" }} p={"sm"}>
+    <GlassPanel flex={{ base: "1 1 auto", md: 1 }} w={{ base: "100%", md: "auto" }}  p={"sm"}>
       <Group gap={5}>
         <IconFileDescription size={18} color="var(--mantine-color-surface-9)" />
-        <Text fz={"xs"} c={"textMain.3"}>
+        <Text fw={500} c={"textMain.0"}>
           {t2("OrderSummary")}
         </Text>
       </Group>
@@ -50,16 +50,18 @@ export default function OrderSummary({
           {renderPrice(subtotal)}
         </Text>
       </Group>
-      <Group justify="space-between" px={"xs"}>
+         <Group justify="space-between" px={"xs"}>
         <Text fz={"xs"} c={"textMain.3"}>
           {t2("ShippingFee")}
         </Text>
         <Text
           fz={"xs"}
-          c={"textMain.3"}
+          c={shippingFee === 0 ? "#22C55E" : "textMain.3"}
           ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
         >
-          {renderPrice(shippingFee)}
+          {shippingFee === 0
+            ?  t2("Free") 
+            : renderPrice(shippingFee)}
         </Text>
       </Group>
       <HorizontalDivider />

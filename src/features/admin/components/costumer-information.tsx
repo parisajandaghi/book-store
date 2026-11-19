@@ -40,7 +40,7 @@ export default function CostumerInformation({
           </Text>
         </Group>
 
-        <Stack gap="sm">
+        <Stack gap="xs">
           <Group justify="space-between" align="center" wrap="nowrap">
             <Group gap={8} wrap="nowrap">
               <IconUser size={16} color="#fefaf4" style={{ flexShrink: 0 }} />
@@ -95,8 +95,8 @@ export default function CostumerInformation({
         </Stack>
       </div>
 
+        <HorizontalDivider  />
       <div>
-        <HorizontalDivider my="sm" />
         <Group align="flex-start" gap="xs" wrap="nowrap">
           <IconMapPin
             size={18}
@@ -106,6 +106,7 @@ export default function CostumerInformation({
           <Text
             c={"textMain.0"}
             fz={"xs"}
+            lineClamp={1}
             style={{
               wordBreak: "break-word",
               lineHeight: 1.5,

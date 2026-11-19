@@ -1,4 +1,6 @@
 // src/features/books/hooks/useBooks.ts
+import { notify } from "@/utils/notification";
+import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import {
   BooksApiResponse,
@@ -6,9 +8,6 @@ import {
   UpdateBookDTO,
   UseBooksParams,
 } from "../book.type";
-import { notifications } from "@mantine/notifications";
-import { notify } from "@/utils/notification";
-import { useTranslations } from "next-intl";
 
 const fetcher = async (url: string): Promise<BooksApiResponse> => {
   const res = await fetch(url);
@@ -19,18 +18,22 @@ const fetcher = async (url: string): Promise<BooksApiResponse> => {
   return res.json();
 };
 
-export function useBooks({
-  page = 1,
-  limit = 4,
-  search = "",
-  sort = "most_popular",
-}: UseBooksParams = {}) {
+export function useBooks(
+  {
+    page = 1,
+    limit = 4,
+    search = "",
+    sort = "most_popular",
+    locale, // <--- اضافه شد
+  }: UseBooksParams & { locale?: string } = {}
+) {
   const t = useTranslations("Notifications");
   const queryParams = new URLSearchParams({
     page: page.toString(),
     limit: limit.toString(),
     ...(search.trim() ? { search: search.trim() } : {}),
     ...(sort ? { sort } : {}),
+    ...(locale ? { locale } : {}), // <--- پارامتر locale به کوئری استرینگ اضافه شد
   });
 
   const { data, error, isLoading, isValidating, mutate } =

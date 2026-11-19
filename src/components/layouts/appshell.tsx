@@ -18,7 +18,7 @@ function AppShellLayout({ children }: AppShellProps) {
     pathname.endsWith("/signup") ||
     pathname.endsWith("/forgot-password") ||
     pathname.endsWith("/reset-password");
-
+  const isAuthPage = hideHeader;
   return (
     <Stack mih="100vh">
       {!hideHeader && <Header />}
@@ -28,7 +28,8 @@ function AppShellLayout({ children }: AppShellProps) {
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          // marginTop:isAuthPage ? "" : "30px",
+          justifyContent: isAuthPage ? "center" : "flex-start",
         }}
       >
         {children}

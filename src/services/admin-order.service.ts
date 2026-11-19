@@ -2,6 +2,7 @@
 import db from "@/lib/db";
 import { Order } from "@/features/orders/order.type";
 import { OrderItem } from "@/features/orders/order-item.type";
+import { Translation } from "@/features/books/book.type";
 
 export const adminOrderService = {
   getAllOrders: () => {
@@ -34,8 +35,7 @@ export const adminOrderService = {
       WHERE o.id = ?
     `);
 
-    const order = orderStmt.get(orderId) as unknown as Order;
-    console.log('order', order);
+    const order = orderStmt.get(orderId) as Order | undefined;
 
     if (!order) {
       return null;
@@ -45,16 +45,35 @@ export const adminOrderService = {
       SELECT
         order_items.*,
         books.image_url,
-        translations.title,
-        translations.author
+        json_group_array(
+          json_object(
+            'id', translations.id,
+            'book_id', translations.book_id,
+            'language_code', translations.language_code,
+            'title', translations.title,
+            'author', translations.author,
+            'description', translations.description
+          )
+        ) AS translations
       FROM order_items
       JOIN books ON books.id = order_items.book_id
-      LEFT JOIN translations ON translations.book_id = books.id AND translations.language_code = 'en'
+      LEFT JOIN translations ON translations.book_id = books.id
       WHERE order_items.order_id = ?
       GROUP BY order_items.id
     `);
 
-    const items = itemsStmt.all(order.id) as unknown as OrderItem[];
+    type RawDbOrderItem = Omit<OrderItem, "translations"> & {
+      translations: string;
+    };
+
+    const rawItems = itemsStmt.all(order.id) as RawDbOrderItem[];
+
+    const items: OrderItem[] = rawItems.map((item) => ({
+      ...item,
+      translations: item.translations
+        ? (JSON.parse(item.translations) as Translation[])
+        : [],
+    }));
 
     return {
       ...order,
@@ -64,7 +83,7 @@ export const adminOrderService = {
 
   updateOrder: (
     orderId: number,
-    data: { status?: string; tracking_code?: string }
+    data: { status?: string; tracking_code?: string },
   ) => {
     const updates: string[] = [];
     const values: (string | number)[] = [];

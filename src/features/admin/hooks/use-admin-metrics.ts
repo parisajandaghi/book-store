@@ -10,6 +10,7 @@ export interface AdminMetrics {
   booksHistory: number[];
   customersHistory: number[];
   ordersHistory: number[];
+  totalTitles: number[];
 }
 
 const fetcher = async (url: string): Promise<AdminMetrics> => {

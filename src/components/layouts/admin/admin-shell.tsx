@@ -23,7 +23,7 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import LanguageDropdown from "../header/language-dropdown";
-
+import style from "./admin-shell.module.css";
 type AdminLayoutProps = {
   children: ReactNode;
 };
@@ -81,15 +81,10 @@ export default function AdminShell({ children }: AdminLayoutProps) {
         href="/"
         onClick={close}
         label={t("BacktoStore")}
+        className={style.backToStore}
         leftSection={
           <IconBuildingStore size="1.2rem" stroke={1.5} color="#bc982a" />
         }
-        styles={{
-          root: {
-            borderRadius: "8px",
-            color: "#fefaf4",
-          },
-        }}
       />
     </Stack>
   );
@@ -115,7 +110,7 @@ export default function AdminShell({ children }: AdminLayoutProps) {
           <Text
             c="surface.6"
             fw={700}
-            size="md"
+            size="xl"
             truncate="end"
             style={{ minWidth: 0 }}
           >
@@ -167,6 +162,7 @@ export default function AdminShell({ children }: AdminLayoutProps) {
         <Box
           flex={1}
           p={{ base: "xs", sm: "xl" }}
+          mt={"lg"}
           style={{ overflowY: "auto", overflowX: "hidden" }}
         >
           {children}

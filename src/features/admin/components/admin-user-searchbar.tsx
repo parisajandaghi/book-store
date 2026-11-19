@@ -9,7 +9,7 @@ import {
   Title,
   Box,
 } from "@mantine/core";
-import { IconSearch, IconX } from "@tabler/icons-react";
+import { IconPackage, IconSearch, IconUser, IconUsers, IconX } from "@tabler/icons-react";
 import React, { useState } from "react";
 import style from "../admin.module.css";
 import { useTranslations } from "next-intl";
@@ -29,16 +29,26 @@ export default function AdminUserSearchBar({
   return (
     <GlassPanel p={{ base: "xs", sm: "md" }}>
       <Group justify="space-between" align="center" wrap="wrap" gap="sm">
-        <Stack gap={2}>
-          <Title order={2} fz={{ base: "h4", sm: "h2" }} c="surface.5">
-            {t("User.UserManagment")}
-          </Title>
-          <Text c="dimmed" size="xs">
-            {t("User.UserDescription")}
-          </Text>
-        </Stack>
+        <Group align="center" wrap="nowrap" gap="sm">
+          <IconUsers
+            size={36}
+            color="var(--mantine-color-surface-9)"
+            style={{ flexShrink: 0 }}
+          />
+          <Stack gap={2} style={{ minWidth: 0 }}>
+            <Title order={2} fz={{ base: "h4", sm: "h2" }} c="surface.5">
+              {t("User.UserManagment")}
+            </Title>
+            <Text c="dimmed" size="xs">
+              {t("User.UserDescription")}
+            </Text>
+          </Stack>
+        </Group>
 
-        <Box w={{ base: "100%", sm: "auto" }} style={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
+        <Box
+          w={{ base: "100%", sm: "auto" }}
+          style={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
+        >
           <Paper
             className={`${style.inputWrapper} ${focused ? style.focused : ""}`}
             w={{ base: "100%", sm: 300 }}

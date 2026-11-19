@@ -5,6 +5,10 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
 
+
+   width: 100%; 
+  min-width: 0; 
+  overflow: hidden;
   transition: all 150ms ease;
 }
 
@@ -30,6 +34,9 @@
   margin-top: 8px;
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-xs);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 .indicator {
   background-color: transparent;

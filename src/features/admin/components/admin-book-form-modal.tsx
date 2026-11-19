@@ -1,3 +1,5 @@
+"use client";
+
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import {
   Book,
@@ -5,9 +7,12 @@ import {
   CreateBookDTO,
 } from "@/features/books/book.type";
 import { toCreateDTO, toFormValues } from "@/utils/book.utils";
+import { notify } from "@/utils/notification";
 import {
   Button,
+  FileInput,
   Group,
+  Image,
   Modal,
   SimpleGrid,
   Stack,
@@ -15,8 +20,8 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import style from "../../carts/cart.module.css";
 import styles from "../admin.module.css";
 
@@ -27,16 +32,22 @@ interface BookFormModalProps {
   initialData: Book | null;
 }
 
-export function BookFormModal({
-  opened,
-  onClose,
-  onSubmit,
-  initialData,
-}: BookFormModalProps) {
+interface InnerBookFormProps {
+  onClose: () => void;
+  onSubmit: (values: CreateBookDTO) => Promise<boolean>;
+  initialData: Book | null;
+}
+
+function InnerBookForm({ onClose, onSubmit, initialData }: InnerBookFormProps) {
   const isEditing = Boolean(initialData);
   const t = useTranslations("Admin");
+  const locale = useLocale();
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   const form = useForm<BookFormValues>({
-    initialValues: toFormValues(initialData),
+    initialValues: toFormValues(initialData, locale),
     validateInputOnBlur: true,
     validate: {
       title: (val) => {
@@ -72,14 +83,12 @@ export function BookFormModal({
           return t("Modal.StockValidation");
         }
         const num = Number(val);
-
         if (num < 0) return t("Modal.Stock");
         return null;
       },
       image_url: (val) => {
         const trimmed = (val ?? "").trim();
         if (!trimmed) return t("Modal.ImageUrlValidation");
-
         const isValidUrl =
           trimmed.startsWith("/") || /^https?:\/\/.+\..+/i.test(trimmed);
         if (!isValidUrl) return t("Modal.ImageUrl");
@@ -88,18 +97,174 @@ export function BookFormModal({
     },
   });
 
-  useEffect(() => {
-    if (opened) {
-      form.setValues(toFormValues(initialData));
-      form.clearErrors();
-      form.resetDirty();
-    }
-  }, [opened, initialData]);
+  const handleFileChange = async (file: File | null) => {
+    setSelectedFile(file);
+    if (!file) return;
 
-  const handleSubmit = (values: BookFormValues) => {
-    const dto = toCreateDTO(values, initialData?.id);
-    onSubmit(dto);
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/uploads", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(
+          data.error ||
+            (locale === "en" ? "Image upload failed" : "خطا در آپلود تصویر"),
+        );
+      }
+
+      form.setFieldValue("image_url", data.url);
+      form.clearFieldError("image_url");
+
+      notify.success({
+        title: t("Book.ImageUpload"),
+        message: t("Book.ImageUploadedSuccessfully"),
+      });
+    } catch (error: unknown) {
+      const fallbackMsg = t("Book.ImageUploadFailed");
+      const message = error instanceof Error ? error.message : fallbackMsg;
+
+      notify.error({
+        title: t("Book.ImageUpload"),
+        message,
+      });
+      setSelectedFile(null);
+    } finally {
+      setIsUploading(false);
+    }
   };
+
+  const handleSubmit = async (values: BookFormValues) => {
+    const dto = toCreateDTO(values, initialData?.id, locale);
+    const success = await onSubmit(dto);
+    if (success) {
+      onClose();
+    }
+  };
+
+  return (
+    <GlassPanel p={{ base: "sm", sm: "md" }}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="xs">
+          <Title order={3} c="textMain.0" fz={{ base: "h4", sm: "h3" }}>
+            {isEditing ? t("Book.EditBookDetails") : t("Book.AddNewBook")}
+          </Title>
+
+          <TextInput
+            label={t("Book.BookTitle")}
+            placeholder={t("Book.BookTitle")}
+            withAsterisk
+            classNames={{
+              input: style.input,
+              label: style.label,
+            }}
+            {...form.getInputProps("title")}
+          />
+
+          <TextInput
+            label={t("Book.Author")}
+            placeholder={t("Book.Author")}
+            withAsterisk
+            classNames={{
+              input: style.input,
+              label: style.label,
+            }}
+            {...form.getInputProps("author")}
+          />
+
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
+            <TextInput
+              label={t("Book.Price")}
+              withAsterisk
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              styles={{
+                input: {
+                  fontFamily:
+                    locale === "en" ? "system-ui, sans-serif" : "inherit",
+                },
+              }}
+              {...form.getInputProps("price")}
+            />
+            <TextInput
+              label={t("Book.Inventory")}
+              withAsterisk
+              classNames={{
+                input: style.input,
+                label: style.label,
+              }}
+              styles={{
+                input: {
+                  fontFamily:
+                    locale === "en" ? "system-ui, sans-serif" : "inherit",
+                },
+              }}
+              {...form.getInputProps("stock")}
+            />
+          </SimpleGrid>
+
+          <FileInput
+            label={t("Book.ImgUrl")}
+            placeholder={t("Book.ChooseImage")}
+            accept="image/png,image/jpeg,image/webp,image/avif"
+            value={selectedFile}
+            onChange={handleFileChange}
+            disabled={isUploading}
+            clearable
+            error={form.errors.image_url}
+            withAsterisk={!isEditing}
+            classNames={{
+              input: style.input,
+              label: style.label,
+            }}
+          />
+
+          {form.values.image_url && (
+            <Group justify="center" my="xs">
+              <Image
+                src={form.values.image_url}
+                alt="Book preview"
+                h={120}
+                w="auto"
+                fit="contain"
+                radius="md"
+              />
+            </Group>
+          )}
+
+          <Group justify="center" mt="md" gap="xs">
+            <Button onClick={onClose} className={styles.modalButton}>
+              {t("Book.Cancle")}
+            </Button>
+            <Button
+              type="submit"
+              loading={form.submitting || isUploading}
+              className={styles.modalButton}
+            >
+              {isEditing ? t("Book.Save") : t("Book.AddNewBook")}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+    </GlassPanel>
+  );
+}
+
+export function BookFormModal({
+  opened,
+  onClose,
+  onSubmit,
+  initialData,
+}: BookFormModalProps) {
+  const locale = useLocale();
 
   return (
     <Modal
@@ -119,81 +284,14 @@ export function BookFormModal({
         },
       }}
     >
-      <GlassPanel p={{ base: "sm", sm: "md" }}>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap={"xs"}>
-            <Title order={3} c={"textMain.0"} fz={{ base: "h4", sm: "h3" }}>
-              {isEditing ? t("Book.EditBookDetails") : t("Book.AddNewBook")}
-            </Title>
-            <TextInput
-              label={t("Book.BookTitle")}
-              placeholder={t("Book.BookTitle")}
-              withAsterisk
-              classNames={{
-                input: style.input,
-                label: style.label,
-              }}
-              {...form.getInputProps("title")}
-            />
-
-            <TextInput
-              label={t("Book.Author")}
-              placeholder={t("Book.Author")}
-              withAsterisk
-              classNames={{
-                input: style.input,
-                label: style.label,
-              }}
-              {...form.getInputProps("author")}
-            />
-
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
-              <TextInput
-                label={t("Book.Price")}
-                withAsterisk
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-                {...form.getInputProps("price")}
-              />
-              <TextInput
-                label={t("Book.Inventory")}
-                withAsterisk
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-                {...form.getInputProps("stock")}
-              />
-            </SimpleGrid>
-
-            <TextInput
-              label={t("Book.ImgUrl")}
-              placeholder={t("Book.PlaceHolder.UrlExam")}
-              withAsterisk
-              classNames={{
-                input: style.input,
-                label: style.label,
-              }}
-              {...form.getInputProps("image_url")}
-            />
-
-            <Group justify="center" mt="md" gap={"xs"}>
-              <Button onClick={onClose} className={styles.modalButton}>
-                {t("Book.Cancle")}
-              </Button>
-              <Button
-                type="submit"
-                loading={form.submitting}
-                className={styles.modalButton}
-              >
-                {isEditing ? t("Book.Save") : t("Book.AddNewBook")}
-              </Button>
-            </Group>
-          </Stack>
-        </form>
-      </GlassPanel>
+      {opened && (
+        <InnerBookForm
+          key={`${initialData?.id ?? "new"}-${locale}`}
+          onClose={onClose}
+          onSubmit={onSubmit}
+          initialData={initialData}
+        />
+      )}
     </Modal>
   );
 }

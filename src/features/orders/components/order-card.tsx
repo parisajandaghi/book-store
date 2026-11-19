@@ -9,7 +9,6 @@ import {
   Card,
   Center,
   Group,
-  Loader,
   ScrollArea,
   Stack,
   Text,
@@ -24,6 +23,7 @@ import { useAtom } from "jotai";
 import { useLocale, useTranslations } from "next-intl";
 import { useOrderHistory } from "../hooks/use-order-history";
 import style from "../order-card.module.css";
+import UserOrderCardSkeleton from "./user-order-card-skeleton";
 
 export default function OrderCard() {
   const [filterStatus] = useAtom(filterStatusAtom);
@@ -35,17 +35,13 @@ export default function OrderCard() {
   const { orders, isLoading, error } = useOrderHistory();
 
   if (isLoading) {
-    return (
-      <Center h={200}>
-        <Loader color="surface.9" />
-      </Center>
-    );
+    return <UserOrderCardSkeleton count={5} />;
   }
 
   if (error) {
     return (
       <Center h={200}>
-        <Text c="red">خطا در دریافت لیست سفارشات</Text>
+        <Text c="red">{t1("FetchingOrdersFaild")}</Text>
       </Center>
     );
   }

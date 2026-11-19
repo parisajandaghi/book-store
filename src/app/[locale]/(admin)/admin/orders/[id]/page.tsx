@@ -2,6 +2,7 @@
 
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import GlassPanel from "@/components/ui/glass/glass-panel";
+import AdminOrdersDetailsSkeleton from "@/features/admin/components/admin-orders-details-skeleton";
 import CostumerInformation from "@/features/admin/components/costumer-information";
 import { useAdminOrder } from "@/features/admin/hooks/use-admin-orders";
 import { useStatusBadge } from "@/features/admin/hooks/use-status-badge";
@@ -13,7 +14,7 @@ import {
   Center,
   Grid,
   Group,
-  Loader,
+  ScrollArea,
   Select,
   Stack,
   Text,
@@ -41,7 +42,6 @@ export default function AdminOrderDetailsPage() {
   const orderId = params.id as string;
 
   const { order, error, isLoading, updateOrder } = useAdminOrder(orderId);
-
   const { getStatusBadge } = useStatusBadge();
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -51,11 +51,7 @@ export default function AdminOrderDetailsPage() {
   );
 
   if (isLoading) {
-    return (
-      <Center h={400}>
-        <Loader size="lg" color="surface.9" />
-      </Center>
-    );
+    return <AdminOrdersDetailsSkeleton />;
   }
 
   if (error || !order) {
@@ -92,6 +88,7 @@ export default function AdminOrderDetailsPage() {
   const hasChanges =
     currentStatus !== originalStatus ||
     currentTrackingCode !== originalTrackingCode;
+
   const handleUpdateOrder = async () => {
     if (!hasChanges) return;
 
@@ -110,6 +107,7 @@ export default function AdminOrderDetailsPage() {
       setIsUpdating(false);
     }
   };
+
   const isRtl = locale === "fa";
   const BackIcon = isRtl ? IconArrowLeft : IconArrowRight;
   const fontStyle = locale === "en" ? "system-ui, sans-serif" : "inherit";
@@ -180,84 +178,89 @@ export default function AdminOrderDetailsPage() {
         </Group>
       </GlassPanel>
 
-      <Grid gutter={{ base: "md", md: "lg" }} align="stretch" w="100%">
-        <Grid.Col span={{ base: 12, md: 8 }}>
-          <OrderItems items={order.order_items || []} />
-        </Grid.Col>
+      <ScrollArea h={{ base: 360, sm: 450 }} offsetScrollbars>
+        <Grid gutter={{ base: "md", md: "lg" }} align="stretch" w="100%">
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <OrderItems items={order.order_items || []} />
+          </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <GlassPanel
-            p={{ base: "md", sm: "lg" }}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <Group gap="sm" mb="md">
-              <IconEdit size={20} color="var(--mantine-color-surface-9)" />
-              <Text c="textMain.0" fw={500}>
-                {t("AdminActions")}
-              </Text>
-            </Group>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <GlassPanel
+              p={{ base: "md", sm: "lg" }}
+              style={{ width: "100%", height: "100%" }}
+            >
+              <Group gap="sm" mb="md">
+                <IconEdit size={20} color="var(--mantine-color-surface-9)" />
+                <Text c="textMain.0" fw={500}>
+                  {t("AdminActions")}
+                </Text>
+              </Group>
 
-            <Stack gap="md">
-              <Select
-                label={t("Status")}
-                placeholder={t("Status")}
-                value={currentStatus}
-                onChange={setSelectedStatus}
-                data={[
-                  { value: "pending", label: t1("Status.pending") },
-                  { value: "processing", label: t1("Status.processing") },
-                  { value: "delivered", label: t1("Status.delivered") },
-                  { value: "cancelled", label: t1("Status.cancelled") },
-                ]}
-                classNames={{
-                  dropdown: "custom-select-dropdown",
-                  option: "custom-select-option",
-                  input: style.input,
-                  label: style.label,
-                }}
-              />
+              <Stack gap="md">
+                <Select
+                  label={t("Status")}
+                  placeholder={t("Status")}
+                  value={currentStatus}
+                  onChange={setSelectedStatus}
+                  data={[
+                    { value: "pending", label: t1("Status.pending") },
+                    { value: "processing", label: t1("Status.processing") },
+                    { value: "delivered", label: t1("Status.delivered") },
+                    { value: "cancelled", label: t1("Status.cancelled") },
+                  ]}
+                  classNames={{
+                    dropdown: "custom-select-dropdown",
+                    option: "custom-select-option",
+                    input: style.input,
+                    label: style.label,
+                  }}
+                />
 
-              <TextInput
-                label={t("TrackingCode")}
-                placeholder={t("TrackingCode")}
-                value={currentTrackingCode}
-                classNames={{
-                  input: style.input,
-                  label: style.label,
-                }}
-                onChange={(e) => setTrackingCodeInput(e.currentTarget.value)}
-              />
+                <TextInput
+                  label={t("TrackingCode")}
+                  placeholder={t("TrackingCode")}
+                  value={currentTrackingCode}
+                  classNames={{
+                    input: style.input,
+                    label: style.label,
+                  }}
+                  onChange={(e) => setTrackingCodeInput(e.currentTarget.value)}
+                />
 
-              <PrimaryButton
-                btnText={t("UpdateOrder")}
-                icon={
-                  <IconCheck size={18} color="var(--mantine-color-surface-9)" />
-                }
-                isLoading={isUpdating}
-                onClick={handleUpdateOrder}
-                mt="sm"
-              />
-            </Stack>
-          </GlassPanel>
-        </Grid.Col>
+                <PrimaryButton
+                  btnText={t("UpdateOrder")}
+                  icon={
+                    <IconCheck
+                      size={18}
+                      color="var(--mantine-color-surface-9)"
+                    />
+                  }
+                  isLoading={isUpdating}
+                  onClick={handleUpdateOrder}
+                  mt="sm"
+                />
+              </Stack>
+            </GlassPanel>
+          </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 8 }}>
-          <OrderSummary
-            subtotal={order.subtotal}
-            shippingFee={order.shipping_fee}
-            totalAmount={order.total}
-          />
-        </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <OrderSummary
+              subtotal={order.subtotal}
+              shippingFee={order.shipping_fee}
+              totalAmount={order.total}
+            />
+          </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <CostumerInformation
-            address={order.address}
-            email={order.customer_email}
-            name={order.customer_name}
-            phone={order.phone}
-          />
-        </Grid.Col>
-      </Grid>
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <CostumerInformation
+              address={order.address}
+              email={order.customer_email}
+              name={order.customer_name}
+              phone={order.phone}
+            />
+          </Grid.Col>
+        </Grid>
+      </ScrollArea>
     </Stack>
   );
 }

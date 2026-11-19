@@ -10,9 +10,9 @@ export function useOrderHistory() {
   );
 
   return {
-    orders: data || [], // اگه دیتا هنوز نیومده بود، آرایه خالی برمی‌گردونه تا map ارور نده
+    orders: data || [],
     isLoading,
     error,
-    mutate, // برای زمانی که بخوای لیست رو دستی رفرش کنی
+    mutate,
   };
 }

@@ -13,24 +13,27 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
 
 export default async function BookDetails({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }) {
-  const t = await getTranslations("BooksDetails");
-  const t1 = await getTranslations("Product");
-  const locale = await getLocale();
-  const { id } = await params;
+  const { id,locale } = await params;
+ const t = await getTranslations({ locale, namespace: "BooksDetails" });
+  const t1 = await getTranslations({ locale, namespace: "Product" });
+
+  
 
   let book;
 
   try {
     book = getBookById(id);
+    console.log("--> Current URL locale:", locale);
+  console.log("--> Book translations in DB:", book?.translations);
   } catch (error) {
     if (error) notFound();
   }

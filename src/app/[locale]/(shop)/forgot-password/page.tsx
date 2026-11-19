@@ -27,13 +27,14 @@ export default function ForgotPassword() {
       px="md"
       py="xl"
     >
-      <GlassPanel
-        w="100%"
-        maw={480}
-        p={{ base: "xl", sm: 40 }}
-      >
+      <GlassPanel w="100%" maw={480} p={{ base: "xl", sm: 40 }}>
         <Stack w="100%" gap="lg">
-          <Text fz={{ base: "h4", sm: "h3" }} fw="bold" c="surface.9" ta="center">
+          <Text
+            fz={{ base: "h4", sm: "h3" }}
+            fw="bold"
+            c="surface.9"
+            ta="center"
+          >
             {t("Form.PasswordRecovery")}
           </Text>
 
@@ -46,7 +47,7 @@ export default function ForgotPassword() {
               <TextInput
                 w="100%"
                 label={t("Form.Email")}
-                placeholder="abc@abc.com"
+                placeholder="Email"
                 classNames={{
                   input: style.input,
                   label: style.label,

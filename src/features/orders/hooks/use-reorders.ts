@@ -11,11 +11,11 @@ export const useReOrder = () => {
 
   const reorder = async (items: OrderItem[]): Promise<boolean> => {
     if (!items || items.length === 0) {
-      notifications.show({
-        color: "yellow",
-        title: "خطا",
-        message: "هیچ آیتمی برای خرید مجدد یافت نشد.",
-      });
+      // notifications.show({
+      //   color: "yellow",
+      //   title: "خطا",
+      //   message: "هیچ آیتمی برای خرید مجدد یافت نشد.",
+      // });
       return false;
     }
 
@@ -51,35 +51,35 @@ export const useReOrder = () => {
       await mutate("/api/cart");
 
       if (failed.length === 0) {
-        notifications.show({
-          color: "teal",
-          title: "خرید مجدد موفق",
-          message: "تمامی اقلام سفارش به سبد خرید شما اضافه شدند.",
-        });
+        // notifications.show({
+        //   color: "teal",
+        //   title: "خرید مجدد موفق",
+        //   message: "تمامی اقلام سفارش به سبد خرید شما اضافه شدند.",
+        // });
         router.push("/cart");
         return true;
       } else if (succeeded.length > 0) {
-        notifications.show({
-          color: "yellow",
-          title: "افزودن ناقص",
-          message: "برخی از اقلام به دلیل اتمام موجودی اضافه نشدند.",
-        });
+        // notifications.show({
+        //   color: "yellow",
+        //   title: "افزودن ناقص",
+        //   message: "برخی از اقلام به دلیل اتمام موجودی اضافه نشدند.",
+        // });
         router.push("/cart");
         return true;
       } else {
-        notifications.show({
-          color: "red",
-          title: "خطا",
-          message: "امکان افزودن اقلام به سبد خرید وجود نداشت.",
-        });
+        // notifications.show({
+        //   color: "red",
+        //   title: "خطا",
+        //   message: "امکان افزودن اقلام به سبد خرید وجود نداشت.",
+        // });
         return false;
       }
     } catch {
-      notifications.show({
-        color: "red",
-        title: "خطای ارتباط",
-        message: "مشکلی در برقراری ارتباط با سرور رخ داد.",
-      });
+      // notifications.show({
+      //   color: "red",
+      //   title: "خطای ارتباط",
+      //   message: "مشکلی در برقراری ارتباط با سرور رخ داد.",
+      // });
       return false;
     } finally {
       setIsReordering(false);

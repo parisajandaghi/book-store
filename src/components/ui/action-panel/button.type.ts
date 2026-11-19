@@ -12,4 +12,5 @@ export type ButtonProps = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isLoading?: boolean;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 };

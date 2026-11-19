@@ -19,10 +19,10 @@ export default function SecondaryButton({
       size={size}
       radius={radius}
       onClick={onClick}
-      px={btnText ? undefined : 0} /* اگر فقط آیکون است، پدینگ صفر شود تا مربع و متقارن بماند */
+      px={btnText ? undefined : 0}
     >
+      {btnText && <Text fz={{ base: 12, sm: 14 }} mx={'xs'}>{btnText}</Text>}
       {icon}
-      {btnText && <Text fz={{ base: 12, sm: 14 }}>{btnText}</Text>}
     </Button>
   );
 }

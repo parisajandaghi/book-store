@@ -1,7 +1,6 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
-import { SHIPPING_FEE } from "@/constants";
 import CartItemsList from "@/features/carts/components/cart-items-list";
 import { useCart } from "@/features/carts/hooks/use-cart";
 import AddressModal from "@/features/checkout/components/address-modal";
@@ -11,6 +10,7 @@ import ShippingStep from "@/features/checkout/components/shipping-step";
 import { useCheckoutForms } from "@/features/checkout/hooks/use-checkout-forms";
 import { useCheckoutStepper } from "@/features/checkout/hooks/use-checkout-stepper";
 import OrderSummary from "@/features/orders/components/order-summary";
+
 import { useRouter } from "@/navigation";
 import {
   Box,
@@ -30,6 +30,10 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect } from "react";
 import style from "../../../../../features/carts/cart.module.css";
+import { useStoreSettings } from "@/features/admin/hooks/use-store-settings";
+import { useAtomValue } from "jotai";
+import { checkoutAtom } from "@/store/checkout-atom";
+import CheckoutSkeleton from "@/features/checkout/components/checkout-skeleton";
 
 export default function Checkout() {
   const router = useRouter();
@@ -37,17 +41,33 @@ export default function Checkout() {
   const { activeStep, isProcessing, nextStep, prevStep, setActiveStep } =
     useCheckoutStepper({ paymentForm });
   const { cartTotal, isLoading } = useCart();
+  const { settings } = useStoreSettings();
+  const checkoutState = useAtomValue(checkoutAtom);
 
-  const totalAmount = cartTotal + SHIPPING_FEE;
+  const baseRate = settings?.shipping_rate ?? 35000;
+  const threshold = settings?.free_shipping_threshold ?? 300000;
+  const isFreeShipping = cartTotal >= threshold;
+
+  const shippingFee =
+    checkoutState.shippingMethod === "express"
+      ? isFreeShipping
+        ? 100000
+        : baseRate + 100000
+      : isFreeShipping
+        ? 0
+        : baseRate;
+
+  const totalAmount = cartTotal + shippingFee;
 
   const locale = useLocale();
   const t = useTranslations("CheckoutInfo");
 
   useEffect(() => {
-    if (!isLoading && cartTotal === 0) {
+    if (!isLoading && cartTotal === 0 && !isProcessing) {
       router.replace("/cart");
     }
-  }, [cartTotal, isLoading, router]);
+  }, [cartTotal, isLoading, isProcessing, router]);
+
   const icon =
     locale === "fa" ? (
       <IconArrowLeft size={14} />
@@ -129,42 +149,54 @@ export default function Checkout() {
           />
         )}
       </Group>
-
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        align={{ base: "stretch", md: "flex-start" }}
-        gap="md"
-      >
-        <Box flex={{ base: "1 1 auto", md: 2 }} w="100%">
-          {activeStep === 0 && <AddressStep form={checkoutForm} />}
-          {activeStep === 1 && <ShippingStep />}
-          {activeStep === 2 && <PaymentStep form={paymentForm} />}
-        </Box>
-
-        <Box flex={{ base: "1 1 auto", md: 1 }} w="100%">
-          <OrderSummary
-            subtotal={cartTotal}
-            shippingFee={SHIPPING_FEE}
-            totalAmount={totalAmount}
-            button={
-              <PrimaryButton
-                btnText={getButtonText()}
-                width={"100%"}
-                onClick={nextStep}
-                isLoading={isProcessing}
-              />
-            }
+      {isLoading ? (
+        <CheckoutSkeleton />
+      ) : (
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          align="stretch"
+          gap="md"
+        >
+          <Box
+            flex={{ base: "1 1 auto", md: 2 }}
+            w="100%"
+            style={{ display: "flex", flexDirection: "column" }}
           >
-            <ScrollArea
-              h={{ base: 120, sm: 150 }}
-              offsetScrollbars
-              type="hover"
+            {activeStep === 0 && <AddressStep form={checkoutForm} />}
+            {activeStep === 1 && <ShippingStep />}
+            {activeStep === 2 && <PaymentStep form={paymentForm} />}
+          </Box>
+
+          <Box
+            flex={{ base: "1 1 auto", md: 1 }}
+            w="100%"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <OrderSummary
+              subtotal={cartTotal}
+              shippingFee={shippingFee}
+              totalAmount={totalAmount}
+              button={
+                <PrimaryButton
+                  btnText={getButtonText()}
+                  width={"100%"}
+                  onClick={nextStep}
+                  isLoading={isProcessing}
+                />
+              }
             >
-              <CartItemsList compact={true} />
-            </ScrollArea>
-          </OrderSummary>
-        </Box>
-      </Flex>
+              <ScrollArea
+                h={{ base: 120, sm: 150 }}
+                offsetScrollbars
+                type="hover"
+              >
+                <CartItemsList compact={true} />
+              </ScrollArea>
+            </OrderSummary>
+          </Box>
+        </Flex>
+      )}
+
       <AddressModal form={checkoutForm} />
     </Container>
   );

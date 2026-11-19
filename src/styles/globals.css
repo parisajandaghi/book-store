@@ -18,14 +18,11 @@ body,
 
 .appBackground {
   min-height: 100vh;
-
+  min-height: 100dvh;
+  width: 100%;
   background:
     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
-    url("/images/book-cover-1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+    url("/images/book-cover-1.jpg") center center / cover no-repeat fixed;
 }
 
 .custom-select-input {

@@ -12,6 +12,7 @@ import {
 import { IconShoppingBag } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import { OrderItem } from "../order-item.type";
+import { getLocalizedBook } from "@/utils/book.utils";
 
 interface OrderItemsProps {
   items: OrderItem[];
@@ -33,7 +34,7 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
     >
       <Group gap={5}>
         <IconShoppingBag size={18} color="var(--mantine-color-surface-9)" />
-        <Text fz="xs" c="textMain.3">
+        <Text fw={500} c="textMain.0">
           {t("OrderItems")}
         </Text>
       </Group>
@@ -74,86 +75,93 @@ export default function OrderItems({ items = [] }: OrderItemsProps) {
 
           <ScrollArea h={220} offsetScrollbars p="xs" type="hover">
             <Stack gap="xs">
-              {items.map((item) => (
-                <Grid
-                  key={item.id}
-                  p="xs"
-                  align="center"
-                  style={{
-                    backgroundColor: "#1f0f1fa8",
-                    borderRadius: 5,
-                    border: "1px solid #d4af3766",
-                  }}
-                >
-                  <Grid.Col span={5}>
-                    <Group wrap="nowrap" gap="xs">
-                      <Image
-                        src={item.image_url}
-                        w={30}
-                        h={40}
-                        alt={item.title}
-                        radius={4}
-                      />
-                      <Stack gap={2}>
-                        <Text fz="xs" c="textMain.3" lineClamp={1}>
-                          {item.title}
+              {items.map((item) => {
+                console.log("item", item);
+
+                const localized = getLocalizedBook(item, locale);
+                console.log("localized", localized);
+
+                return (
+                  <Grid
+                    key={item.id}
+                    p="xs"
+                    align="center"
+                    style={{
+                      backgroundColor: "#1f0f1fa8",
+                      borderRadius: 5,
+                      border: "1px solid #d4af3766",
+                    }}
+                  >
+                    <Grid.Col span={5}>
+                      <Group wrap="nowrap" gap="xs">
+                        <Image
+                          src={item.image_url}
+                          w={30}
+                          h={40}
+                          alt={item.title}
+                          radius={4}
+                        />
+                        <Stack gap={2}>
+                          <Text fz="xs" c="textMain.3" lineClamp={1}>
+                            {localized.title}
+                          </Text>
+                          <Text fz="xs" c="textMain.3" lineClamp={1}>
+                            {localized.author}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                      <Center h="100%">
+                        <Text
+                          fz="xs"
+                          c="textMain.3"
+                          style={{
+                            fontFamily:
+                              locale === "en"
+                                ? "system-ui, -apple-system, sans-serif"
+                                : undefined,
+                          }}
+                        >
+                          {item.price.toLocaleString()}
                         </Text>
-                        <Text fz="xs" c="textMain.3" lineClamp={1}>
-                          {item.author}
+                      </Center>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                      <Center h="100%">
+                        <Text
+                          fz="xs"
+                          c="textMain.3"
+                          style={{
+                            fontFamily:
+                              locale === "en"
+                                ? "system-ui, -apple-system, sans-serif"
+                                : undefined,
+                          }}
+                        >
+                          {item.quantity}
                         </Text>
-                      </Stack>
-                    </Group>
-                  </Grid.Col>
-                  <Grid.Col span={2}>
-                    <Center h="100%">
-                      <Text
-                        fz="xs"
-                        c="textMain.3"
-                        style={{
-                          fontFamily:
-                            locale === "en"
-                              ? "system-ui, -apple-system, sans-serif"
-                              : undefined,
-                        }}
-                      >
-                        {item.price.toLocaleString()}
-                      </Text>
-                    </Center>
-                  </Grid.Col>
-                  <Grid.Col span={2}>
-                    <Center h="100%">
-                      <Text
-                        fz="xs"
-                        c="textMain.3"
-                        style={{
-                          fontFamily:
-                            locale === "en"
-                              ? "system-ui, -apple-system, sans-serif"
-                              : undefined,
-                        }}
-                      >
-                        {item.quantity}
-                      </Text>
-                    </Center>
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                    <Center h="100%">
-                      <Text
-                        fz="xs"
-                        c="textMain.3"
-                        style={{
-                          fontFamily:
-                            locale === "en"
-                              ? "system-ui, -apple-system, sans-serif"
-                              : undefined,
-                        }}
-                      >
-                        {(item.price * item.quantity).toLocaleString()}
-                      </Text>
-                    </Center>
-                  </Grid.Col>
-                </Grid>
-              ))}
+                      </Center>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Center h="100%">
+                        <Text
+                          fz="xs"
+                          c="textMain.3"
+                          style={{
+                            fontFamily:
+                              locale === "en"
+                                ? "system-ui, -apple-system, sans-serif"
+                                : undefined,
+                          }}
+                        >
+                          {(item.price * item.quantity).toLocaleString()}
+                        </Text>
+                      </Center>
+                    </Grid.Col>
+                  </Grid>
+                );
+              })}
               {items.length === 0 && (
                 <Center p="md">
                   <Text fz="sm" c="dimmed">

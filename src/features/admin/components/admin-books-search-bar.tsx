@@ -10,7 +10,7 @@ import {
   Input,
   Box,
 } from "@mantine/core";
-import { IconPlus, IconSearch, IconX } from "@tabler/icons-react";
+import { IconBooks, IconPlus, IconSearch, IconX } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import style from "../admin.module.css";
 import React, { useState } from "react";
@@ -32,14 +32,21 @@ export default function AdminBooksSearchBar({
   return (
     <GlassPanel p={{ base: "xs", sm: "md" }}>
       <Group justify="space-between" align="center" wrap="wrap" gap="sm">
-        <Stack gap={2}>
-          <Title order={2} fz={{ base: "h4", sm: "h2" }} c="surface.5">
-            {t("Book.BookInventory")}
-          </Title>
-          <Text c="dimmed" size="xs">
-            {t("Book.BookDescription")}
-          </Text>
-        </Stack>
+        <Group align="center" wrap="nowrap" gap="sm">
+          <IconBooks
+            size={36}
+            color="var(--mantine-color-surface-9)"
+            style={{ flexShrink: 0 }}
+          />
+          <Stack gap={2}>
+            <Title order={2} fz={{ base: "h4", sm: "h2" }} c="surface.5">
+              {t("Book.BookInventory")}
+            </Title>
+            <Text c="dimmed" size="xs">
+              {t("Book.BookDescription")}
+            </Text>
+          </Stack>
+        </Group>
 
         <Group
           gap="xs"
@@ -83,6 +90,7 @@ export default function AdminBooksSearchBar({
           <Box display={{ base: "none", sm: "block" }}>
             <PrimaryButton
               btnText={t("Book.AddNewBook")}
+              disabled={true}
               onClick={handleOpenCreate}
               icon={
                 <IconPlus size={18} color="var(--mantine-color-surface-9)" />

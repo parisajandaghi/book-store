@@ -1,6 +1,8 @@
 import { Order } from "@/features/orders/order.type";
-import { OrderItem } from "@/features/orders/order-item.type";
+import { OrderItem, RawOrderItemRow } from "@/features/orders/order-item.type";
 import db from "@/lib/db";
+import { Translation } from "@/features/books/book.type";
+
 
 export function getOrdersByUserId(userId: number): Order[] {
   const stmt = db.prepare(`
@@ -11,7 +13,7 @@ export function getOrdersByUserId(userId: number): Order[] {
   return stmt.all(userId) as unknown as Order[];
 }
 
-export function getOrderHistory(userId: number) {
+export function getOrderHistory(userId: number): Order[] {
   const ordersStmt = db.prepare(`
     SELECT * FROM orders 
     WHERE user_id = ? 
@@ -23,17 +25,39 @@ export function getOrderHistory(userId: number) {
     SELECT
       order_items.*,
       books.image_url,
-      translations.title,
-      translations.author
+      (
+        SELECT json_group_array(
+          json_object(
+            'id', t.id,
+            'book_id', t.book_id,
+            'language_code', t.language_code,
+            'title', t.title,
+            'author', t.author,
+            'description', t.description
+          )
+        )
+        FROM translations t
+        WHERE t.book_id = books.id
+      ) as translations_json
     FROM order_items
     JOIN books ON books.id = order_items.book_id
-    LEFT JOIN translations ON translations.book_id = books.id AND translations.language_code='en'
-    WHERE order_items.order_id=?
-    GROUP BY order_items.id -- این خط اضافه شد تا جلوی تکرار را بگیرد
+    WHERE order_items.order_id = ?
   `);
 
   const history = orders.map((order) => {
-    const items = itemsStmt.all(order.id) as unknown as OrderItem[];
+    const rawItems = itemsStmt.all(order.id) as unknown as RawOrderItemRow[];
+    const items: OrderItem[] = rawItems.map((item) => {
+      const { translations_json, ...rest } = item;
+      const translations: Translation[] = translations_json
+        ? JSON.parse(translations_json)
+        : [];
+
+      return {
+        ...rest,
+        translations,
+      };
+    });
+
     return {
       ...order,
       order_items: items,
@@ -137,12 +161,12 @@ export function deleteOrder(orderId: number, userId: number): void {
   stmt.run(orderId, userId);
 }
 
-export function getOrderById(orderId: number, userId: number) {
+export function getOrderById(orderId: number, userId: number): Order | null {
   const orderStmt = db.prepare(`
     SELECT * FROM orders 
     WHERE id = ? AND user_id = ?
   `);
-  const order = orderStmt.get(orderId, userId) as unknown as Order;
+  const order = orderStmt.get(orderId, userId) as Order | undefined;
 
   if (!order) {
     return null;
@@ -152,22 +176,44 @@ export function getOrderById(orderId: number, userId: number) {
     SELECT
       order_items.*,
       books.image_url,
-      translations.title,
-      translations.author
+      (
+        SELECT json_group_array(
+          json_object(
+            'id', t.id,
+            'book_id', t.book_id,
+            'language_code', t.language_code,
+            'title', t.title,
+            'author', t.author,
+            'description', t.description
+          )
+        )
+        FROM translations t
+        WHERE t.book_id = books.id
+      ) as translations_json
     FROM order_items
     JOIN books ON books.id = order_items.book_id
-    LEFT JOIN translations ON translations.book_id = books.id AND translations.language_code = 'en'
     WHERE order_items.order_id = ?
-    GROUP BY order_items.id -- این خط اضافه شد تا جلوی تکرار را بگیرد
   `);
 
-  const items = itemsStmt.all(order.id) as unknown as OrderItem[];
+  const rawItems = itemsStmt.all(order.id) as unknown as RawOrderItemRow[];
+  const items: OrderItem[] = rawItems.map((item) => {
+    const { translations_json, ...rest } = item;
+    const translations: Translation[] = translations_json
+      ? JSON.parse(translations_json)
+      : [];
+
+    return {
+      ...rest,
+      translations,
+    };
+  });
 
   return {
     ...order,
     order_items: items,
   };
 }
+
 export function cancelOrder(orderId: number, userId: number) {
   // ۱. شروع تراکنش
   db.exec("BEGIN TRANSACTION");

@@ -6,6 +6,7 @@ import {
   Flex,
   Group,
   Modal,
+  PasswordInput,
   SimpleGrid,
   Stack,
   Text,
@@ -16,16 +17,27 @@ import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import style from "../../carts/cart.module.css";
 import { useProfileForm } from "../hook/use-profile-form";
+import { notify } from "@/utils/notification";
 
 export default function UserInformationModal() {
   const t = useTranslations("Profile");
+  const t1 = useTranslations("Notifications");
   const { form, loading, error, handleSubmit } = useProfileForm();
   const [isInfoModalOpen, setIsInfoModalOpen] = useAtom(informationModalAtom);
 
   const onSubmit = async (values: typeof form.values) => {
     const isSuccess = await handleSubmit(values);
     if (isSuccess) {
+      notify.success({
+        title: t1("SuccessTitle"),
+        message: t1("ProfileUpdateSuccess"),
+      });
       setIsInfoModalOpen(false);
+    } else {
+      notify.error({
+        title: t1("ErrorTitle"),
+        message: error || t1("UpdateFailed"),
+      });
     }
   };
 
@@ -36,7 +48,6 @@ export default function UserInformationModal() {
       centered
       withCloseButton={false}
       size="md"
-     
       overlayProps={{
         backgroundOpacity: 0.6,
         blur: 4,
@@ -64,7 +75,6 @@ export default function UserInformationModal() {
 
         <form onSubmit={form.onSubmit(onSubmit)}>
           <Stack gap="sm">
-            {/* در موبایل تک‌ستونه و تمام‌عرض، در sm به بعد دو ستونه */}
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm">
               <TextInput
                 label={t("Modal.Name")}
@@ -82,12 +92,13 @@ export default function UserInformationModal() {
                 }}
                 {...form.getInputProps("email")}
               />
-              <TextInput
+              <PasswordInput
                 label={t("Modal.NewPassword")}
                 type="password"
                 classNames={{
                   input: style.input,
                   label: style.label,
+                  // innerInput: style.innerInput,
                 }}
                 {...form.getInputProps("password")}
               />
@@ -107,7 +118,6 @@ export default function UserInformationModal() {
               </Text>
             )}
 
-            {/* دکمه‌ها: در موبایل ستونی یا تمام‌عرض، در دسکتاپ افقی */}
             <Flex
               direction={{ base: "column-reverse", sm: "row" }}
               justify="center"

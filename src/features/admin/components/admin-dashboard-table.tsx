@@ -1,7 +1,15 @@
 "use client";
 
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import { ActionIcon, Button, Group, Table, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Center,
+  Group,
+  Loader,
+  Table,
+  Text,
+} from "@mantine/core";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
 import { Link } from "@/navigation";
@@ -13,7 +21,7 @@ import { Order } from "../../orders/order.type";
 import { useStatusBadge } from "../hooks/use-status-badge";
 
 export default function AdminDashboardTable() {
-  const { orders } = useOrderHistory();
+  const { orders, isLoading } = useOrderHistory();
   const { getStatusBadge } = useStatusBadge();
   const t1 = useTranslations("Admin");
   const t2 = useTranslations("Product");
@@ -58,12 +66,12 @@ export default function AdminDashboardTable() {
           {order.created_at ? (
             <>
               {new Date(order.created_at).toLocaleDateString(
-                locale === "fa" ? "fa-IR" : "en-US"
+                locale === "fa" ? "fa-IR" : "en-US",
               )}
               {" - "}
               {new Date(order.created_at).toLocaleTimeString(
                 locale === "fa" ? "fa-IR" : "en-US",
-                { hour: "2-digit", minute: "2-digit" }
+                { hour: "2-digit", minute: "2-digit" },
               )}
             </>
           ) : (
@@ -129,7 +137,27 @@ export default function AdminDashboardTable() {
               <Table.Th ta="center"></Table.Th>
             </Table.Tr>
           </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
+          <Table.Tbody>
+            {isLoading ? (
+              <Table.Tr>
+                <Table.Td colSpan={6}>
+                  <Center py="xl" h={160}>
+                    <Loader size="sm" color="#a78622" />
+                  </Center>
+                </Table.Td>
+              </Table.Tr>
+            ) : rows.length === 0 ? (
+              <Table.Tr>
+                <Table.Td colSpan={6} ta="center" py="lg" c="dimmed">
+                  <Text fz="md" color="#a78622">
+                    {t1("NoItemsFound")}
+                  </Text>
+                </Table.Td>
+              </Table.Tr>
+            ) : (
+              rows
+            )}
+          </Table.Tbody>
         </Table>
       </Table.ScrollContainer>
     </GlassPanel>

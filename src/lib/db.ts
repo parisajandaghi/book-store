@@ -47,10 +47,11 @@ function getDbInstance(): DatabaseSync {
 
       global.__db = instance;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.error(
         `Error connecting to SQLite database at ${dbPath}:`,
-        errorMessage
+        errorMessage,
       );
       throw new Error(`Failed to initialize database: ${errorMessage}`);
     }
@@ -162,15 +163,12 @@ function initDatabase(instance: DatabaseSync) {
 
   try {
     const makeAdmin = instance.prepare(
-      `UPDATE users SET role = 'ADMIN' WHERE email = ?`
+      `UPDATE users SET role = 'ADMIN' WHERE email = ?`,
     );
     makeAdmin.run("parisajandaghi6831@gmail.com");
-  } catch {
-    // نادیده گرفتن در صورت نبود کاربر
-  }
+  } catch {}
 }
 
-// استفاده از Proxy برای دسترسی به دیتابیس
 const db = new Proxy({} as DatabaseSync, {
   get(_target, prop) {
     const realDb = getDbInstance();

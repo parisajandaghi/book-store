@@ -20,7 +20,11 @@ export function usePasswordRecoveryForms() {
     },
     validate: {
       email: (value) =>
-        /^\S+@\S+$/.test(value) ? null : t("Validation.InvalidEmail"),
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|ir|org|net|edu|gov|co|io|info|biz|me)$/i.test(
+          value,
+        )
+          ? null
+          : t("Validation.InvalidEmail"),
     },
   });
 

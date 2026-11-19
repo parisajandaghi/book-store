@@ -1,21 +1,23 @@
+import { Order } from "@/features/orders/order.type";
 import { Center, Table, Text } from "@mantine/core";
 import { IconShoppingCartOff } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { Order } from "@/features/orders/order.type";
 import { AdminOrderRow } from "./admin-orders-row";
+import AdminOrdersTableSkeleton from "./admin-orders-table-skeleton";
 
 interface AdminOrdersTableProps {
   orders: Order[];
+  isLoading?: boolean;
 }
 
-export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
+export function AdminOrdersTable({ orders, isLoading }: AdminOrdersTableProps) {
   const t = useTranslations("Admin");
 
-  if (orders.length === 0) {
+  if (!isLoading && orders.length === 0) {
     return (
       <Center h={250} style={{ flexDirection: "column" }}>
         <IconShoppingCartOff size={70} color="#a9a9a9" stroke={1.5} />
-        <Text c="surface.6" size="sm" fw={600} mt="md">
+        <Text c="surface.6" size="xl" fw={600} mt="md">
           {t("NoOrdersFound")}
         </Text>
       </Center>
@@ -43,9 +45,13 @@ export function AdminOrdersTable({ orders }: AdminOrdersTableProps) {
         </Table.Thead>
 
         <Table.Tbody>
-          {orders.map((order) => (
-            <AdminOrderRow key={order.id} order={order} />
-          ))}
+          {isLoading ? (
+            <AdminOrdersTableSkeleton />
+          ) : (
+            orders.map((order) => (
+              <AdminOrderRow key={order.id} order={order} />
+            ))
+          )}
         </Table.Tbody>
       </Table>
     </Table.ScrollContainer>

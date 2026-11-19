@@ -4,8 +4,7 @@ import {
   CheckoutRequest,
   CheckoutResult,
 } from "@/features/carts/cart.type";
-
-const SHIPPING_FEE = 10;
+import { getStoreSettings } from "@/services/store-setting.service";
 
 function generateTrackingCode() {
   return `BS${Date.now()}${Math.floor(1000 + Math.random() * 9000)}`;
@@ -39,24 +38,42 @@ export function checkout(
       throw new Error("سبد خرید شما خالی است.");
     }
 
-    // ۲. اعتبارسنجی مجدد موجودی انبار قبل از نهایی‌سازی خرید
+    // ۲. اعتبارسنجی موجودی انبار قبل از نهایی‌سازی خرید
     for (const item of cartItems) {
       if (item.stock < item.quantity) {
         throw new Error(`موجودی کتاب با شناسه ${item.book_id} کافی نیست.`);
       }
     }
 
-    // ۳. محاسبه هزینه‌ها
+    // ۳. محاسبه ساب‌توتال (مجموع قیمت کالاها)
     const subtotal = cartItems.reduce(
       (sum, item) => sum + item.quantity * item.price,
       0,
     );
 
-    const shippingFee = SHIPPING_FEE;
+    // ۴. دریافت تنظیمات ارسال داینامیک از جدول store_settings
+    const settings = getStoreSettings();
+    const baseShippingRate = Number(settings.shipping_rate) || 0;
+    const freeShippingThreshold = Number(settings.free_shipping_threshold) || 0;
+    const isFreeShipping = subtotal >= freeShippingThreshold;
+
+    // ۵. محاسبه هزینه ارسال بر اساس متد انتخابی کاربر
+    let shippingFee = 0;
+    const method = checkoutData.shippingMethod || "standard";
+
+    if (method === "express") {
+      // هزینه پیشتاز (نرخ پایه + ۱۰۰ هزار تومان اکسپرس)، در صورت سقف ارسال رایگان فقط هزینه اکسپرس دریافت می‌شود
+      const expressSurcharge = 100000;
+      shippingFee = isFreeShipping ? expressSurcharge : baseShippingRate + expressSurcharge;
+    } else {
+      // روش عادی (standard)
+      shippingFee = isFreeShipping ? 0 : baseShippingRate;
+    }
+
     const total = subtotal + shippingFee;
     const trackingCode = generateTrackingCode();
 
-    // ۴. ایجاد رکورد سفارش
+    // ۶. ایجاد رکورد سفارش
     const createOrderStmt = db.prepare(`
       INSERT INTO orders (
         user_id,
@@ -100,7 +117,7 @@ export function checkout(
       checkoutData.address,
       trackingCode,
       checkoutData.addressId,
-      checkoutData.shippingMethod,
+      method,
       checkoutData.deliveryDate,
       checkoutData.deliveryTime,
     );
@@ -110,7 +127,7 @@ export function checkout(
       throw new Error("خطا در ایجاد سفارش.");
     }
 
-    // ۵. استیتمنت‌های ثبت آیتم و کسر موجودی
+    // ۷. ثبت آیتم‌ها و کسر همزمان موجودی از جدول books
     const createOrderItemStmt = db.prepare(`
       INSERT INTO order_items (
         order_id,
@@ -127,13 +144,12 @@ export function checkout(
       WHERE id = ?
     `);
 
-    // ۶. اجرای ثبت آیتم‌ها و کسر همزمان موجودی از جدول books
     for (const item of cartItems) {
       createOrderItemStmt.run(orderId, item.book_id, item.quantity, item.price);
-      deductStockStmt.run(item.quantity, item.book_id); // 👈 کسر موجودی از انبار
+      deductStockStmt.run(item.quantity, item.book_id);
     }
 
-    // ۷. پاک کردن سبد خرید کاربر
+    // ۸. پاک کردن سبد خرید کاربر
     const clearCartStmt = db.prepare(`
       DELETE FROM cart_items
       WHERE user_id = ?
@@ -143,7 +159,7 @@ export function checkout(
     db.exec("COMMIT");
 
     return {
-      orderId: orderId,
+      orderId,
       trackingCode,
       subtotal,
       shippingFee,

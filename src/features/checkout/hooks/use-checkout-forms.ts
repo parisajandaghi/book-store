@@ -2,6 +2,7 @@ import {
   CheckoutAddressFormValues,
   paymentFormValues,
 } from "@/features/carts/cart.type";
+import { isValidLuhn, toEnglishDigits } from "@/utils/book.utils";
 import { useForm } from "@mantine/form";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -19,27 +20,50 @@ export function useCheckoutForms() {
       city: currentLang === "en" ? "Tehran" : "تهران",
     },
     validate: {
-      recipientName: (value) =>
-        value.length < 3 ? t("AddressForm.Validation.NameMinLength") : null,
+      recipientName: (value) => {
+        const trimmed = value?.trim() || "";
+        if (trimmed.length < 3)
+          return t("AddressForm.Validation.NameMinLength");
+        if (trimmed.length > 50)
+          return t("AddressForm.Validation.NameMaxLength");
+        return null;
+      },
 
-      phone: (value) =>
-        /^09\d{9}$/.test(value) ? null : t("AddressForm.Validation.ValidPhone"),
+      phone: (value) => {
+        const normalized = toEnglishDigits(value || "").trim();
+        if (!normalized) return t("AddressForm.Validation.ValidPhone");
 
-      postalCode: (value) =>
-        /^\d{10}$/.test(value)
+        return /^09\d{9}$/.test(normalized)
           ? null
-          : t("AddressForm.Validation.ValidPostalCode"),
+          : t("AddressForm.Validation.ValidPhone");
+      },
 
-      address: (value) =>
-        value.length < 10 ? t("AddressForm.Validation.AddressMinLength") : null,
+      postalCode: (value) => {
+        const normalized = toEnglishDigits(value || "").trim();
+        if (!normalized) return t("AddressForm.Validation.ValidPostalCode");
+
+        return /^\d{10}$/.test(normalized)
+          ? null
+          : t("AddressForm.Validation.ValidPostalCode");
+      },
+
+      address: (value) => {
+        const trimmed = value?.trim() || "";
+        if (trimmed.length < 10)
+          return t("AddressForm.Validation.AddressMinLength");
+        if (trimmed.length > 300)
+          return t("AddressForm.Validation.AddressMaxLength");
+        return null;
+      },
 
       province: (value) =>
-        !value ? t("AddressForm.Validation.RequiredProvince") : null,
+        !value?.trim() ? t("AddressForm.Validation.RequiredProvince") : null,
 
       city: (value) =>
-        !value ? t("AddressForm.Validation.RequiredCity") : null,
+        !value?.trim() ? t("AddressForm.Validation.RequiredCity") : null,
     },
   });
+
   const paymentForm = useForm<paymentFormValues>({
     initialValues: {
       cardHolderName: "",
@@ -48,23 +72,47 @@ export function useCheckoutForms() {
       cvv2: "",
     },
     validate: {
-      cardHolderName: (value) =>
-        value.trim().length < 3
-          ? t("PaymentForm.Validation.CardHolderName")
-          : null,
+      cardHolderName: (value) => {
+        const val = value.trim();
+        if (!val || val.length < 3) {
+          return t("PaymentForm.Validation.CardHolderName");
+        }
+        if (!/^[\u0600-\u06FFa-zA-Z\s]+$/.test(val)) {
+          return t("PaymentForm.Validation.CardHolderName");
+        }
+        return null;
+      },
 
-      cardNumber: (value) =>
-        /^\d{16}$/.test(value.replace(/\s/g, ""))
+      cardNumber: (value) => {
+        const cleanNumber = String(toEnglishDigits(value)).replace(
+          /[\s-]/g,
+          "",
+        );
+        if (!/^\d{16}$/.test(cleanNumber)) {
+          return t("PaymentForm.Validation.CardNumber");
+        }
+        if (!isValidLuhn(cleanNumber)) {
+          return t("PaymentForm.Validation.CardNumberValidation");
+        }
+        return null;
+      },
+
+      expiryDate: (value) => {
+        const cleanDate = String(toEnglishDigits(value)).trim();
+        const pattern = /^(0[4-9]|1[0-2])\/(0[1-9]|1[0-2])$/;
+
+        if (!pattern.test(cleanDate)) {
+          return t("PaymentForm.Validation.ExpiryDate");
+        }
+        return null;
+      },
+
+      cvv2: (value) => {
+        const cleanCvv = String(toEnglishDigits(value)).trim();
+        return /^\d{3,4}$/.test(cleanCvv)
           ? null
-          : t("PaymentForm.Validation.CardNumber"),
-
-      expiryDate: (value) =>
-        /^(0[1-9]|1[0-2])\/\d{2}$/.test(value)
-          ? null
-          : t("PaymentForm.Validation.ExpiryDate"),
-
-      cvv2: (value) =>
-        /^\d{3,4}$/.test(value) ? null : t("PaymentForm.Validation.Cvv2"),
+          : t("PaymentForm.Validation.Cvv2");
+      },
     },
   });
   return { checkoutForm, paymentForm };

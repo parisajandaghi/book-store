@@ -1,7 +1,14 @@
 "use client";
 import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import GlassPanel from "@/components/ui/glass/glass-panel";
-import { Group, Text, TextInput, Stack, Box } from "@mantine/core";
+import {
+  Group,
+  Text,
+  TextInput,
+  Stack,
+  Box,
+  PasswordInput,
+} from "@mantine/core";
 import { useLocale, useTranslations } from "next-intl";
 import style from "../../../../features/carts/cart.module.css";
 import { useRouter, Link } from "@/navigation";
@@ -100,20 +107,22 @@ export default function Login() {
                 placeholder={t("Email")}
                 label={t("Email")}
                 w="100%"
+                maxLength={60}
                 classNames={{
                   input: style.input,
                   label: style.label,
                 }}
                 {...form.getInputProps("email")}
               />
-              <TextInput
+              <PasswordInput
                 placeholder={t("Password")}
                 label={t("Password")}
-                type="password"
+                maxLength={12}
                 w="100%"
                 classNames={{
                   input: style.input,
                   label: style.label,
+                  innerInput: style.innerInput,
                 }}
                 {...form.getInputProps("password")}
               />

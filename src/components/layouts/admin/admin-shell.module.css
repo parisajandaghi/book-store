@@ -1,0 +1,17 @@
+/* admin-shell.module.css */
+.backToStore {
+  border-radius: 8px;
+  color: #fefaf4 !important;
+  transition: background-color 150ms ease;
+}
+
+.backToStore:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #fefaf4 !important;
+}
+
+/* برای اطمینان از اینکه متن و آیکون در المنت‌های فرزند هم سفید نشوند */
+.backToStore :global(.mantine-NavLink-label),
+.backToStore :global(.mantine-NavLink-section) {
+  color: inherit !important;
+}

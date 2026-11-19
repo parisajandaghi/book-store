@@ -3,6 +3,7 @@ import { useStatusBadge } from "@/features/admin/hooks/use-status-badge";
 import OrderItems from "@/features/orders/components/order-items";
 import OrderSummary from "@/features/orders/components/order-summary";
 import ShoppingInfo from "@/features/orders/components/shopping-info";
+import UserOrderDetailsSkeleton from "@/features/orders/components/user-order-details-skeleton";
 import { useCancelOrder } from "@/features/orders/hooks/use-cancel-order";
 import { useOrderDetails } from "@/features/orders/hooks/use-order.details";
 import { useReOrder } from "@/features/orders/hooks/use-reorders";
@@ -14,7 +15,6 @@ import {
   Container,
   Flex,
   Group,
-  Loader,
   Stack,
   Text,
   Title,
@@ -37,16 +37,13 @@ export default function OrderDetails() {
   const orderId = params.id as string;
   const { cancelOrder, isCancelling } = useCancelOrder(orderId);
   const { error, isLoading, order } = useOrderDetails(orderId);
+  console.log("order", order);
+
   const { getStatusBadge } = useStatusBadge();
 
   if (isLoading) {
-    return (
-      <Center h={400}>
-        <Loader color="surface.9" />
-      </Center>
-    );
+    return <UserOrderDetailsSkeleton />;
   }
-
   if (error || !order) {
     return (
       <Center h={400}>
@@ -78,8 +75,8 @@ export default function OrderDetails() {
     try {
       await reorder(order.order_items);
       notify.success({
-        title: t("SuccessTitle"),
-        message: t("ReorderSuccess"),
+        title: t1("SuccessTitle"),
+        message: t1("ReorderSuccess"),
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : t("ReorderError");
@@ -95,6 +92,7 @@ export default function OrderDetails() {
     <Container
       w="100%"
       maw="75rem"
+      mt={"xl"}
       p={{ base: "xs", sm: "md" }}
       style={{
         backgroundColor: "#1f0f1fa8",

@@ -2,6 +2,7 @@ import PrimaryButton from "@/components/ui/action-panel/primary-button";
 import SecondaryButton from "@/components/ui/action-panel/secondary-button";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import OrderSummary from "@/features/orders/components/order-summary";
+
 import { Link } from "@/navigation";
 import {
   Container,
@@ -13,27 +14,35 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import CartItemsList from "./cart-items-list";
-import { useCart } from "../hooks/use-cart";
-import { SHIPPING_FEE } from "@/constants";
 import { useRouter } from "next/navigation";
+import { useCart } from "../hooks/use-cart";
+import CartItemsList from "./cart-items-list";
+import { useStoreSettings } from "@/features/admin/hooks/use-store-settings";
+import UserCardSkeleton from "./user-card-skeleton";
 
 export default function CartItems() {
-  const { cartTotal } = useCart();
-const router=useRouter()
-  const totalAmount = cartTotal + SHIPPING_FEE;
+  const { cartTotal, isLoading } = useCart();
+  const { settings } = useStoreSettings();
+  const router = useRouter();
+
+  const threshold = settings?.free_shipping_threshold ?? 300000;
+  const baseRate = settings?.shipping_rate ?? 35000;
+
+  const shippingFee = cartTotal >= threshold ? 0 : baseRate;
+  const totalAmount = cartTotal + shippingFee;
+
   const t2 = useTranslations("Cart");
   const locale = useLocale();
 
   const icon =
     locale === "fa" ? (
-      <IconArrowRight
+      <IconArrowLeft
         size={16}
         style={{ marginLeft: 5 }}
         color="var(--mantine-color-surface-9)"
       />
     ) : (
-      <IconArrowLeft
+      <IconArrowRight
         size={16}
         style={{ marginRight: 5 }}
         color="var(--mantine-color-surface-9)"
@@ -63,39 +72,43 @@ const router=useRouter()
             icon={icon}
             radius={20}
             size="xs"
-            onClick={()=>router.push('/books')}
+            onClick={() => router.push("/books")}
           />
         </Group>
 
-        <Flex
-          direction={{ base: "column", md: "row" }}
-          align={{ base: "stretch", md: "flex-start" }}
-          gap="md"
-        >
-          <GlassPanel flex={{ base: "1 1 auto", md: 2 }} p={"md"} w="100%">
-            <ScrollArea
-              h={{ base: 320, sm: 400 }}
-              offsetScrollbars
-              type="hover"
-            >
-              <CartItemsList />
-            </ScrollArea>
-          </GlassPanel>
-
-          <OrderSummary
-            subtotal={cartTotal}
-            shippingFee={SHIPPING_FEE}
-            totalAmount={totalAmount}
-            button={
-              <Link
-                href={"/cart/checkout"}
-                style={{ width: "100%", display: "block" }}
+        {isLoading ? (
+          <UserCardSkeleton />
+        ) : (
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            align={{ base: "stretch", md: "flex-start" }}
+            gap="md"
+          >
+            <GlassPanel flex={{ base: "1 1 auto", md: 2 }} p={"md"} w="100%">
+              <ScrollArea.Autosize
+                mah={{ base: 320, sm: 400 }}
+                offsetScrollbars
+                type="hover"
               >
-                <PrimaryButton btnText={t2("CheckOut")} width={"100%"} />
-              </Link>
-            }
-          />
-        </Flex>
+                <CartItemsList />
+              </ScrollArea.Autosize>
+            </GlassPanel>
+
+            <OrderSummary
+              subtotal={cartTotal}
+              shippingFee={shippingFee}
+              totalAmount={totalAmount}
+              button={
+                <Link
+                  href={"/cart/checkout"}
+                  style={{ width: "100%", display: "block" }}
+                >
+                  <PrimaryButton btnText={t2("CheckOut")} width={"100%"} />
+                </Link>
+              }
+            />
+          </Flex>
+        )}
       </Stack>
     </Container>
   );

@@ -21,6 +21,8 @@
 
 .bookImage {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .bookInfo {
@@ -29,59 +31,58 @@
   min-width: 0;
 }
 
-@media (max-width: 400px) {
+/* --- تنظیمات اختصاصی فقط برای موبایل (زیر 600px) --- */
+@media (max-width: 600px) {
   .pageWrapper {
-    padding: 30px 16px;
+    padding: 16px 12px !important;
+    align-items: center !important;
   }
 
   .bookDetailsCard {
-    width: 100%;
-    height: auto;
-    max-width: 550px;
+    width: 100% !important;
+    height: auto !important;
+    padding: 16px !important;
   }
 
   .bookDetailsContent {
-    height: auto;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* حذف خط عمودی دسکتاپ در موبایل */
+  .bookDetailsContent > :global(.mantine-Divider-root) {
+    display: none !important;
   }
 
   .imageWrapper {
-    width: 100%;
-    flex: none;
-    justify-content: center;
+    width: 100% !important;
+    flex: unset !important;
+    display: flex !important;
+    justify-content: center !important;
   }
 
   .bookImage {
-    width: 100%;
-    max-height: 300px;
+    width: auto !important;
+    height: auto !important;
+    max-height: 200px !important;
+    border-radius: 8px;
+    object-fit: contain !important;
   }
 
   .bookInfo {
-    width: 100%;
-    height: auto;
-    flex: none;
+    width: 100% !important;
+    height: auto !important;
+    flex: unset !important;
+    text-align: center !important;
   }
 
-  .bookDetailsContent > :global(.mantine-Divider-root) {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .pageWrapper {
-    padding: 20px 12px;
+  .bookInfo :global(h3) {
+    font-size: 1.1rem !important;
+    text-align: center !important;
   }
 
-  .bookDetailsCard {
-    width: 100%;
-  }
-
-  .bookImage {
-    max-height: 240px;
-  }
-
-  .bookInfo {
-    width: 100%;
+  .bookInfo :global(h5) {
+    font-size: 0.85rem !important;
+    text-align: center !important;
   }
 }

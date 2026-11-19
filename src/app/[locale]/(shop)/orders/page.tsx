@@ -3,18 +3,18 @@ import EmptyOrderState from "@/features/orders/components/empty-order-state";
 import OrderCard from "@/features/orders/components/order-card";
 import { useOrderHistory } from "@/features/orders/hooks/use-order-history";
 import { filterStatusAtom } from "@/store/order-atom";
-import { Container, Group, Select, Stack, Title } from "@mantine/core";
+import { Container, Group, ScrollArea, Select, Title } from "@mantine/core";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 
 export default function Orders() {
   const t = useTranslations("Orders");
   const [filterStatus, setFilterStatus] = useAtom(filterStatusAtom);
-  const { orders } = useOrderHistory();
+  const { orders, isLoading } = useOrderHistory();
 
   return (
     <>
-      {orders.length !== 0 ? (
+      {isLoading || orders.length !== 0 ? (
         <Container
           size="md"
           w="100%"
@@ -56,9 +56,9 @@ export default function Orders() {
             />
           </Group>
 
-          <Stack align="stretch" w="100%">
+          <ScrollArea h={{ base: 400, sm: 450 }} offsetScrollbars>
             <OrderCard />
-          </Stack>
+          </ScrollArea>
         </Container>
       ) : (
         <EmptyOrderState />

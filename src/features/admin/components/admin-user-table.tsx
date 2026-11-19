@@ -1,16 +1,9 @@
 import { User } from "@/types/user.type";
-import {
-  ActionIcon,
-  Center,
-  Group,
-  Loader,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Center, Stack, Table, Text } from "@mantine/core";
 import { IconPencil, IconUserOff } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRoleBadge } from "../hooks/use-role-badge";
+import AdminUserTableSkeleton from "./admin-user-table-skeleton";
 
 type AdminUserItem = User & { orders_count?: number };
 
@@ -30,18 +23,14 @@ export default function AdminUserTable({
   const locale = useLocale();
 
   if (isLoading && users.length === 0) {
-    return (
-      <Center py="xl">
-        <Loader size="sm" color="var(--mantine-color-surface-9)" />
-      </Center>
-    );
+    return <AdminUserTableSkeleton rowsCount={5} />;
   }
 
   if (users.length === 0) {
     return (
       <Center h={180} style={{ flexDirection: "column" }}>
         <IconUserOff size={64} color="#a9a9a9" stroke={1.5} />
-        <Text c="surface.6" size="sm" fw={600} mt="sm">
+        <Text c="surface.6" size="xl" fw={600} mt="sm">
           {t("User.NoUserFound")}
         </Text>
       </Center>
@@ -127,7 +116,7 @@ export default function AdminUserTable({
                   {user.created_at ? (
                     <>
                       {new Date(user.created_at).toLocaleDateString(
-                        locale === "fa" ? "fa-IR" : "en-US"
+                        locale === "fa" ? "fa-IR" : "en-US",
                       )}
                       {" - "}
                       {new Date(user.created_at).toLocaleTimeString(
@@ -135,7 +124,7 @@ export default function AdminUserTable({
                         {
                           hour: "2-digit",
                           minute: "2-digit",
-                        }
+                        },
                       )}
                     </>
                   ) : (

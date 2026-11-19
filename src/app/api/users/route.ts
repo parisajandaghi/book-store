@@ -32,7 +32,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const updated = updateProfile(user.id, body);
+    const updated = await updateProfile(user.id, body);
 
     return NextResponse.json(updated, { status: 200 });
   } catch (error) {

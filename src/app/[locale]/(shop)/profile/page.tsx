@@ -15,7 +15,6 @@ import {
   Flex,
   Group,
   ScrollArea,
-  Stack,
   Text,
   Title,
 } from "@mantine/core";
@@ -30,11 +29,11 @@ export default function Profile() {
   const [, setIsInfoModalOpen] = useAtom(informationModalAtom);
   const { orders } = useOrderHistory();
   const locale = useLocale();
+ 
 
   return (
     <Container w="100%" px={{ base: "xs", sm: "md" }}>
       <GlassPanel py={{ base: "md", sm: "lg" }} px={{ base: "md", sm: "xl" }}>
-        {/* بخش اطلاعات کاربر */}
         <Flex
           direction={{ base: "column", sm: "row" }}
           align={{ base: "center", sm: "flex-start" }}
@@ -44,8 +43,10 @@ export default function Profile() {
           <Avatar
             color="var(--mantine-color-surface-9)"
             size={70}
-            style={{ flexShrink: 0 }}
-          />
+            style={{ flexShrink: 0, fontWeight: 700 }}
+          >
+            {user?.name ? user.name.slice(0, 2).toUpperCase() : ""}
+          </Avatar>
 
           <Flex
             direction={{ base: "column", sm: "row" }}
@@ -120,10 +121,8 @@ export default function Profile() {
 
         <HorizontalDivider my="md" />
 
-        {/* لیست سفارش‌ها */}
         {orders.length !== 0 ? (
           <Flex justify="center" w="100%">
-            {/* ظرف مشترک تایتل و کارت تا دقیقاً هم‌تراز بمانند */}
             <Box w={{ base: "100%", sm: "fit-content" }}>
               <Text
                 fz={{ base: "h5", sm: "h4" }}

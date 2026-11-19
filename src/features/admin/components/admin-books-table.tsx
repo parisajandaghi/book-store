@@ -1,17 +1,9 @@
 import { Book } from "@/features/books/book.type";
 import { getFormattedPrice, getLocalizedBook } from "@/utils/book.utils";
-import {
-  ActionIcon,
-  Center,
-  Group,
-  Loader,
-  Table,
-  Text,
-  Image,
-} from "@mantine/core";
-import { IconPencil } from "@tabler/icons-react";
+import { ActionIcon, Center, Group, Image, Table, Text } from "@mantine/core";
+import { IconBookOff, IconPencil } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import React from "react";
+import BooksTableSkeleton from "./books-table-skeleton";
 
 type AdminBooksTableProps = {
   books: Book[];
@@ -28,19 +20,12 @@ export default function AdminBooksTable({
   const t2 = useTranslations("Product");
   const locale = useLocale();
 
-  if (isLoading && books.length === 0) {
+  if (!isLoading && books.length === 0) {
     return (
-      <Center py="xl">
-        <Loader size="sm" color="var(--mantine-color-surface-9)" />
-      </Center>
-    );
-  }
-
-  if (books.length === 0) {
-    return (
-      <Center py="xl">
-        <Text c="surface.6" size="sm" fw={600}>
-          {t("Book.NoBookFound")}
+      <Center h={180} style={{ flexDirection: "column" }}>
+        <IconBookOff size={64} color="#a9a9a9" stroke={1.5} />
+        <Text c="surface.6" size="xl" fw={600} mt="sm">
+          {t("Book.NoBooksFound")}
         </Text>
       </Center>
     );
@@ -90,77 +75,81 @@ export default function AdminBooksTable({
             </Table.Th>
           </Table.Tr>
         </Table.Thead>
+
         <Table.Tbody>
-          {books.map((book: Book) => {
-            const localizedBook = getLocalizedBook(book, locale);
-            const formattedPrice = getFormattedPrice(book.price, locale);
-            return (
-              <Table.Tr
-                key={book.id}
-                style={{
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
-                }}
-              >
-                <Table.Td>
-                  <Group gap="xs" wrap="nowrap">
-                    <Image
-                      src={book.image_url}
-                      alt={localizedBook?.title}
-                      w={36}
-                      h={50}
-                      radius="xs"
-                      fallbackSrc="/placeholder-book.png"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <div style={{ minWidth: 0, overflow: "hidden" }}>
-                      <Text size="sm" fw={600} c="white" truncate="end">
-                        {localizedBook?.title}
-                      </Text>
-                      <Text size="xs" c="dimmed" truncate="end">
-                        {localizedBook?.author}
-                      </Text>
-                    </div>
-                  </Group>
-                </Table.Td>
+          {isLoading ? (
+            <BooksTableSkeleton />
+          ) : (
+            books.map((book: Book) => {
+              const localizedBook = getLocalizedBook(book, locale);
+              const formattedPrice = getFormattedPrice(book.price, locale);
+              return (
+                <Table.Tr
+                  key={book.id}
+                  style={{
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
+                  }}
+                >
+                  <Table.Td>
+                    <Group gap="xs" wrap="nowrap">
+                      <Image
+                        src={book.image_url}
+                        alt={localizedBook?.title}
+                        w={36}
+                        h={50}
+                        radius="xs"
+                        fallbackSrc="/placeholder-book.png"
+                        style={{ flexShrink: 0 }}
+                      />
+                      <div style={{ minWidth: 0, overflow: "hidden" }}>
+                        <Text size="sm" fw={600} c="white" truncate="end">
+                          {localizedBook?.title}
+                        </Text>
+                        <Text size="xs" c="dimmed" truncate="end">
+                          {localizedBook?.author}
+                        </Text>
+                      </div>
+                    </Group>
+                  </Table.Td>
 
-                <Table.Td ta={"center"}>
-                  <Text
-                    size="sm"
-                    fw={600}
-                    c="white"
-                    ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
-                  >
-                    {locale === "en"
-                      ? `${t2("CurrencySymbol")} ${formattedPrice}`
-                      : `${formattedPrice} ${t2("CurrencySymbol")}`}
-                  </Text>
-                </Table.Td>
+                  <Table.Td ta={"center"}>
+                    <Text
+                      size="sm"
+                      fw={600}
+                      c="white"
+                      ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
+                    >
+                      {locale === "en"
+                        ? `${t2("CurrencySymbol")} ${formattedPrice}`
+                        : `${formattedPrice} ${t2("CurrencySymbol")}`}
+                    </Text>
+                  </Table.Td>
 
-                <Table.Td ta={"center"}>
-                  <Text
-                    size="sm"
-                    c="white"
-                    ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
-                  >
-                    {`${book.stock} ${t2("Pcs")}`}
-                  </Text>
-                </Table.Td>
+                  <Table.Td ta={"center"}>
+                    <Text
+                      size="sm"
+                      c="white"
+                      ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
+                    >
+                      {`${book.stock} ${t2("Pcs")}`}
+                    </Text>
+                  </Table.Td>
 
-                {/* Actions */}
-                <Table.Td ta={"center"}>
-                  <ActionIcon
-                    variant="subtle"
-                    color="var(--mantine-color-surface-9)"
-                    radius="md"
-                    size="sm"
-                    onClick={() => handleOpenEdit(book)}
-                  >
-                    <IconPencil size={16} />
-                  </ActionIcon>
-                </Table.Td>
-              </Table.Tr>
-            );
-          })}
+                  <Table.Td ta={"center"}>
+                    <ActionIcon
+                      variant="subtle"
+                      color="var(--mantine-color-surface-9)"
+                      radius="md"
+                      size="sm"
+                      onClick={() => handleOpenEdit(book)}
+                    >
+                      <IconPencil size={16} />
+                    </ActionIcon>
+                  </Table.Td>
+                </Table.Tr>
+              );
+            })
+          )}
         </Table.Tbody>
       </Table>
     </Table.ScrollContainer>

@@ -9,6 +9,7 @@ export default function PrimaryButton({
   isLoading,
   icon,
   mt,
+  disabled,
 }: ButtonProps) {
   return (
     <Button
@@ -19,6 +20,7 @@ export default function PrimaryButton({
       loading={isLoading}
       leftSection={icon}
       mt={mt}
+      disabled={disabled}
     >
       <Text fz={14}>{btnText}</Text>
     </Button>

@@ -1,8 +1,9 @@
-import { DatabaseSync } from "node:sqlite";
-import path from "path";
+// import { DatabaseSync } from "node:sqlite";
+// import path from "path";
 
-const dbPath = path.join(process.cwd(), "data", "bookstore.db");
-const db = new DatabaseSync(dbPath);
+// const dbPath = path.join(process.cwd(), "data", "bookstore.db");
+// const db = new DatabaseSync(dbPath);
+import db from "./db";
 
 // تنظیمات PRAGMA
 db.exec(`

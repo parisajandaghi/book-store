@@ -28,7 +28,7 @@ export default function LanguageSwitcher() {
           { label: t("fa"), value: "fa" },
           { label: t("en"), value: "en" },
         ]}
-        size="xs"
+        size="10px"
         radius="lg"
         classNames={{
           root: style.root,

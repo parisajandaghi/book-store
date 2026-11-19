@@ -46,7 +46,11 @@
     "CancelSuccess": "Order has been successfully cancelled.",
     "CancelError": "Failed to cancel order. Please try again.",
     "ReorderSuccess": "Order items added to cart successfully.",
-    "ReorderError": "Failed to reorder items."
+    "ReorderError": "Failed to reorder items.",
+    "LoginRequired": "Please log in first to add items to your cart.",
+    "LoginRequiredTitle": "Authentication Required",
+    "ProfileUpdateSuccess": "Profile updated successfully.",
+    "UpdateFailed": "Failed to update profile. Please try again."
   },
   "Admin": {
     "BookStoreDashboard": "Book Store Dashboard",
@@ -60,7 +64,7 @@
     "TotalRevenue": "Total Revenue",
     "ActiveOrders": "Active Orders",
     "NewCustomers": "New Customers",
-    "BooksInStock": "Books In Stock",
+    "BooksInStock": "New Books",
     "RecentOrders": "Recent Orders",
     "ViewAllOrders": "View All Orders",
     "OrderId": "Order Id",
@@ -69,11 +73,13 @@
     "Status": "Status",
     "TotalAmount": "Total Amount",
     "NoOrdersFound": "No Orders Found .",
-    "OrderManagment": "Order Managment",
+    "NoItemsFound": "No Items Found",
+    "OrderManagment": "Order Managments",
     "TrackingCode": "Tracking Code",
     "Actions": "Actions",
     "SearchOrders": "Search ",
     "Order": "Order",
+    "OrderDescription": "Manage, update, and track all Orders.",
     "CostumerInfo": "Costumer Information",
     "UserAddress": "Address",
     "UserMail": "E-Mail",
@@ -81,9 +87,22 @@
     "UserName": "Name",
     "AdminActions": "Admin Actions",
     "UpdateOrder": "Update Order",
+    "Validation": {
+      "StoreNameMin": "Store name must be at least 2 characters",
+      "InvalidEmail": "Please enter a valid email address",
+      "InvalidPhone": "Please enter a valid phone number",
+      "ShippingNegative": "Shipping rate cannot be negative",
+      "ThresholdNegative": "Free shipping threshold cannot be negative"
+    },
+    "Tooltips": {
+      "Books": "New books added in the last 7 days",
+      "Customers": "New customer registrations in the last 7 days",
+      "Orders": "Orders placed daily in the last 7 days",
+      "Revenue": "Daily revenue trends in the last 7 days"
+    },
     "Book": {
       "BookInventory": "Book Inventory",
-      "BookDescription": "Manage, update, and track all books in the catalog.",
+      "BookDescription": "Manage, update, and track all books.",
       "AddNewBook": "Add New Book",
       "SearchBooks": "Search...",
       "BookDetails": "BookDetails",
@@ -95,12 +114,16 @@
       "Author": "Author",
       "ImgUrl": "Image Url",
       "PaginationDescription": "Showing 1 to 4 of 4 entries",
-      "NoBookFound": "No Book Found .",
+      "NoBooksFound": "No Books Found .",
       "Confirm": "Confirm",
       "Cancle": "Cancle",
       "Save": "Save",
       "ConfirmMessage": "Are You Sure You Want To Delete Book ?",
       "EditBookDetails": "Edit Book Details",
+      "ImageUpload": "Image Upload",
+      "ImageUploadedSuccessfully": "Image Uploaded Successfully",
+      "ImageUploadFailed": "Image Upload Failed",
+      "ChooseImage": "Choose image from your device…",
       "PlaceHolder": {
         "UrlExam": "e.g : https://..."
       }
@@ -188,6 +211,7 @@
   },
   "Orders": {
     "Title": "Order History",
+    "FetchingOrdersFaild": "Faild to fetch orders list!",
     "TableHeaders": {
       "OrderId": "Order Id",
       "Date": "Order Date",
@@ -239,7 +263,8 @@
     "Qty": "Quantity",
     "Order": "Order",
     "ReOrder": "Re-Order",
-    "OrderNotFound": "Order Not Found"
+    "OrderNotFound": "Order Not Found",
+    "Free": "Free"
   },
   "Cart": {
     "ShoppingCart": "Shopping Cart",
@@ -260,7 +285,7 @@
     "ShippingInfo": "Shipping Information",
     "ModalTitle": "New Address",
     "PlaceHolders": {
-      "Phone": "e.g. : 09124080426",
+      "Phone": "e.g. : 09121234567",
       "Name": "e.g. : Sara Ahmadi",
       "Province": "Select Province",
       "City": "Select City",
@@ -287,6 +312,7 @@
       "Validation": {
         "CardHolderName": "Card holder name must be at least 3 characters",
         "CardNumber": "Card number must contain 16 digits",
+        "CardNumberValidation": "card number is not valid",
         "ExpiryDate": "Expiry date must be in MM/YY format",
         "Cvv2": "CVV2 must be 3 or 4 digits"
       }
@@ -339,7 +365,10 @@
     "NoAccount": "No Account ?",
     "InvalidEmail": "Invalid email",
     "PasswordTooShort": "Password must be at least 6 characters",
-    "SomethingWentWrong": "Something went wrong"
+    "SomethingWentWrong": "Something went wrong",
+    "ErrorTitle": "Error",
+    "SuccessTitle": "Success",
+    "SuccessfulRegister": "User account created successfully"
   },
   "Register": {
     "Title": "Create an account",
@@ -368,6 +397,13 @@
       "NewPassword": "New Password",
       "SaveChanges": "Save Changes",
       "Cancel": "Cancel"
+    },
+    "ValidationMessage": {
+      "NameRequired": "Name must be at least 3 characters long",
+      "InvalidEmail": "Invalid email format.",
+      "InvalidPhoneNumber": "Phone number is not valid.",
+      "PasswordTooShort": "Password must be at least 6 characters long.",
+      "RequiredField": "This field is required"
     }
   },
   "PasswordRecovery": {

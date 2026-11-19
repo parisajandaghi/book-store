@@ -11,10 +11,18 @@ import {
 } from "@mantine/core";
 import React from "react";
 import LanguageSwitcher from "./language-switcher";
-import { IconLogout, IconUser } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconBook2,
+  IconHome,
+  IconLogout,
+  IconReceipt,
+  IconUser,
+} from "@tabler/icons-react";
 import { useUser } from "@/features/profile/hook/use-user";
 import style from "./header.module.css";
 import { useLocale, useTranslations } from "next-intl";
+import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 type MobileDrawerProps = {
   mobileMenuOpened: boolean;
   handleNavigation: () => void;
@@ -34,7 +42,12 @@ export default function MobileDrawer({
     <Drawer
       opened={mobileMenuOpened}
       onClose={handleNavigation}
-      position={locale === "fa" ? "right" : "left"}
+      dir="ltr"
+      position={locale === "fa" ? "left" : "right"}
+      transitionProps={{
+        duration: 250,
+        timingFunction: "ease",
+      }}
       size="min(82vw, 320px)"
       withCloseButton={false}
       zIndex={3000}
@@ -50,72 +63,104 @@ export default function MobileDrawer({
         backgroundOpacity: 0.55,
         blur: 4,
       }}
-      transitionProps={{
-        duration: 220,
-        timingFunction: "ease",
-      }}
     >
-      <Stack gap={4}>
-        <Link
-          href="/"
-          onClick={handleNavigation}
-          className={isActive("/") ? style.mobileActiveLink : style.mobileLink}
-        >
-          <Text size="sm" c="textMain.2">
-            {t("Home")}
-          </Text>
-        </Link>
-
-        <Link
-          href="/books"
-          onClick={handleNavigation}
-          className={
-            isActive("/books") ? style.mobileActiveLink : style.mobileLink
-          }
-        >
-          <Text size="sm" c="textMain.2">
-            {t("Books")}
-          </Text>
-        </Link>
-
-        {user && (
+      <div dir={locale === "fa" ? "rtl" : "ltr"}>
+        <Stack gap={4}>
+          <Group mb={"lg"}>
+            <LanguageSwitcher />
+          </Group>
           <Link
-            href="/orders"
+            href="/"
             onClick={handleNavigation}
             className={
-              isActive("/orders") ? style.mobileActiveLink : style.mobileLink
+              isActive("/") ? style.mobileActiveLink : style.mobileLink
             }
           >
-            <Text size="sm" c="textMain.2">
-              {t("Orders")}
-            </Text>
+            <Group gap={"xs"}>
+              <IconHome size={18} color="var(--mantine-color-surface-9)" />
+              <Text size="sm" c="textMain.2">
+                {t("Home")}
+              </Text>
+            </Group>
           </Link>
-        )}
 
-        <LanguageSwitcher />
-        <div className={style.mobileDivider} />
+          <Link
+            href="/books"
+            onClick={handleNavigation}
+            className={
+              isActive("/books") ? style.mobileActiveLink : style.mobileLink
+            }
+          >
+            <Group gap={"xs"}>
+              <IconBook size={18} color="var(--mantine-color-surface-9)" />
+              <Text size="sm" c="textMain.2">
+                {t("Books")}
+              </Text>
+            </Group>
+          </Link>
 
-        {isLoading ? (
-          <Center h={40}>
-            <Loader size="sm" type="dots" color="surface.9" />
-          </Center>
-        ) : user ? (
-          <Stack gap={4} w="100%">
+          {user && (
             <Link
-              href="/profile"
+              href="/orders"
               onClick={handleNavigation}
               className={
-                isActive("/profile") ? style.mobileActiveLink : style.mobileLink
+                isActive("/orders") ? style.mobileActiveLink : style.mobileLink
               }
             >
-              <Group gap="xs">
-                <IconUser size={18} color="var(--mantine-color-surface-9)" />
+              <Group gap={"xs"}>
+                <IconReceipt size={18} color="var(--mantine-color-surface-9)" />
                 <Text size="sm" c="textMain.2">
-                  {user.name || t("Profile")}
+                  {t("Orders")}
                 </Text>
               </Group>
             </Link>
+          )}
 
+          <HorizontalDivider my="md" />
+          {isLoading ? (
+            <Center h={40}>
+              <Loader size="sm" type="dots" color="surface.9" />
+            </Center>
+          ) : user ? (
+            <Stack gap={4} w="100%">
+              <Link
+                href="/profile"
+                onClick={handleNavigation}
+                className={
+                  isActive("/profile")
+                    ? style.mobileActiveLink
+                    : style.mobileLink
+                }
+              >
+                <Group gap="xs">
+                  <IconUser size={18} color="var(--mantine-color-surface-9)" />
+                  <Text size="sm" c="textMain.2">
+                    {user.name || t("Profile")}
+                  </Text>
+                </Group>
+              </Link>
+
+              <Button
+                variant="subtle"
+                color="textMain.2"
+                fw={"normal"}
+                fullWidth
+                justify="flex-start"
+                leftSection={
+                  <IconLogout
+                    size={18}
+                    color="var(--mantine-color-surface-9)"
+                  />
+                }
+                onClick={() => {
+                  handleNavigation();
+                  logout();
+                }}
+              >
+                {t("Logout")}
+              </Button>
+            </Stack>
+          ) : (
             <Button
               variant="subtle"
               color="textMain.2"
@@ -127,31 +172,14 @@ export default function MobileDrawer({
               }
               onClick={() => {
                 handleNavigation();
-                logout();
+                router.push("/login");
               }}
             >
-              {t("Logout")}
+              {t1("SignIn")}
             </Button>
-          </Stack>
-        ) : (
-          <Button
-            variant="subtle"
-            color="textMain.2"
-            fw={"normal"}
-            fullWidth
-            justify="flex-start"
-            leftSection={
-              <IconLogout size={18} color="var(--mantine-color-surface-9)" />
-            }
-            onClick={() => {
-              handleNavigation();
-              router.push("/login");
-            }}
-          >
-            {t1("SignIn")}
-          </Button>
-        )}
-      </Stack>
+          )}
+        </Stack>
+      </div>
     </Drawer>
   );
 }

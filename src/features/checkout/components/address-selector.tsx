@@ -1,6 +1,6 @@
 import { useAddresses } from "@/features/profile/hook/use-address";
 import { addressModalAtom, checkoutAtom } from "@/store/checkout-atom";
-import { Button, Group, Radio, Stack, Text } from "@mantine/core";
+import { Button, Group, Radio, ScrollArea, Stack, Text } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
@@ -39,7 +39,9 @@ export default function AddressSelector() {
     >
       <Group wrap="nowrap" align="flex-start">
         <Radio.Indicator variant="outline" className={styles.indicator} />
-        <div>
+        <div
+          style={{ minWidth: 0, flex: 1, flexShrink: 1, overflow: "hidden" }}
+        >
           <Text className={styles.label}>{item.recipientName}</Text>
           <Text className={styles.description}>{item.phone}</Text>
           <Text className={styles.description}>{item.address}</Text>
@@ -51,30 +53,32 @@ export default function AddressSelector() {
 
   return (
     <Stack flex={2}>
-      <Radio.Group
-        value={activeValue}
-        onChange={(value) => {
-          const selectedAddress = addresses.find(
-            (address) => String(address.id) === value,
-          );
+      <ScrollArea.Autosize mah={430} offsetScrollbars>
+        <Radio.Group
+          value={activeValue}
+          onChange={(value) => {
+            const selectedAddress = addresses.find(
+              (address) => String(address.id) === value,
+            );
 
-          if (!selectedAddress) return;
+            if (!selectedAddress) return;
 
-          setCheckout((prev) => ({
-            ...prev,
+            setCheckout((prev) => ({
+              ...prev,
 
-            addressId: Number(selectedAddress.id),
+              addressId: Number(selectedAddress.id),
 
-            recipientName: selectedAddress.recipientName,
+              recipientName: selectedAddress.recipientName,
 
-            phone: selectedAddress.phone,
+              phone: selectedAddress.phone,
 
-            address: selectedAddress.address,
-          }));
-        }}
-      >
-        <Stack gap="xs">{addressCards}</Stack>
-      </Radio.Group>
+              address: selectedAddress.address,
+            }));
+          }}
+        >
+          <Stack gap="xs">{addressCards}</Stack>
+        </Radio.Group>
+      </ScrollArea.Autosize>
       <Button
         className={styles.addAddressButton}
         onClick={() => setIsAddressModalOpen(true)}

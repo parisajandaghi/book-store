@@ -26,6 +26,7 @@ export default function AdminBooksPage() {
     page: activePage,
     limit: 4,
     search: debouncedSearch,
+    locale,
   });
 
   const [modalOpened, setModalOpened] = useState(false);

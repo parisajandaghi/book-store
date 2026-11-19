@@ -1,4 +1,5 @@
 import { CheckoutRequest, paymentFormValues } from "@/features/carts/cart.type";
+import { useCart } from "@/features/carts/hooks/use-cart";
 import { useRouter } from "@/navigation";
 import { checkoutAtom } from "@/store/checkout-atom";
 import { notify } from "@/utils/notification";
@@ -13,6 +14,7 @@ interface UseCheckoutStepperProps {
 
 export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
+  const { mutate } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const t = useTranslations("Notifications");
   const router = useRouter();
@@ -100,23 +102,31 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
 
     try {
       const result = await submitOrder();
+
       notify.success({
         id: "checkout-order-success",
         title: t("SuccessTitle"),
         message: t("OrderPlacedSuccess"),
       });
-      setCheckout({
-        activeStep: 0,
-        addressId: null,
-        shippingMethod: null,
-        deliveryDate: null,
-        deliveryTime: null,
-        recipientName: "",
-        phone: "",
-        address: "",
-      });
-
       router.push(`/cart/success?orderId=${result.orderId}`);
+
+      mutate();
+
+      // ۳. ریست کردن استیت بعد از اینکه کاربر وارد صفحه بعد شد
+      // این کار مانع پرش تصویر به استپ ۰ جلوی چشم کاربر می‌شود
+      setTimeout(() => {
+        setCheckout({
+          activeStep: 0,
+          addressId: null,
+          shippingMethod: null,
+          deliveryDate: null,
+          deliveryTime: null,
+          recipientName: "",
+          phone: "",
+          address: "",
+        });
+      }, 500);
+
       router.refresh();
     } catch (error) {
       console.error(error);

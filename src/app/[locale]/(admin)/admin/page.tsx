@@ -2,18 +2,22 @@
 
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import AdminDashboardTable from "@/features/admin/components/admin-dashboard-table";
+import MetricCardsSkeleton from "@/features/admin/components/metric-cards-skeleton";
+
 import { useAdminMetrics } from "@/features/admin/hooks/use-admin-metrics";
 import { getFormattedPrice } from "@/utils/book.utils";
 import { Sparkline } from "@mantine/charts";
 import {
+  Box,
   Center,
   Group,
-  Loader,
+  ScrollArea,
   SimpleGrid,
   Stack,
   Text,
   ThemeIcon,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconBooks,
@@ -23,6 +27,8 @@ import {
   IconUserPlus,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
+import style from "./admin-page.module.css";
+import DashboardTableSkeleton from "@/features/admin/components/dashboard-table-skeleton";
 
 export default function AdminDashboardPage() {
   const t = useTranslations("Admin");
@@ -35,20 +41,23 @@ export default function AdminDashboardPage() {
         {
           label: t("BooksInStock"),
           icon: IconBooks,
-          value: metrics.booksInStock,
+          value: metrics.totalTitles,
           data: metrics.booksHistory,
+          tooltip: t("Tooltips.Books"),
         },
         {
           label: t("NewCustomers"),
           icon: IconUserPlus,
           value: metrics.newCustomers,
           data: metrics.customersHistory,
+          tooltip: t("Tooltips.Customers"),
         },
         {
           label: t("ActiveOrders"),
           icon: IconPackage,
           value: metrics.activeOrders,
           data: metrics.ordersHistory,
+          tooltip: t("Tooltips.Orders"),
         },
         {
           label: t("TotalRevenue"),
@@ -58,13 +67,13 @@ export default function AdminDashboardPage() {
               ? `${t2("CurrencySymbol")} ${getFormattedPrice(metrics.totalRevenue, locale)}`
               : `${getFormattedPrice(metrics.totalRevenue, locale)} ${t2("CurrencySymbol")}`,
           data: metrics.revenueHistory,
+          tooltip: t("Tooltips.Revenue"),
         },
       ]
     : [];
 
   return (
     <Stack gap="xl" w="100%" maw={1200} mx="auto">
-      {/* Title & Welcome */}
       <Stack gap={4}>
         <Title order={2} c="surface.5">
           {t("Dashboard")}
@@ -77,11 +86,8 @@ export default function AdminDashboardPage() {
         </Group>
       </Stack>
 
-      {/* Metrics Cards Grid */}
       {isLoading ? (
-        <Center h={140}>
-          <Loader size="sm" color="#a78622" />
-        </Center>
+        <MetricCardsSkeleton />
       ) : (
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }} spacing="md">
           {cards.map((card) => (
@@ -96,7 +102,12 @@ export default function AdminDashboardPage() {
                   >
                     {card.label}
                   </Text>
-                  <ThemeIcon variant="outline" color="#a78622" radius="xl" size="sm">
+                  <ThemeIcon
+                    variant="outline"
+                    color="#a78622"
+                    radius="xl"
+                    size="sm"
+                  >
                     <card.icon color="#a78622" size={16} />
                   </ThemeIcon>
                 </Group>
@@ -113,16 +124,29 @@ export default function AdminDashboardPage() {
                 </Center>
 
                 <Center>
-                  <Sparkline
-                    w="100%"
-                    maw={140}
-                    h={50}
-                    data={card.data}
-                    curveType="linear"
-                    color="#a78622"
-                    fillOpacity={0.6}
-                    strokeWidth={2}
-                  />
+                  <Tooltip
+                    label={card.tooltip}
+                    position="top"
+                    withArrow
+                    arrowSize={6}
+                    transitionProps={{ transition: "fade-up", duration: 150 }}
+                    classNames={{
+                      tooltip: `${style.glassTooltip} ${locale === "en" ? style.glassTooltipEn : ""}`,
+                      arrow: style.glassTooltipArrow,
+                    }}
+                  >
+                    <Box w="100%" maw={140} style={{ cursor: "pointer" }}>
+                      <Sparkline
+                        w="100%"
+                        h={50}
+                        data={card.data}
+                        curveType="linear"
+                        color="#a78622"
+                        fillOpacity={0.6}
+                        strokeWidth={2}
+                      />
+                    </Box>
+                  </Tooltip>
                 </Center>
               </Stack>
             </GlassPanel>
@@ -130,8 +154,13 @@ export default function AdminDashboardPage() {
         </SimpleGrid>
       )}
 
-      {/* Recent Orders Table */}
-      <AdminDashboardTable />
+      {isLoading ? (
+        <DashboardTableSkeleton />
+      ) : (
+        <ScrollArea h={{ base: 360, sm: 300 }} offsetScrollbars type="hover">
+          <AdminDashboardTable />
+        </ScrollArea>
+      )}
     </Stack>
   );
 }

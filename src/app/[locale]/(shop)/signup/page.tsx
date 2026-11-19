@@ -14,6 +14,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useTranslations } from "next-intl";
 import style from "../../../../features/carts/cart.module.css";
+import { notify } from "@/utils/notification";
 
 export default function Signup() {
   const t = useTranslations("Register");
@@ -25,15 +26,19 @@ export default function Signup() {
     initialValues: {
       name: "",
       email: "",
-      phoneNumber: "",
+      phone: "",
       password: "",
       confirmPassword: "",
     },
 
     validate: {
       name: (value) => (value.trim().length > 2 ? null : t("NameRequired")),
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : t("InvalidEmail")),
-      phoneNumber: (value) =>
+      email: (value) => {
+        const emailRegex =
+          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|ir|org|net|edu|gov|co|io|info|biz|me)$/i;
+        return emailRegex.test(value.trim()) ? null : t("InvalidEmail");
+      },
+      phone: (value) =>
         /^09\d{9}$/.test(value) ? null : t("InvalidPhoneNumber"),
       password: (value) => (value.length >= 6 ? null : t("PasswordTooShort")),
       confirmPassword: (value, values) =>
@@ -52,21 +57,37 @@ export default function Signup() {
           name: values.name,
           email: values.email,
           password: values.password,
-          phoneNumber: values.phoneNumber,
+          phone: values.phone,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        form.setFieldError("email", data.error);
+        const errorMessage = data.error || t1("SomethingWentWrong");
+        form.setFieldError("email", errorMessage);
+
+        notify.error({
+          title: t1("ErrorTitle"),
+          message: errorMessage,
+        });
         return;
       }
+
+      notify.success({
+        title: t1("SuccessTitle"),
+        message: t1("SuccessfulRegister"),
+      });
       form.reset();
 
       router.push("/login");
     } catch {
-      form.setFieldError("email", t2("SomethingWentWrong"));
+      const err = t2("SomethingWentWrong");
+      form.setFieldError("email", err);
+      notify.error({
+        title: t1("ErrorTitle"),
+        message: err,
+      });
     }
   };
 
@@ -94,10 +115,25 @@ export default function Signup() {
           </Text>
 
           <Box component="form" onSubmit={form.onSubmit(handleSubmit)} w="100%">
+            <input
+              type="text"
+              style={{ display: "none" }}
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+            <input
+              type="password"
+              style={{ display: "none" }}
+              tabIndex={-1}
+              autoComplete="new-password"
+              defaultValue=""
+            />
             <Stack gap="sm" w="100%">
               <TextInput
                 placeholder={t("Name")}
                 label={t("Name")}
+                maxLength={20}
                 w="100%"
                 classNames={{
                   input: style.input,
@@ -108,7 +144,9 @@ export default function Signup() {
               <TextInput
                 placeholder={t("Email")}
                 label={t("Email")}
+                maxLength={60}
                 w="100%"
+                autoComplete="one-time-code"
                 classNames={{
                   input: style.input,
                   label: style.label,
@@ -119,16 +157,19 @@ export default function Signup() {
                 placeholder={t("PhoneNumber")}
                 label={t("PhoneNumber")}
                 w="100%"
+                maxLength={11}
                 classNames={{
                   input: style.input,
                   label: style.label,
                 }}
-                {...form.getInputProps("phoneNumber")}
+                {...form.getInputProps("phone")}
               />
               <PasswordInput
                 placeholder={t("Password")}
                 label={t("Password")}
+                maxLength={12}
                 w="100%"
+                autoComplete="one-time-code"
                 classNames={{
                   input: style.input,
                   label: style.label,

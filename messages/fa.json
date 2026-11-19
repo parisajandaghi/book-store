@@ -46,7 +46,11 @@
     "CancelSuccess": "سفارش با موفقیت لغو شد.",
     "CancelError": "خطا در لغو سفارش. لطفاً دوباره تلاش کنید.",
     "ReorderSuccess": "آیتم‌های سفارش با موفقیت به سبد خرید اضافه شدند.",
-    "ReorderError": "خطا در ثبت مجدد سفارش."
+    "ReorderError": "خطا در ثبت مجدد سفارش.",
+    "LoginRequired": "لطفا ابتدا وارد حساب کاربری خود شوید!",
+    "LoginRequiredTitle": "ورود به حساب کاربری",
+    "ProfileUpdateSuccess": "اطلاعات پروفایل با موفقیت به‌روزرسانی شد.",
+    "UpdateFailed": "خطا در به‌روزرسانی پروفایل. لطفاً دوباره تلاش کنید."
   },
   "Admin": {
     "BookStoreDashboard": "پیشخوان کتاب سرا",
@@ -54,13 +58,14 @@
     "BacktoStore": "بازگشت به کتاب سرا",
     "Books": "کتاب ها",
     "Orders": "سفارش ها",
+    "OrderDescription": "مدیریت، به‌روزرسانی و پیگیری تمامی سفارش های موجود.",
     "Users": "کاربران",
     "Setting": "پیکربندی",
     "Wellcom": "به پیشخوان کتاب سرا خوش آمدید .",
     "TotalRevenue": "کل فروش",
     "ActiveOrders": "سفارش های فعال",
     "NewCustomers": "مشتریان جدید",
-    "BooksInStock": "کتاب های موجود",
+    "BooksInStock": "کتاب های اضافه شده",
     "RecentOrders": "آخرین سفارش ها",
     "ViewAllOrders": "مشاهده همه سفارش ها",
     "OrderId": "شماره سفارش",
@@ -69,7 +74,8 @@
     "Status": "وضعیت",
     "TotalAmount": "مبلغ نهایی",
     "NoOrdersFound": "سفارشی یافت نشد .",
-    "OrderManagment": "مدیریت سفارش",
+    "NoItemsFound": "موردی یافت نشد .",
+    "OrderManagment": "مدیریت سفارش ها",
     "TrackingCode": "کد رهگیری",
     "Actions": "عملیات",
     "SearchOrders": "جست و جو",
@@ -81,9 +87,23 @@
     "UserName": "نام",
     "AdminActions": "عملیات ادمین",
     "UpdateOrder": "به روز کردن سفارش",
+    "Tooltips": {
+      "Books": "روند کتاب‌های اضافه شده در ۷ روز گذشته",
+      "Customers": "ثبت‌نام مشتریان جدید در ۷ روز گذشته",
+      "Orders": "تعداد سفارش‌های ثبت‌شده در ۷ روز گذشته",
+      "Revenue": "روند درآمد و فروش در ۷ روز گذشته"
+    },
+
+    "Validation": {
+      "StoreNameMin": "نام فروشگاه باید حداقل ۲ کاراکتر باشد",
+      "InvalidEmail": "لطفاً یک ایمیل معتبر وارد کنید",
+      "InvalidPhone": "لطفاً یک شماره تماس معتبر وارد کنید",
+      "ShippingNegative": "هزینه ارسال نمی‌تواند منفی باشد",
+      "ThresholdNegative": "سقف ارسال رایگان نمی‌تواند منفی باشد"
+    },
     "Book": {
       "BookInventory": "موجودی کتاب",
-      "BookDescription": "مدیریت، به‌روزرسانی و پیگیری تمامی کتاب‌های موجود در کاتالوگ.",
+      "BookDescription": "مدیریت، به‌روزرسانی و پیگیری تمامی کتاب‌های موجود .",
       "AddNewBook": "افزودن کتاب جدید",
       "SearchBooks": "جست و جو",
       "BookDetails": "جزییات کناب",
@@ -95,12 +115,16 @@
       "Actions": "عملیات",
       "ImgUrl": "آدرس تصویر ",
       "PaginationDescription": "نمایش ۱ تا ۴ مورد",
-      "NoBookFound": "کتابی یافت نشد .",
+      "NoBooksFound": "کتابی یافت نشد .",
       "Confirm": "تایید",
       "Cancle": "انصراف",
       "Save": "ذخیره",
       "ConfirmMessage": "آیا از حذف کتاب اطمینان دارید ؟",
       "EditBookDetails": "ویرایش مشخصات کتاب",
+      "ImageUpload": "آپلود تصویر",
+      "ImageUploadedSuccessfully": "تصویر با موفقیت بارگذاری شد",
+      "ImageUploadFailed": "خطا در آپلود تصویر",
+      "ChooseImage": "انتخاب تصویر از سیستم...",
       "PlaceHolder": {
         "UrlExam": "مثال : https://..."
       }
@@ -188,6 +212,7 @@
   },
   "Orders": {
     "Title": "تاریخچه سفارش ها",
+    "FetchingOrdersFaild": "خطا در دریافت لیست سفارش ها!",
     "TableHeaders": {
       "OrderId": "شماره سفارش",
       "Date": "تاریخ ثبت",
@@ -239,7 +264,8 @@
     "Qty": "تعداد",
     "Order": "سفارش",
     "ReOrder": "خرید مجدد",
-    "OrderNotFound": "سفارشی یافت نشد ."
+    "OrderNotFound": "سفارشی یافت نشد .",
+    "Free": "رایگان"
   },
   "Cart": {
     "ShoppingCart": "سبد خرید",
@@ -264,7 +290,7 @@
     "ShippingInfo": "اطلاعات ارسال",
     "ModalTitle": "آدرس جدید",
     "PlaceHolders": {
-      "Phone": "مثال : 09124080426",
+      "Phone": "مثال : 09121234567",
       "Name": "مثال : سارا احمدی",
       "Province": "انتخاب استان",
       "City": "انتخاب شهر",
@@ -280,7 +306,7 @@
     "AddressForm": {
       "Validation": {
         "NameMinLength": "نام گیرنده باید حداقل ۳ حرف باشد",
-        "ValidPhone": "شماره موبایل نامعتبر است (مثال: 09123456789)",
+        "ValidPhone": "شماره موبایل نامعتبر است (مثال: 09121234567)",
         "ValidPostalCode": "کد پستی باید دقیقاً ۱۰ عدد باشد",
         "AddressMinLength": "لطفاً آدرس دقیق‌تری وارد کنید",
         "RequiredProvince": "لطفاً استان را انتخاب کنید",
@@ -291,6 +317,7 @@
       "Validation": {
         "CardHolderName": "نام دارنده کارت باید حداقل ۳ حرف باشد",
         "CardNumber": "شماره کارت باید ۱۶ رقم باشد",
+        "CardNumberValidation": "شماره کارت معتبر نیست",
         "ExpiryDate": "تاریخ انقضا باید به فرمت ماه/سال (MM/YY) باشد",
         "Cvv2": "کد CVV2 باید ۳ یا ۴ رقم باشد"
       }
@@ -339,7 +366,10 @@
     "NoAccount": "حساب کاربری ندارید ؟",
     "InvalidEmail": "ایمیل وارد شده صحیح نیست",
     "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
-    "SomethingWentWrong": "مشکلی رخ داده است"
+    "SomethingWentWrong": "مشکلی رخ داده است",
+    "ErrorTitle": "خطا",
+    "SuccessTitle": "موفقیت‌آمیز",
+    "SuccessfulRegister": "حساب کاربری با موفقیت ساخته شد"
   },
   "Register": {
     "Title": "ایجاد حساب کاربری",
@@ -367,6 +397,13 @@
       "NewPassword": "رمز عبور جدید",
       "SaveChanges": "ذخیره تغییرات",
       "Cancel": "انصراف"
+    },
+    "ValidationMessage": {
+      "NameRequired": "نام باید حداقل ۳ کاراکتر باشد.",
+      "InvalidEmail": "فرمت ایمیل نامعتبر است .",
+      "InvalidPhoneNumber": "شماره موبایل معتبر نیست.",
+      "PasswordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+      "RequiredField": "پر کردن این فیلد الزامی است."
     }
   },
   "PasswordRecovery": {

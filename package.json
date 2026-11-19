@@ -45,5 +45,11 @@
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "argon2@0.44.0": true,
+    "sharp@0.34.5": true,
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.16.22": true
   }
 }
