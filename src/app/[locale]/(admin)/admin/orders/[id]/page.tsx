@@ -178,7 +178,7 @@ export default function AdminOrderDetailsPage() {
         </Group>
       </GlassPanel>
 
-      <ScrollArea h={{ base: 360, sm: 450 }} offsetScrollbars>
+      <ScrollArea h={{ base: 'auto',md: 450 }} offsetScrollbars>
         <Grid gutter={{ base: "md", md: "lg" }} align="stretch" w="100%">
           <Grid.Col span={{ base: 12, md: 8 }}>
             <OrderItems items={order.order_items || []} />

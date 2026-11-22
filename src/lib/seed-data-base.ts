@@ -5,24 +5,21 @@
 // const db = new DatabaseSync(dbPath);
 import db from "./db";
 
-// تنظیمات PRAGMA
 db.exec(`
   PRAGMA journal_mode = WAL;
   PRAGMA foreign_keys = ON;
 `);
 
-// ایجاد کاربر تستی پیش‌فرض
 const userStmt = db.prepare(`
   INSERT OR IGNORE INTO users (id, name, email, password, role)
   VALUES (1, 'Test User', 'test@test.com', '123456', 'user')
 `);
 userStmt.run();
 
-// لیست کتاب‌ها همراه با موجودی (stock) و ترجمه‌ها
 const booksSeedData = [
   {
     id: 1,
-    price: 250000,
+    price: 400000,
     stock: 15,
     image_url: "/images/jonathan-livingston-seagull.jpg",
     translations: [
@@ -44,7 +41,7 @@ const booksSeedData = [
   },
   {
     id: 2,
-    price: 300000,
+    price: 900000,
     stock: 8,
     image_url: "/images/thus-spoke-zarathustra.jpg",
     translations: [
@@ -66,7 +63,7 @@ const booksSeedData = [
   },
   {
     id: 3,
-    price: 210000,
+    price: 500000,
     stock: 10,
     image_url: "/images/no-mud-no-lotus.jpg",
     translations: [
@@ -88,7 +85,7 @@ const booksSeedData = [
   },
   {
     id: 4,
-    price: 280000,
+    price: 600000,
     stock: 5,
     image_url: "/images/On-the-Wisdom-of-Life.jpg",
     translations: [
@@ -110,7 +107,7 @@ const booksSeedData = [
   },
   {
     id: 5,
-    price: 450000,
+    price: 1700000,
     stock: 12,
     image_url: "/images/Brothers-Karamazov.jpg",
     translations: [
@@ -132,7 +129,7 @@ const booksSeedData = [
   },
   {
     id: 6,
-    price: 220000,
+    price: 800000,
     stock: 10,
     image_url: "/images/Women-Who-Run-With-the-Wolves.jpg",
     translations: [
@@ -154,7 +151,7 @@ const booksSeedData = [
   },
   {
     id: 7,
-    price: 180000,
+    price: 400000,
     stock: 0, // کتاب ناموجود برای تست نمایش در فرانت‌اند
     image_url: "/images/snow-in-summer.jpg",
     translations: [
@@ -176,7 +173,7 @@ const booksSeedData = [
   },
   {
     id: 8,
-    price: 270000,
+    price: 450000,
     stock: 14,
     image_url: "/images/meditation.jpg",
     translations: [
@@ -198,7 +195,7 @@ const booksSeedData = [
   },
   {
     id: 9,
-    price: 210000,
+    price: 370000,
     stock: 7,
     image_url: "/images/gravity-and-grace.jpg",
     translations: [
@@ -220,7 +217,7 @@ const booksSeedData = [
   },
   {
     id: 10,
-    price: 290000,
+    price: 480000,
     stock: 9,
     image_url: "/images/guide-to-good-life.jpg",
     translations: [
@@ -242,7 +239,7 @@ const booksSeedData = [
   },
   {
     id: 11,
-    price: 150000,
+    price: 500000,
     stock: 4,
     image_url: "/images/repetition.jpg",
     translations: [
@@ -264,7 +261,7 @@ const booksSeedData = [
   },
   {
     id: 12,
-    price: 260000,
+    price: 420000,
     stock: 11,
     image_url: "/images/fear-and-trembling.jpg",
     translations: [

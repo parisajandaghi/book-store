@@ -1,15 +1,30 @@
 import { useAddresses } from "@/features/profile/hook/use-address";
-import { addressModalAtom, checkoutAtom } from "@/store/checkout-atom";
-import { Button, Group, Radio, ScrollArea, Stack, Text } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import {
+  addressModalAtom,
+  checkoutAtom,
+  editingAddressAtom,
+} from "@/store/checkout-atom";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Radio,
+  ScrollArea,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import styles from "../address-selector.module.css";
+import { Address } from "@/features/carts/cart.type";
 export default function AddressSelector() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
-  const { addresses } = useAddresses();
+  const [, setEditingAddress] = useAtom(editingAddressAtom);
+  const { addresses, deleteAddress } = useAddresses();
   const t = useTranslations("CheckoutInfo");
   const activeValue =
     checkout.addressId?.toString() ??
@@ -31,21 +46,66 @@ export default function AddressSelector() {
       address: first.address,
     }));
   }, [addresses, checkout.addressId, setCheckout]);
+
+  const handleEdit = (e: React.MouseEvent, item: Address) => {
+    e.stopPropagation();
+    setEditingAddress(item);
+    setIsAddressModalOpen(true);
+  };
+
+  const handleDelete = async (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    const success = await deleteAddress(id);
+    if (success && checkout.addressId === id) {
+      setCheckout((prev) => ({
+        ...prev,
+        addressId: null,
+        recipientName: "",
+        phone: "",
+        address: "",
+      }));
+    }
+  };
+
   const addressCards = addresses.map((item) => (
     <Radio.Card
+      component="div"
       className={styles.root}
       value={item.id.toString()}
       key={item.id}
     >
-      <Group wrap="nowrap" align="flex-start">
-        <Radio.Indicator variant="outline" className={styles.indicator} />
-        <div
-          style={{ minWidth: 0, flex: 1, flexShrink: 1, overflow: "hidden" }}
-        >
-          <Text className={styles.label}>{item.recipientName}</Text>
-          <Text className={styles.description}>{item.phone}</Text>
-          <Text className={styles.description}>{item.address}</Text>
-        </div>
+      <Group wrap="nowrap" align="flex-start" justify="space-between">
+        <Group wrap="nowrap" align="flex-start">
+          <Radio.Indicator variant="outline" className={styles.indicator} />
+          <div
+            style={{ minWidth: 0, flex: 1, flexShrink: 1, overflow: "hidden" }}
+          >
+            <Text className={styles.label}>{item.recipientName}</Text>
+            <Text className={styles.description}>{item.phone}</Text>
+            <Text className={styles.description}>{item.address}</Text>
+          </div>
+        </Group>
+        <Group gap={6} wrap="nowrap" onClick={(e) => e.stopPropagation()}>
+          <ActionIcon
+            variant="subtle"
+            color="surface.6"
+            size="sm"
+            onClick={(e) => handleEdit(e, item)}
+            aria-label="Edit address"
+          >
+            <IconPencil size={16} />
+          </ActionIcon>
+
+          <ActionIcon
+            variant="subtle"
+            color="red"
+            size="sm"
+            onClick={(e) => handleDelete(e, Number(item.id))}
+            aria-label="Delete address"
+          >
+            <IconTrash size={16} />
+          </ActionIcon>
+        </Group>
       </Group>
     </Radio.Card>
   ));
@@ -81,7 +141,10 @@ export default function AddressSelector() {
       </ScrollArea.Autosize>
       <Button
         className={styles.addAddressButton}
-        onClick={() => setIsAddressModalOpen(true)}
+        onClick={() => {
+          setEditingAddress(null);
+          setIsAddressModalOpen(true);
+        }}
         leftSection={<IconPlus size={16} />}
       >
         {t("AddNewAddress")}

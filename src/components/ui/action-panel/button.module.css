@@ -31,3 +31,28 @@
   background: rgba(212, 175, 55, 0.15);
   border-color: #d4af37;
 }
+/* تنظیمات برای دکمه‌های غیرفعال (Primary و Secondary) */
+.Primary:disabled,
+.Primary[data-disabled],
+.Secondary:disabled,
+.Secondary[data-disabled] {
+  /* جلوگیری از کلیک و تغییر نشانگر موس */
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  
+  /* ظاهر بصری خاموش */
+  opacity: 0.45 !important;
+  filter: grayscale(85%) !important;
+  
+  /* حذف استایل‌های هاور و درخشش */
+  background: rgba(47, 22, 47, 0.2) !important;
+  border-color: rgba(212, 175, 55, 0.2) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* برای اطمینان از اینکه متن داخل دکمه هم کمرنگ شود */
+.Primary[data-disabled] text,
+.Primary[data-disabled] span {
+  color: rgba(253, 246, 235, 0.5) !important;
+}

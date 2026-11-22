@@ -1,4 +1,6 @@
 "use client";
+import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
+import { useUser } from "@/features/profile/hook/use-user";
 import { Link, useRouter } from "@/navigation";
 import {
   Button,
@@ -9,20 +11,16 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import React from "react";
-import LanguageSwitcher from "./language-switcher";
 import {
   IconBook,
-  IconBook2,
   IconHome,
   IconLogout,
   IconReceipt,
   IconUser,
 } from "@tabler/icons-react";
-import { useUser } from "@/features/profile/hook/use-user";
-import style from "./header.module.css";
 import { useLocale, useTranslations } from "next-intl";
-import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
+import style from "./header.module.css";
+import LanguageSwitcher from "./language-switcher";
 type MobileDrawerProps = {
   mobileMenuOpened: boolean;
   handleNavigation: () => void;

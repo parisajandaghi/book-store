@@ -1,14 +1,12 @@
-"use client";
+import CartClient from "@/features/carts/components/cart-client";
+import { getCurrentUser } from "@/lib/auth";
+import { getCart } from "@/services/cart.service";
 
-import CartItems from "@/features/carts/components/cart-items";
-import EmptyCartState from "@/features/carts/components/empty-cart-state";
-import { useCart } from "@/features/carts/hooks/use-cart";
+export const dynamic = "force-dynamic";
 
-export default function Carts() {
-  const { cartItems, isLoading } = useCart();
-  return (
-    <>
-      {isLoading || cartItems.length !== 0 ? <CartItems /> : <EmptyCartState />}
-    </>
-  );
+export default async function Carts() {
+  const user = await getCurrentUser();
+  const initialCart = user ? getCart(user.id) : [];
+
+  return <CartClient initialCart={initialCart} />;
 }

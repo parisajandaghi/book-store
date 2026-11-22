@@ -158,7 +158,7 @@ function initDatabase(instance: DatabaseSync) {
     );
 
     INSERT OR IGNORE INTO store_settings (id, store_name, support_email, phone, shipping_rate, free_shipping_threshold)
-    VALUES (1, 'کتاب سرا', 'support@bookstore.com', '021-12345678', 35000, 300000);
+    VALUES (1, 'کتاب سرا', 'support@bookstore.com', '021-12345678', 200000, 2000000);
   `);
 
   try {

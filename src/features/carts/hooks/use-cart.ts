@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { CartItem } from "../cart.type";
 
-const fetcher = async (url: string) => {
+const fetcher = async (url: string): Promise<CartItem[]> => {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -15,29 +15,35 @@ const fetcher = async (url: string) => {
   return response.json();
 };
 
-export const useCart = () => {
+export const useCart = (initialCart?: CartItem[]) => {
   const { user, isLoading: isUserLoading } = useUser();
   const t = useTranslations("Notifications");
+
   const {
     data,
     error,
     isLoading: isCartLoading,
     mutate,
-  } = useSWR<CartItem[]>(user ? "/api/cart" : null, fetcher);
+  } = useSWR<CartItem[]>(user ? "/api/cart" : null, fetcher, {
+    fallbackData: initialCart,
+    revalidateOnMount: true,
+  });
 
-  const cartItems = data || [];
+  const cartItems = data ?? [];
 
   const isLoading =
-    isUserLoading ||
-    (!!user && isCartLoading) ||
-    (!!user && data === undefined && !error);
+    data === undefined &&
+    (isUserLoading || (!!user && isCartLoading));
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
   );
 
-  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const cartCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
 
   const addToCart = async (
     bookId: number,
@@ -51,6 +57,7 @@ export const useCart = () => {
       });
       return false;
     }
+
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -67,6 +74,7 @@ export const useCart = () => {
           });
           return false;
         }
+
         notify.warning({
           id: "warning",
           title: t("WarningTitle"),
@@ -76,19 +84,23 @@ export const useCart = () => {
       }
 
       await mutate();
+
       notify.success({
         id: "add-successfully",
         title: t("SuccessTitle"),
         message: t("AddedSuccess"),
       });
+
       return true;
     } catch (err) {
       console.error(err);
+
       notify.error({
         id: "network-error",
         title: t("ErrorTitle"),
         message: t("NetworkError"),
       });
+
       return false;
     }
   };
@@ -116,7 +128,6 @@ export const useCart = () => {
       }
 
       await mutate();
-
       return true;
     } catch {
       notify.error({
@@ -154,7 +165,6 @@ export const useCart = () => {
       }
 
       await mutate();
-
       return true;
     } catch {
       notify.error({
@@ -180,10 +190,12 @@ export const useCart = () => {
       }
 
       await mutate();
+
       notify.success({
         title: t("SuccessTitle"),
         message: t("RemoveSuccess"),
       });
+
       return true;
     } catch {
       notify.error({

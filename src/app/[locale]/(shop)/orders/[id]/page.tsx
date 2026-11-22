@@ -1,4 +1,5 @@
 "use client";
+import GlassPanel from "@/components/ui/glass/glass-panel";
 import { useStatusBadge } from "@/features/admin/hooks/use-status-badge";
 import OrderItems from "@/features/orders/components/order-items";
 import OrderSummary from "@/features/orders/components/order-summary";
@@ -36,7 +37,7 @@ export default function OrderDetails() {
   const { reorder, isReordering } = useReOrder();
   const orderId = params.id as string;
   const { cancelOrder, isCancelling } = useCancelOrder(orderId);
-  const { error, isLoading, order } = useOrderDetails(orderId);
+  const { isLoading, order } = useOrderDetails(orderId);
   console.log("order", order);
 
   const { getStatusBadge } = useStatusBadge();
@@ -44,10 +45,12 @@ export default function OrderDetails() {
   if (isLoading) {
     return <UserOrderDetailsSkeleton />;
   }
-  if (error || !order) {
+  if (!order) {
     return (
       <Center h={400}>
-        <Text c="red">{error || t("OrderNotFound")}</Text>
+        <GlassPanel p="xl" style={{ textAlign: "center", maxWidth: 400 }}>
+          <Text c="surface.6">{t("OrderNotFound")}</Text>
+        </GlassPanel>
       </Center>
     );
   }
@@ -91,8 +94,8 @@ export default function OrderDetails() {
   return (
     <Container
       w="100%"
-      maw="75rem"
-      mt={"xl"}
+      maw="70rem"
+      mt={50}
       p={{ base: "xs", sm: "md" }}
       style={{
         backgroundColor: "#1f0f1fa8",
@@ -104,7 +107,7 @@ export default function OrderDetails() {
         },
       }}
     >
-      <Flex direction={{ base: "column", md: "row" }} gap="md" align="stretch">
+      <Flex direction={{ base: "column", md: "row" }} gap="md" align="stretch" >
         <Stack flex={{ base: "1 1 auto", md: 1 }} p="xs">
           <Stack flex={1}>
             <Group gap="xl">

@@ -5,13 +5,18 @@ import { getFormattedPrice, getLocalizedBook } from "@/utils/book.utils";
 import { Stack, Grid, Group, Center, Image, Text } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import NumberInput from "@/components/ui/action-panel/number-input";
+import { CartItem } from "../cart.type";
 
 interface CartItemsListProps {
-  compact?: boolean; 
+  compact?: boolean;
+  initialCart?: CartItem[];
 }
 
-export default function CartItemsList({ compact = false }: CartItemsListProps) {
-  const { cartItems, removeFromCart } = useCart();
+export default function CartItemsList({
+  compact = false,
+  initialCart,
+}: CartItemsListProps) {
+  const { cartItems, removeFromCart } = useCart(initialCart);
   const t1 = useTranslations("Product");
   const locale = useLocale();
 

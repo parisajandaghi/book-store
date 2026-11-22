@@ -70,6 +70,13 @@ export default async function RootLayout({
     <html lang={locale} dir={dir} {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
+
+        <link
+          rel="preload"
+          as="image"
+          href="/images/book-cover-1.jpg"
+          fetchPriority="high"
+        />
       </head>
       <body className={`${IRANSansWeb.className} appBackground`}>
         <NextIntlClientProvider messages={messages} locale={locale}>

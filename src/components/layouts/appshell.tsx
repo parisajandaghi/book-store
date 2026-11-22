@@ -20,7 +20,7 @@ function AppShellLayout({ children }: AppShellProps) {
     pathname.endsWith("/reset-password");
   const isAuthPage = hideHeader;
   return (
-    <Stack mih="100vh">
+    <Stack mih="100dvh" gap={0}>
       {!hideHeader && <Header />}
 
       <main

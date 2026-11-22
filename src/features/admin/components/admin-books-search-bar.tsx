@@ -104,12 +104,17 @@ export default function AdminBooksSearchBar({
               radius="xl"
               variant="outline"
               color="surface.9"
+              disabled={true}
               onClick={handleOpenCreate}
               aria-label={t("Book.AddNewBook")}
               style={{
                 borderColor: "#d4af3766",
                 background: "#1f0f1fa8",
                 flexShrink: 0,
+                opacity: 0.45,
+                filter: "grayscale(85%)",
+                cursor: "not-allowed",
+                pointerEvents: "none",
               }}
             >
               <IconPlus size={18} color="var(--mantine-color-surface-9)" />

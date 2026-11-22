@@ -21,39 +21,32 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useLocale, useTranslations } from "next-intl";
-import { useOrderHistory } from "../hooks/use-order-history";
 import style from "../order-card.module.css";
+import { Order } from "../order.type";
 import UserOrderCardSkeleton from "./user-order-card-skeleton";
-
-export default function OrderCard() {
+interface OrderCardProps {
+  orders: Order[];
+  isLoading: boolean;
+}
+export default function OrderCard({ orders, isLoading }: OrderCardProps) {
   const [filterStatus] = useAtom(filterStatusAtom);
   const { getStatusBadge } = useStatusBadge();
   const t1 = useTranslations("Orders");
   const t2 = useTranslations("Product");
   const locale = useLocale();
   const ChevronIcon = locale === "fa" ? IconChevronLeft : IconChevronRight;
-  const { orders, isLoading, error } = useOrderHistory();
 
   if (isLoading) {
     return <UserOrderCardSkeleton count={5} />;
-  }
-
-  if (error) {
-    return (
-      <Center h={200}>
-        <Text c="red">{t1("FetchingOrdersFaild")}</Text>
-      </Center>
-    );
   }
 
   const filteredOrders = orders.filter((order) => {
     if (filterStatus === "all") return true;
     return order.status === filterStatus;
   });
-
   if (filteredOrders.length === 0) {
     return (
-      <Center w="100%">
+      <Center w="100%" mih="55vh">
         <GlassPanel
           h={100}
           w="100%"

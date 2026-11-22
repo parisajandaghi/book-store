@@ -2,11 +2,11 @@
 
 import {
   Badge,
+  Box,
   Burger,
   Button,
-  Center,
   Group,
-  Loader,
+  Skeleton,
   Text,
   Title,
 } from "@mantine/core";
@@ -28,10 +28,11 @@ import { useUser } from "@/features/profile/hook/use-user";
 import MobileDrawer from "./mobile-drawer";
 
 function Header() {
-  const { cartCount } = useCart();
+  const { cartCount, isLoading: isCartLoading } = useCart();
 
   const locale = useLocale();
-  const { isLoading, user } = useUser();
+
+  const { isLoading: isUserLoading, user } = useUser();
   const t = useTranslations("Header");
   const t1 = useTranslations("Login");
   const pathName = usePathname();
@@ -82,7 +83,7 @@ function Header() {
               </Text>
             </Link>
 
-            {user && (
+            {user ? (
               <Link
                 href="/orders"
                 className={isActive("/orders") ? style.activeLink : style.link}
@@ -91,6 +92,14 @@ function Header() {
                   {t("Orders")}
                 </Text>
               </Link>
+            ) : isUserLoading ? (
+              <Box>
+                <Skeleton height={14} width={42} radius="sm" opacity={0.2} />
+              </Box>
+            ) : (
+              <Text size="sm" style={{ visibility: "hidden" }}>
+                {t("Orders")}
+              </Text>
             )}
 
             <LanguageDropdown />
@@ -105,17 +114,27 @@ function Header() {
             <Group className={style.cartWrapper} c="textMain.2">
               <IconShoppingCartFilled size={20} />
 
-              <Badge className={style.cartBadge} color="surface.3" size="xs">
-                {cartCount}
-              </Badge>
+              {isCartLoading ? (
+                <Skeleton
+                  className={style.cartBadge}
+                  height={16}
+                  width={18}
+                  radius="xl"
+                  opacity={0.2}
+                />
+              ) : (
+                <Badge className={style.cartBadge} color="surface.3" size="xs">
+                  {cartCount}
+                </Badge>
+              )}
             </Group>
           </Link>
 
           <Group className={style.authSection}>
-            {isLoading ? (
-              <Center className={style.authLoader}>
-                <Loader size="sm" type="dots" color="surface.9" />
-              </Center>
+            {isUserLoading ? (
+              <Group gap="xs" wrap="nowrap">
+                <Skeleton height={28} width={28} circle opacity={0.2} />
+              </Group>
             ) : user ? (
               <UserProfile />
             ) : (

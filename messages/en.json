@@ -50,7 +50,8 @@
     "LoginRequired": "Please log in first to add items to your cart.",
     "LoginRequiredTitle": "Authentication Required",
     "ProfileUpdateSuccess": "Profile updated successfully.",
-    "UpdateFailed": "Failed to update profile. Please try again."
+    "UpdateFailed": "Failed to update profile. Please try again.",
+    "AddressDeleteSuccess": "Address deleted successfully."
   },
   "Admin": {
     "BookStoreDashboard": "Book Store Dashboard",
@@ -284,6 +285,8 @@
     "Province": "Province",
     "ShippingInfo": "Shipping Information",
     "ModalTitle": "New Address",
+    "EditAddress": "Edit Address",
+    "UpdateAddress": "Update Address",
     "PlaceHolders": {
       "Phone": "e.g. : 09121234567",
       "Name": "e.g. : Sara Ahmadi",

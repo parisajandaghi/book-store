@@ -39,3 +39,4 @@ export const checkoutAtom = atomWithStorage<CheckoutState>(
   initialCheckoutState,
   storage,
 );
+export const editingAddressAtom = atom<Address | null>(null);

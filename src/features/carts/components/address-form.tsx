@@ -30,6 +30,7 @@ import {
   addressesAtom,
   addressModalAtom,
   checkoutAtom,
+  editingAddressAtom,
 } from "@/store/checkout-atom";
 import { useAtom } from "jotai";
 import { notify } from "@/utils/notification";
@@ -53,19 +54,33 @@ export default function AddressForm({
   const locale = useLocale();
   const { mutate } = useAddresses();
   const currentLang = locale === "en" ? "en" : "fa";
-  const [, setCheckout] = useAtom(checkoutAtom);
+  const [checkout, setCheckout] = useAtom(checkoutAtom);
   const [, setIsAddressModalOpen] = useAtom(addressModalAtom);
   const [, setAddresses] = useAtom(addressesAtom);
+  const [editingAddress, setEditingAddress] = useAtom(editingAddressAtom);
 
   const currentProvincesData = locationsData[currentLang];
   const provincesList = Object.keys(currentProvincesData);
   const currentCitiesList = form.values.province
     ? currentProvincesData[form.values.province] || []
     : [];
+
+  const handleClose = () => {
+    setIsAddressModalOpen(false);
+    setEditingAddress(null);
+    form.reset();
+  };
+
   const handleSubmit = async (values: CheckoutAddressFormValues) => {
     try {
-      const response = await fetch("/api/users/addresses", {
-        method: "POST",
+      const isEditing = Boolean(editingAddress);
+      const url = isEditing
+        ? `/api/users/addresses/${editingAddress!.id}`
+        : "/api/users/addresses";
+      const method = isEditing ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -73,31 +88,39 @@ export default function AddressForm({
       });
 
       if (!response.ok) {
-        throw new Error("مشکلی در ثبت آدرس به وجود آمد");
+        throw new Error("مشکلی در ذخیره آدرس به وجود آمد");
       }
 
-      const newAddress = await response.json();
-      await mutate((current) => [...(current || []), newAddress], {
-        revalidate: false,
-      });
+      // به‌روزرسانی داده‌ها در SWR
+      await mutate();
 
-      setAddresses((prev) => [...prev, newAddress]);
+      // در صورت ویرایش آدرسِ در حال انتخاب، اطلاعات چک‌اوت هم به‌روزرسانی شود
+      if (isEditing && checkout.addressId === editingAddress!.id) {
+        setCheckout((prev) => ({
+          ...prev,
+          recipientName: values.recipientName,
+          phone: values.phone,
+          address: values.address,
+        }));
+      } else if (!isEditing) {
+        const newAddress = await response.json();
+        setAddresses((prev) => [...prev, newAddress]);
+        setCheckout((prev) => ({
+          ...prev,
+          addressId: newAddress.id,
+          recipientName: newAddress.recipientName,
+          phone: newAddress.phone,
+          address: newAddress.address,
+        }));
+      }
 
-      setCheckout((prev) => ({
-        ...prev,
-        addressId: newAddress.id,
-        recipientName: newAddress.recipientName,
-        phone: newAddress.phone,
-        address: newAddress.address,
-      }));
       notify.success({
         id: "address-saved",
         title: t1("SuccessTitle"),
         message: t1("AddressSavedSuccess"),
       });
 
-      form.reset();
-      setIsAddressModalOpen(false);
+      handleClose();
     } catch (error) {
       console.error("Error saving address:", error);
       notify.error({
@@ -107,6 +130,7 @@ export default function AddressForm({
       });
     }
   };
+
   const commonClasses = {
     input: style.input,
     label: style.label,
@@ -117,8 +141,9 @@ export default function AddressForm({
     dropdown: style.dropDown,
     option: style.option,
   };
+
   return (
-    <ScrollArea  h={{ base: 360, sm: 490 }} offsetScrollbars type="hover">
+    <ScrollArea h={{ base: 360, sm: 490 }} offsetScrollbars type="hover">
       <GlassPanel flex={2} p={"md"}>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap={3}>
@@ -134,9 +159,7 @@ export default function AddressForm({
                   size={18}
                   color="var(--mantine-color-surface-7)"
                   cursor={"pointer"}
-                  onClick={() => {
-                    setIsAddressModalOpen(false);
-                  }}
+                  onClick={handleClose}
                 />
               )}
             </Group>
@@ -146,7 +169,7 @@ export default function AddressForm({
               label={t("Name")}
               classNames={commonClasses}
               {...form.getInputProps("recipientName")}
-            ></TextInput>
+            />
             <TextInput
               label={t("Mobile")}
               placeholder={t("PlaceHolders.Phone")}
@@ -154,7 +177,7 @@ export default function AddressForm({
               leftSection={<IconPhone size={16} />}
               classNames={commonClasses}
               {...form.getInputProps("phone")}
-            ></TextInput>
+            />
 
             <Flex w={"100%"} direction={{ base: "column", sm: "row" }} gap="xs">
               <Select
@@ -191,14 +214,14 @@ export default function AddressForm({
               maxLength={10}
               classNames={commonClasses}
               {...form.getInputProps("postalCode")}
-            ></TextInput>
+            />
             <Textarea
               maxLength={250}
               leftSection={<IconMapPin2 size={16} />}
               label={t("Address")}
               classNames={commonClasses}
               {...form.getInputProps("address")}
-            ></Textarea>
+            />
             {children && <Stack mt={"sm"}>{children}</Stack>}
           </Stack>
         </form>

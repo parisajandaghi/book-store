@@ -10,12 +10,12 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import style from "../address-selector.module.css";
 
+import { EXCHANGE_RATE } from "@/constants";
+import { useStoreSettings } from "@/features/admin/hooks/use-store-settings";
+import { useCart } from "@/features/carts/hooks/use-cart";
 import { checkoutAtom } from "@/store/checkout-atom";
 import { useAtom } from "jotai";
 import ShippingDateTimePicker from "./shipping-date-time-picker";
-import { useStoreSettings } from "@/features/admin/hooks/use-store-settings";
-import { useCart } from "@/features/carts/hooks/use-cart";
-import { EXCHANGE_RATE } from "@/constants";
 
 export default function ShippingStep() {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
@@ -25,22 +25,14 @@ export default function ShippingStep() {
   const t1 = useTranslations("Product");
   const locale = useLocale();
 
-  // ۱. مقادیر پایه دیتابیس (همیشه بر حسب تومان است)
-  const rawBaseRate = Number(settings?.shipping_rate) || 35000;
-  const rawThreshold = Number(settings?.free_shipping_threshold) || 300000;
+  const rawBaseRate = Number(settings?.shipping_rate) || 200000;
+  const rawThreshold = Number(settings?.free_shipping_threshold) || 2000000;
 
-  // ۲. تبدیل بر اساس زبان کاربر (اگر در انگلیسی سبد خرید دلاری است)
-  const isEn = locale === "en";
-  
-  // بررسی اینکه آیا cartTotal کاربر به دلار است یا تومان:
-  // اگر cartTotal به تومان باشد (عدد بزرگتر از مثلاً 1000):
   const isCartInToman = cartTotal > 1000;
-  const threshold = isCartInToman ? rawThreshold : (rawThreshold / EXCHANGE_RATE);
-  const baseRate = isCartInToman ? rawBaseRate : (rawBaseRate / EXCHANGE_RATE);
-  const expressExtra = isCartInToman ? 100000 : (100000 / EXCHANGE_RATE);
+  const threshold = isCartInToman ? rawThreshold : rawThreshold / EXCHANGE_RATE;
+  const baseRate = isCartInToman ? rawBaseRate : rawBaseRate / EXCHANGE_RATE;
+  const expressExtra = isCartInToman ? 100000 : 100000 / EXCHANGE_RATE;
 
-  // ۳. بررسی شرط ارسال رایگان با مقادیر هم‌واحد
-  // اگر آستانه ارسال رایگان صفر یا نامعتبر بود، ارسال رایگان نشود
   const isFree = rawThreshold > 0 && cartTotal >= threshold;
 
   const standardPrice = isFree ? 0 : baseRate;
@@ -98,11 +90,7 @@ export default function ShippingStep() {
         >
           <Stack gap={8}>
             {shippingMethods.map((item) => (
-              <Radio.Card
-                className={style.root}
-                value={item.id}
-                key={item.id}
-              >
+              <Radio.Card className={style.root} value={item.id} key={item.id}>
                 <Group
                   wrap="nowrap"
                   align="center"
@@ -153,9 +141,7 @@ export default function ShippingStep() {
                       c="#d4af37"
                       fz={{ base: "xs", sm: "sm" }}
                       fw="bold"
-                      ff={
-                        locale === "en" ? "system-ui, sans-serif" : "inherit"
-                      }
+                      ff={locale === "en" ? "system-ui, sans-serif" : "inherit"}
                     >
                       {renderPrice(item.price)}
                     </Text>

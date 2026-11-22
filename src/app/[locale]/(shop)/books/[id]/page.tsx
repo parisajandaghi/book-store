@@ -53,7 +53,7 @@ export default async function BookDetails({
   return (
     <Group
       w="100%"
-      h="100%"
+  mih="calc(100dvh - 80px)" 
       justify="center"
       align="center"
       className={style.pageWrapper}

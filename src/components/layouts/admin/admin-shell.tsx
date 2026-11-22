@@ -90,7 +90,7 @@ export default function AdminShell({ children }: AdminLayoutProps) {
   );
 
   return (
-    <Flex h="100vh" direction="column" bg="#1f0f1f34">
+    <Flex h="100dvh" direction="column" bg="#1f0f1f34">
       <Group
         h={65}
         px={{ base: "xs", sm: "xl" }}

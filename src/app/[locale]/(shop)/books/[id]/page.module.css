@@ -5,7 +5,9 @@
 
 .bookDetailsCard {
   width: 700px;
-  height: 450px;
+  max-width: 100%;
+  /* min-height: 450px;
+  height: auto; */
 }
 
 .bookDetailsContent {
@@ -17,6 +19,9 @@
 .imageWrapper {
   flex: 2;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bookImage {
@@ -34,19 +39,19 @@
 /* --- تنظیمات اختصاصی فقط برای موبایل (زیر 600px) --- */
 @media (max-width: 600px) {
   .pageWrapper {
-    padding: 16px 12px !important;
+    padding: 8px !important;
     align-items: center !important;
   }
 
   .bookDetailsCard {
     width: 100% !important;
     height: auto !important;
-    padding: 16px !important;
+    padding: 10px !important;
   }
 
   .bookDetailsContent {
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 6px !important;
   }
 
   /* حذف خط عمودی دسکتاپ در موبایل */
@@ -64,8 +69,8 @@
   .bookImage {
     width: auto !important;
     height: auto !important;
-    max-height: 200px !important;
-    border-radius: 8px;
+    max-height: 140px !important; /* کوچک‌تر کردن عکس برای حذف نیاز به اسکرول */
+    border-radius: 6px;
     object-fit: contain !important;
   }
 
@@ -76,13 +81,15 @@
     text-align: center !important;
   }
 
-  .bookInfo :global(h3) {
+  .bookInfo :global(h2) {
     font-size: 1.1rem !important;
+    margin: 0 !important;
     text-align: center !important;
   }
 
-  .bookInfo :global(h5) {
+  .bookInfo :global(h4) {
     font-size: 0.85rem !important;
+    margin: 0 !important;
     text-align: center !important;
   }
 }

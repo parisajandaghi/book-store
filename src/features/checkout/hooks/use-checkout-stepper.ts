@@ -78,11 +78,7 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
     }
 
     if (activeStep === 1) {
-      if (
-        !checkout.shippingMethod ||
-        !checkout.deliveryDate ||
-        !checkout.deliveryTime
-      ) {
+      if (!checkout.deliveryDate || !checkout.deliveryTime) {
         notify.error({
           id: "checkout-shipping-required",
           title: t("ErrorTitle"),
@@ -91,7 +87,12 @@ export function useCheckoutStepper({ paymentForm }: UseCheckoutStepperProps) {
         return;
       }
 
-      setActiveStep(2);
+      setCheckout((prev) => ({
+        ...prev,
+        shippingMethod: prev.shippingMethod ?? "standard",
+        activeStep: 2,
+      }));
+
       return;
     }
 

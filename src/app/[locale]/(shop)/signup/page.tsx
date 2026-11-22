@@ -94,7 +94,7 @@ export default function Signup() {
   return (
     <Group
       w="100%"
-      mih="calc(100vh - 80px)"
+      mih="calc(100dvh - 80px)"
       justify="center"
       align="center"
       flex={1}
@@ -104,7 +104,7 @@ export default function Signup() {
       <GlassPanel
         w="100%"
         maw={480}
-        mih={{ base: "auto", sm: 650 }}
+        mih="auto"
         justify="center"
         align="center"
         p={{ base: "lg", sm: "xl" }}

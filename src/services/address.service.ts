@@ -38,3 +38,30 @@ export function createAddress(
     address: data.address,
   };
 }
+export function updateAddress(
+  id: number,
+  userId: number,
+  data: Omit<Address, "id" | "userId">,
+): boolean {
+  const stmt = db.prepare(`
+    UPDATE addresses 
+    SET recipientName = ?, phone = ?, address = ?
+    WHERE id = ? AND user_id = ?
+  `);
+
+  const info = stmt.run(data.recipientName, data.phone, data.address, id, userId);
+  
+  // اگر رکوردی آپدیت شده باشد changes بزرگتر از 0 خواهد بود
+  return info.changes > 0; 
+}
+
+export function deleteAddress(id: number, userId: number): boolean {
+  const stmt = db.prepare(`
+    DELETE FROM addresses 
+    WHERE id = ? AND user_id = ?
+  `);
+
+  const info = stmt.run(id, userId);
+  
+  return info.changes > 0;
+}

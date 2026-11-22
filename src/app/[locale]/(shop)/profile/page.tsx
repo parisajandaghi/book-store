@@ -4,6 +4,7 @@ import HorizontalDivider from "@/components/ui/elements/horizontal-divider";
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import OrderCard from "@/features/orders/components/order-card";
 import { useOrderHistory } from "@/features/orders/hooks/use-order-history";
+import ProfileSkeleton from "@/features/profile/components/profile-skeleton";
 import UserInformationModal from "@/features/profile/components/user-information-modal";
 import { useUser } from "@/features/profile/hook/use-user";
 import { informationModalAtom } from "@/store/profile-atom";
@@ -23,17 +24,30 @@ import { useAtom } from "jotai";
 import { useLocale, useTranslations } from "next-intl";
 
 export default function Profile() {
-  const { user } = useUser();
+  const { user, isLoading: isUserLoading } = useUser();
   const t = useTranslations("Profile");
   const t1 = useTranslations("Orders");
   const [, setIsInfoModalOpen] = useAtom(informationModalAtom);
-  const { orders } = useOrderHistory();
+  const { orders, isLoading: isOrdersLoading } = useOrderHistory();
   const locale = useLocale();
- 
+  if (isUserLoading || isOrdersLoading) {
+    return <ProfileSkeleton />;
+  }
 
   return (
-    <Container w="100%" px={{ base: "xs", sm: "md" }}>
-      <GlassPanel py={{ base: "md", sm: "lg" }} px={{ base: "md", sm: "xl" }}>
+    <Container
+      w="100%"
+      maw="70rem"
+      mt={{ base: "md", sm: "xl" }}
+      mb={{ base: "xl", sm: "2xl" }}
+      px={{ base: "xs", sm: "md" }}
+    >
+      <GlassPanel
+        mih={{ base: "auto", sm: "60vh" }} // در دسکتاپ حداقل ۶۰٪ ارتفاع دید رو می‌گیره تا شکیل بشه
+        py={{ base: "md", sm: "xl" }}
+        px={{ base: "md", sm: "xl" }}
+      >
+        {/* اطلاعات کاربر */}
         <Flex
           direction={{ base: "column", sm: "row" }}
           align={{ base: "center", sm: "flex-start" }}
@@ -100,10 +114,7 @@ export default function Profile() {
               </Group>
             </Flex>
 
-            <Box
-              w={{ base: "fit-content", sm: "auto" }}
-              mx={{ base: "auto", sm: 0 }}
-            >
+            <Box w={{ base: "100%", sm: "auto" }} mx={{ base: "auto", sm: 0 }}>
               <PrimaryButton
                 onClick={() => setIsInfoModalOpen(true)}
                 btnText={t("InfoEdit")}
@@ -119,28 +130,27 @@ export default function Profile() {
           </Flex>
         </Flex>
 
-        <HorizontalDivider my="md" />
+        <HorizontalDivider my="lg" />
 
-        {orders.length !== 0 ? (
-          <Flex justify="center" w="100%">
-            <Box w={{ base: "100%", sm: "fit-content" }}>
-              <Text
-                fz={{ base: "h5", sm: "h4" }}
-                fw={600}
-                c="textMain.2"
-                ta="start"
-                mb="md"
-              >
-                {t("MyOrders")}
-              </Text>
+        {/* بخش لیست سفارشات */}
+        {orders && orders.length > 0 ? (
+          <Box w="100%">
+            <Text
+              fz={{ base: "h5", sm: "h4" }}
+              fw={600}
+              c="textMain.2"
+              ta="start"
+              mb="md"
+            >
+              {t("MyOrders")}
+            </Text>
 
-              <ScrollArea h={{ base: 360, sm: 300 }} offsetScrollbars>
-                <OrderCard />
-              </ScrollArea>
-            </Box>
-          </Flex>
+            <ScrollArea h={{ base: 360, sm: 300 }} offsetScrollbars>
+              <OrderCard />
+            </ScrollArea>
+          </Box>
         ) : (
-          <Center my="xl">
+          <Center py={{ base: "xl", sm: "3xl" }}>
             <Title
               order={3}
               fz={{ base: "md", sm: "h3" }}
