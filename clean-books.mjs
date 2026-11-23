@@ -4,7 +4,7 @@ import path from "node:path";
 const dbPath = path.resolve(process.cwd(), "data/bookstore.db");
 const db = new DatabaseSync(dbPath);
 
-console.log("در حال پاکسازی کتاب‌های جدید...");
+
 
 try {
   // ۱. غیرفعال کردن موقت بررسی Foreign Key
