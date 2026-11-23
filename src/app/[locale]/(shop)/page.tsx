@@ -15,7 +15,7 @@ export default async function Page({
 
   const { data: rawBooks } = getBooks(1, 5, "", "most_popular", locale);
   const books = JSON.parse(JSON.stringify(rawBooks));
-  const t = await getTranslations("Home");
+  const t = await getTranslations({ locale, namespace: "Home" });
 
   return (
     <Stack

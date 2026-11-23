@@ -1,8 +1,8 @@
+
 "use client";
 
 import {
   Badge,
-  Box,
   Burger,
   Button,
   Group,
@@ -83,7 +83,7 @@ function Header() {
               </Text>
             </Link>
 
-            {user ? (
+            {user && (
               <Link
                 href="/orders"
                 className={isActive("/orders") ? style.activeLink : style.link}
@@ -92,14 +92,6 @@ function Header() {
                   {t("Orders")}
                 </Text>
               </Link>
-            ) : isUserLoading ? (
-              <Box>
-                <Skeleton height={14} width={42} radius="sm" opacity={0.2} />
-              </Box>
-            ) : (
-              <Text size="sm" style={{ visibility: "hidden" }}>
-                {t("Orders")}
-              </Text>
             )}
 
             <LanguageDropdown />

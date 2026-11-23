@@ -1,8 +1,8 @@
 import SortSelect from "@/components/ui/sort/sort-select";
 import BookCard from "@/features/books/components/book-card";
 import { getBooks } from "@/services/book.service";
-import { SimpleGrid, Group, Title, Container, Box } from "@mantine/core";
-import { IconBook, IconBook2 } from "@tabler/icons-react";
+import { Box, Container, Group, SimpleGrid, Title } from "@mantine/core";
+import { IconBook } from "@tabler/icons-react";
 import { getTranslations } from "next-intl/server";
 import style from "./page.module.css";
 
@@ -14,7 +14,7 @@ export default async function Books({
   searchParams: Promise<{ search?: string; sort?: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations("Books");
+  const t = await getTranslations({ locale, namespace: "Books" });
   const { search = "", sort = "most_popular" } = await searchParams;
 
   const { data: books } = getBooks(1, 40, search, sort, locale);
@@ -25,7 +25,7 @@ export default async function Books({
         justify="space-between"
         align="center"
         mb="3rem"
-        mt={'lg'}
+        mt={"lg"}
         className={style.booksHeader}
         style={{
           width: "100%",
