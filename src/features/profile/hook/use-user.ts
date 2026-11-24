@@ -31,6 +31,12 @@ export function useUser() {
   } = useSWR<User, FetchError>("/api/users", fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false,
+
+    onError: (err) => {
+      if (err instanceof FetchError && err.status === 401) {
+        mutate(undefined, false);
+      }
+    },
   });
 
   const logout = useCallback(
@@ -47,16 +53,17 @@ export function useUser() {
         router.refresh();
       }
     },
-    [router, mutate]
+    [router, mutate],
   );
 
-  
-  const isGuest = !isLoading && (error?.status === 401 || error?.status === 404 || !user);
+  const isGuest =
+    !isLoading && (error?.status === 401 || error?.status === 404 || !user);
 
   return {
     user: isGuest ? null : user,
     isLoading,
-    error: (error?.status === 401 || error?.status === 404) ? null : error,
+
+    error: error?.status === 401 || error?.status === 404 ? null : error,
     logout,
     refetch: mutate,
   };

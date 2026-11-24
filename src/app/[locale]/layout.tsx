@@ -1,10 +1,11 @@
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@mantine/carousel/styles.css";
 
+/* ایمپورت حتماً بعد از استایل‌های مانتین */
 import "@/styles/globals.css";
 
 import { theme } from "@/styles/theme";
-import "@mantine/carousel/styles.css";
 import {
   ColorSchemeScript,
   MantineProvider,
@@ -12,12 +13,11 @@ import {
 } from "@mantine/core";
 
 import { Notifications } from "@mantine/notifications";
-
 import localFont from "next/font/local";
-
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Viewport } from "next";
 
 const IRANSansWeb = localFont({
   src: [
@@ -49,6 +49,13 @@ export const metadata = {
   description: "I have followed setup instructions carefully",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#120a12", // تم تاریک نوار وضعیت بالای گوشی و مرورگر موبایل
+};
+
 export default async function RootLayout({
   children,
   params,
@@ -63,24 +70,38 @@ export default async function RootLayout({
   }
 
   const dir = locale === "fa" ? "rtl" : "ltr";
-
   const messages = await getMessages();
 
   return (
-    <html lang={locale} dir={dir} {...mantineHtmlProps}>
+    <html
+      lang={locale}
+      dir={dir}
+      {...mantineHtmlProps}
+      suppressHydrationWarning
+      style={{
+        backgroundColor: "#120a12", // رنگ سالید امن برای جلوگیری از فلاش سفید در فایرفاکس و سافاری
+      }}
+    >
       <head>
-        <ColorSchemeScript />
-
+        <ColorSchemeScript defaultColorScheme="dark" />
         <link
           rel="preload"
           as="image"
           href="/images/book-cover-1.jpg"
-          fetchPriority="high"
+          // @ts-expect-error fetchpriority in Next.js link tag
+          fetchpriority="high"
         />
       </head>
-      <body className={`${IRANSansWeb.className} appBackground`}>
+      <body
+        className={`${IRANSansWeb.className} appBackground`}
+        style={{
+          backgroundColor: "transparent",
+          background: "transparent",
+        }}
+      >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <MantineProvider
+            defaultColorScheme="dark"
             theme={{
               ...theme,
               fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",

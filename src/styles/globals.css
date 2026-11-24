@@ -1,8 +1,27 @@
 :root {
-  --app-height: 100dvh;
+  --mantine-color-body: transparent !important;
 }
 
-html,
+[data-mantine-color-scheme] {
+  --mantine-color-body: transparent !important;
+  background-color: transparent !important;
+}
+
+[data-mantine-color-scheme="dark"] body {
+  background-color: transparent !important;
+}
+
+/* رنگ پایه امن زیرین برای جلوگیری از فلاش سفید در فایرفاکس و کشش اسکرول سافاری */
+html {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #120a12 !important;
+  overscroll-behavior-y: none; /* جلوگیری از پرش‌های اضافه کشسانی در موبایل */
+}
+
 body,
 #__next {
   min-height: 100vh;
@@ -11,29 +30,43 @@ body,
   font-family: "IRANSansWeb";
   padding: 0;
   margin: 0;
-
   overflow-x: clip;
-/* 
-  background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
-    url("/images/book-cover-1.jpg") center center / cover no-repeat fixed;; */
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .appBackground {
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-   /* background-color: #1c1420; */
+  position: relative;
+  background: transparent !important;
+}
+
+.appBackground::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh; /* هماهنگ با سایز واقعی نمایشگر موبایل حتی با باز و بسته شدن URL bar */
   background-image:
     linear-gradient(
       rgba(0, 0, 0, 0.6),
       rgba(0, 0, 0, 0.7)
     ),
     url("/images/book-cover-1.jpg");
-
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  
+  pointer-events: none;
+  z-index: -1;
+  
+  /* شتاب‌دهنده گرافیکی GPU بدون لگ */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .custom-select-input {
@@ -43,7 +76,6 @@ body,
   padding: 0px 15px;
   background: rgba(47, 22, 47, 0.57);
   backdrop-filter: blur(10px);
-
   transition: all 0.3s ease;
   height: 30px;
 }
@@ -90,6 +122,7 @@ body,
   background-color: #7b62101a !important;
   color: #bc982a !important;
 }
+
 .mantine-Notification-closeButton {
   color: #d4af37 !important;
 }
