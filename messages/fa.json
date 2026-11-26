@@ -51,7 +51,8 @@
     "LoginRequiredTitle": "ورود به حساب کاربری",
     "ProfileUpdateSuccess": "اطلاعات پروفایل با موفقیت به‌روزرسانی شد.",
     "UpdateFailed": "خطا در به‌روزرسانی پروفایل. لطفاً دوباره تلاش کنید.",
-    "AddressDeleteSuccess":"آدرس با موفقیت حذف شد."
+    "AddressDeleteSuccess": "آدرس با موفقیت حذف شد.",
+    "FailedToDelete": "حذف آدرس با خطا مواجه شد ."
   },
   "Admin": {
     "BookStoreDashboard": "پیشخوان کتاب سرا",
@@ -290,8 +291,8 @@
     "Province": "استان",
     "ShippingInfo": "اطلاعات ارسال",
     "ModalTitle": "آدرس جدید",
-    "EditAddress":"ویرایش آدرس",
-    "UpdateAddress":"ویرایش آدرس",
+    "EditAddress": "ویرایش آدرس",
+    "UpdateAddress": "ویرایش آدرس",
     "PlaceHolders": {
       "Phone": "مثال : 09121234567",
       "Name": "مثال : سارا احمدی",

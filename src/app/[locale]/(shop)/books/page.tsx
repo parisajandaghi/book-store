@@ -4,7 +4,6 @@ import { getBooks } from "@/services/book.service";
 import { Box, Container, Group, SimpleGrid, Title } from "@mantine/core";
 import { IconBook } from "@tabler/icons-react";
 import { getTranslations } from "next-intl/server";
-import style from "./page.module.css";
 
 export default async function Books({
   params,
@@ -20,20 +19,27 @@ export default async function Books({
   const { data: books } = getBooks(1, 40, search, sort, locale);
 
   return (
-    <Container size="55rem" pt={40} pb={40} className={style.booksContainer}>
+    <Container
+      size="55rem"
+      w="100%"
+      pt={{ base: 16, sm: 32 }}
+      pb={{ base: 24, sm: 40 }}
+      px={{ base: "xs", sm: "md" }}
+    >
       <Group
         justify="space-between"
         align="center"
         mb="3rem"
-        mt={"lg"}
-        className={style.booksHeader}
         style={{
+          position: "sticky",
+          top: "95px",
+          zIndex: 100,
           width: "100%",
           padding: "8px 16px",
           borderRadius: "999px",
-          background: "rgba(30, 16, 32, 0.65)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          background: "rgba(25, 12, 26, 0.88)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           border: "1px solid #7b6210",
           boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
         }}

@@ -3,19 +3,12 @@
 import EmptyOrderState from "@/features/orders/components/empty-order-state";
 import OrderCard from "@/features/orders/components/order-card";
 import { useOrderHistory } from "@/features/orders/hooks/use-order-history";
+import { Order } from "@/features/orders/order.type";
 import { filterStatusAtom } from "@/store/order-atom";
-import {
-  Box,
-  Container,
-  Group,
-  ScrollArea,
-  Select,
-  Title,
-} from "@mantine/core";
+import { Box, Container, Group, Select, Title } from "@mantine/core";
 import { IconPackage } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useTranslations } from "next-intl";
-import { Order } from "@/features/orders/order.type";
 
 interface OrdersClientProps {
   initialOrders: Order[];
@@ -44,15 +37,18 @@ export default function OrdersClient({ initialOrders }: OrdersClientProps) {
         justify="space-between"
         align="center"
         wrap="nowrap"
-        mb={{ base: "md", sm: "xl" }}
-        mt={"lg"}
+        mb="3rem"
+        // mt={"lg"}
         style={{
+          position: "sticky",
+          top: "95px",
+          zIndex: 100,
           width: "100%",
           padding: "8px 16px",
           borderRadius: "999px",
-          background: "rgba(30, 16, 32, 0.65)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          background: "rgba(25, 12, 26, 0.88)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           border: "1px solid #7b6210",
           boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
         }}
@@ -107,7 +103,6 @@ export default function OrdersClient({ initialOrders }: OrdersClientProps) {
             { value: "delivered", label: t("Status.delivered") },
             { value: "cancelled", label: t("Status.cancelled") },
           ]}
-          size="xs"
           w={{ base: 110, xs: 130, sm: 160 }}
           style={{ flexShrink: 0 }}
           classNames={{
@@ -118,9 +113,7 @@ export default function OrdersClient({ initialOrders }: OrdersClientProps) {
         />
       </Group>
 
-      <ScrollArea h={{ base: 400, sm: 450 }} offsetScrollbars mt={"xl"}>
-        <OrderCard orders={orders} isLoading={isLoading} />
-      </ScrollArea>
+      <OrderCard orders={orders} isLoading={isLoading} />
     </Container>
   );
 }

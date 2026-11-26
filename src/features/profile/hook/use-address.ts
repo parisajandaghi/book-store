@@ -23,7 +23,12 @@ export function useAddresses() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
-        throw new Error(errData?.error || "Failed to delete address");
+
+        notify.error({
+          title: t("ErrorTitle"),
+          message: errData?.error || t("FailedToDelete"),
+        });
+        return false;
       }
 
       await mutate();
@@ -35,6 +40,11 @@ export function useAddresses() {
       return true;
     } catch (err) {
       console.error("Delete address error:", err);
+
+      notify.error({
+        title: t("ErrorTitle"),
+        message: t("GenericErrorMessage"),
+      });
       return false;
     }
   };

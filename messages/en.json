@@ -51,7 +51,8 @@
     "LoginRequiredTitle": "Authentication Required",
     "ProfileUpdateSuccess": "Profile updated successfully.",
     "UpdateFailed": "Failed to update profile. Please try again.",
-    "AddressDeleteSuccess": "Address deleted successfully."
+    "AddressDeleteSuccess": "Address deleted successfully.",
+    "FailedToDelete": "Failed to delete address."
   },
   "Admin": {
     "BookStoreDashboard": "Book Store Dashboard",

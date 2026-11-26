@@ -11,7 +11,6 @@
   background-color: transparent !important;
 }
 
-/* رنگ پایه امن زیرین برای جلوگیری از فلاش سفید در فایرفاکس و کشش اسکرول سافاری */
 html {
   min-height: 100vh;
   min-height: 100dvh;
@@ -19,7 +18,7 @@ html {
   padding: 0;
   margin: 0;
   background-color: #120a12 !important;
-  overscroll-behavior-y: none; /* جلوگیری از پرش‌های اضافه کشسانی در موبایل */
+  overscroll-behavior-y: none;
 }
 
 body,
@@ -43,12 +42,12 @@ body,
   background: transparent !important;
 }
 
-.appBackground::before {
+/* .appBackground::before {
   content: "";
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100dvh; /* هماهنگ با سایز واقعی نمایشگر موبایل حتی با باز و بسته شدن URL bar */
+  height: 100dvh; 
   background-image:
     linear-gradient(
       rgba(0, 0, 0, 0.6),
@@ -62,11 +61,29 @@ body,
   pointer-events: none;
   z-index: -1;
   
-  /* شتاب‌دهنده گرافیکی GPU بدون لگ */
+
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+} */
+
+.appBackground::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+    url("/images/book-cover-1.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  pointer-events: none;
+  z-index: -1;
+
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .custom-select-input {

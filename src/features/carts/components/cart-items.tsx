@@ -63,15 +63,17 @@ export default function CartItems({ initialCart }: CartItemsProps) {
         justify="space-between"
         align="center"
         wrap="nowrap"
-        mb={{ base: "md", sm: "xl" }}
-        mt={30}
+        mb="3rem"
         style={{
+          position: "sticky",
+          top: "95px",
+          zIndex: 100,
           width: "100%",
           padding: "8px 16px",
           borderRadius: "999px",
-          background: "rgba(30, 16, 32, 0.65)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          background: "rgba(25, 12, 26, 0.88)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           border: "1px solid #7b6210",
           boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
         }}

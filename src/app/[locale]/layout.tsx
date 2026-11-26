@@ -79,7 +79,7 @@ export default async function RootLayout({
       {...mantineHtmlProps}
       suppressHydrationWarning
       style={{
-        backgroundColor: "#120a12", // رنگ سالید امن برای جلوگیری از فلاش سفید در فایرفاکس و سافاری
+        backgroundColor: "#120a12",
       }}
     >
       <head>
@@ -88,8 +88,7 @@ export default async function RootLayout({
           rel="preload"
           as="image"
           href="/images/book-cover-1.jpg"
-          // @ts-expect-error fetchpriority in Next.js link tag
-          fetchpriority="high"
+          fetchPriority="high"
         />
       </head>
       <body
