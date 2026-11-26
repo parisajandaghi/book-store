@@ -19,7 +19,7 @@ function unauthorizedResponse() {
   );
 
   response.cookies.delete({
-    name: "token",
+    name: "auth_token",
     path: "/",
   });
 

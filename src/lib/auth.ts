@@ -46,7 +46,7 @@ export async function verifyToken(token: string) {
 export async function getCurrentUser() {
   const cookieStore = await cookies();
 
-  const token = cookieStore.get("token")?.value;
+  const token = cookieStore.get("auth_token")?.value;
 
   if (!token) {
     return null;
@@ -63,13 +63,13 @@ export async function getCurrentUser() {
 export async function deleteAuthCookie(response?: NextResponse) {
   const cookieStore = await cookies();
   cookieStore.delete({
-    name: "token",
+    name: "auth_token",
     path: "/",
   });
 
   if (response) {
     response.cookies.delete({
-      name: "token",
+      name: "auth_token",
       path: "/",
     });
   }

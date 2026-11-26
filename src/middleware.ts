@@ -20,6 +20,7 @@ const GUEST_ROUTES = ["/login", "/signup"];
 const ADMIN_ROUTES = ["/admin"];
 
 export default async function middleware(req: NextRequest) {
+  // ۱. اجرای میدل‌ور زبان
   const response = intlMiddleware(req);
 
   const { pathname } = req.nextUrl;
@@ -30,7 +31,8 @@ export default async function middleware(req: NextRequest) {
     ? `/${segments.slice(1).join("/")}`
     : pathname;
 
-  const token = req.cookies.get("token")?.value;
+  // ۲. دریافت توکن جدید
+  const token = req.cookies.get("auth_token")?.value;
   let isAuthenticated = false;
   let userRole = "USER";
 
@@ -52,25 +54,42 @@ export default async function middleware(req: NextRequest) {
   const isGuest = GUEST_ROUTES.some((route) => purePath.startsWith(route));
   const isAdmin = ADMIN_ROUTES.some((route) => purePath.startsWith(route));
 
+  // تابع کمکی برای ساخت ریدایرکت با حفظ کوکی‌ها/هدرهای زبان
+  const createRedirectResponse = (url: URL) => {
+    const redirectRes = NextResponse.redirect(url);
+    // کپی کردن کوکی‌های ست شده توسط next-intl
+    response.cookies.getAll().forEach((cookie) => {
+      redirectRes.cookies.set(cookie);
+    });
+    return redirectRes;
+  };
+
+  // کاربر لاگین‌نکرده در مسیرهای محافظت‌شده
   if (isProtected && !isAuthenticated) {
     const redirectUrl = new URL(`/${locale}/login`, req.url);
-    const redirectRes = NextResponse.redirect(redirectUrl);
+    const redirectRes = createRedirectResponse(redirectUrl);
 
-    if (token) {
-      redirectRes.cookies.delete({
-        name: "token",
-        path: "/",
-      });
-    }
+    // پاک کردن کوکی خراب یا نامعتبر
+    redirectRes.cookies.delete({
+      name: "auth_token",
+      path: "/",
+    });
+    redirectRes.cookies.delete({
+      name: "token",
+      path: "/",
+    });
+
     return redirectRes;
   }
 
+  // کاربر لاگین‌کرده در مسیرهای مهمان (مثل لاگین و ثبت‌نام)
   if (isGuest && isAuthenticated) {
-    return NextResponse.redirect(new URL(`/${locale}`, req.url));
+    return createRedirectResponse(new URL(`/${locale}`, req.url));
   }
 
+  // بررسی دسترسی ادمین
   if (isAdmin && (!isAuthenticated || userRole !== "ADMIN")) {
-    return NextResponse.redirect(new URL(`/${locale}`, req.url));
+    return createRedirectResponse(new URL(`/${locale}`, req.url));
   }
 
   return response;

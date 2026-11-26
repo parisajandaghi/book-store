@@ -11,7 +11,7 @@ export async function GET() {
 
     if (!user) {
       // حذف کوکی از سمت سرور
-      (await cookies()).delete("token");
+      (await cookies()).delete("auth_token");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -31,7 +31,7 @@ export async function PUT(req: NextRequest) {
 
     if (!user) {
       // حذف کوکی از سمت سرور
-      (await cookies()).delete("token");
+      (await cookies()).delete("auth_token");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

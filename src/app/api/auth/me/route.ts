@@ -10,26 +10,26 @@ export async function GET() {
 
     if (!user) {
       const cookieStore = await cookies();
-      cookieStore.delete("token"); // پاک کردن کوکی منقضی یا نامعتبر
+      cookieStore.delete("auth_token"); // پاک کردن کوکی منقضی یا نامعتبر
 
       const response = NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
       );
-      response.cookies.delete("token");
+      response.cookies.delete("auth_token");
       return response;
     }
 
     return NextResponse.json(user);
   } catch {
     const cookieStore = await cookies();
-    cookieStore.delete("token");
+    cookieStore.delete("auth_token");
 
     const response = NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
     );
-    response.cookies.delete("token");
+    response.cookies.delete("auth_token");
     return response;
   }
 }
