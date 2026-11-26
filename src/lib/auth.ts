@@ -1,6 +1,7 @@
 import argon2 from "argon2";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -14,10 +15,7 @@ export async function hashPassword(password: string) {
   return argon2.hash(password);
 }
 
-export async function verifyPassword(
-  password: string,
-  hashedPassword: string,
-) {
+export async function verifyPassword(password: string, hashedPassword: string) {
   return argon2.verify(hashedPassword, password);
 }
 
@@ -58,5 +56,21 @@ export async function getCurrentUser() {
     return await verifyToken(token);
   } catch {
     return null;
+  }
+}
+
+// در انتهای src/lib/auth.ts اضافه کنید:
+export async function deleteAuthCookie(response?: NextResponse) {
+  const cookieStore = await cookies();
+  cookieStore.delete({
+    name: "token",
+    path: "/",
+  });
+
+  if (response) {
+    response.cookies.delete({
+      name: "token",
+      path: "/",
+    });
   }
 }

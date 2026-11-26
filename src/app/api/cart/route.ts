@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import {
@@ -10,19 +11,34 @@ import {
 import { getBookById } from "@/services/book.service";
 import { getErrorMessage } from "@/utils/error";
 
+// تابع کمکی برای برگرداندن خطای 401 همراه با پاکسازی خودکار کوکی خراب/منقضی‌شده
+function unauthorizedResponse() {
+  const response = NextResponse.json(
+    { error: "Unauthorized" },
+    { status: 401 }
+  );
+
+  response.cookies.delete({
+    name: "token",
+    path: "/",
+  });
+
+  return response;
+}
+
 export async function GET() {
   try {
     const user = await getCurrentUser();
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return unauthorizedResponse();
     }
-    const cart = getCart(user.id);
 
+    const cart = getCart(user.id);
     return NextResponse.json(cart);
   } catch (error) {
     return NextResponse.json(
       { error: getErrorMessage(error) },
-      { status: 401 }, // در کد خودتان 401 بود، نگه داشتم
+      { status: 500 }
     );
   }
 }
@@ -30,7 +46,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return unauthorizedResponse();
   }
 
   const { bookId, quantity = 1 } = await req.json();
@@ -42,6 +58,13 @@ export async function POST(req: Request) {
   try {
     // ۱. دریافت اطلاعات کتاب برای بررسی موجودی
     const book = getBookById(Number(bookId));
+
+    if (!book) {
+      return NextResponse.json(
+        { error: "کتاب مورد نظر یافت نشد." },
+        { status: 404 }
+      );
+    }
 
     // ۲. بررسی تعداد فعلی این کتاب در سبد خرید کاربر
     const cart = getCart(user.id);
@@ -55,7 +78,7 @@ export async function POST(req: Request) {
     if (totalRequestedQuantity > (book.stock || 0)) {
       return NextResponse.json(
         { error: "تعداد درخواستی بیش از موجودی انبار است." },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -65,7 +88,7 @@ export async function POST(req: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: getErrorMessage(error) },
-      { status: 400 },
+      { status: 400 }
     );
   }
 }
@@ -74,8 +97,9 @@ export async function PUT(req: NextRequest) {
   try {
     const user = await getCurrentUser();
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return unauthorizedResponse();
     }
+
     const { itemId, quantity } = (await req.json()) as {
       itemId: string | number;
       quantity: number;
@@ -92,7 +116,7 @@ export async function PUT(req: NextRequest) {
     if (!cartItem) {
       return NextResponse.json(
         { error: "آیتم در سبد خرید یافت نشد" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -103,7 +127,7 @@ export async function PUT(req: NextRequest) {
     if (quantity > (book.stock || 0)) {
       return NextResponse.json(
         { error: "تعداد درخواستی بیش از موجودی انبار است" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -113,7 +137,7 @@ export async function PUT(req: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: getErrorMessage(error) },
-      { status: 400 },
+      { status: 400 }
     );
   }
 }
@@ -122,15 +146,16 @@ export async function DELETE(req: Request) {
   try {
     const user = await getCurrentUser();
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return unauthorizedResponse();
     }
+
     const { searchParams } = new URL(req.url);
     const itemId = searchParams.get("id");
 
     if (!itemId) {
       return NextResponse.json(
         { error: "Item id is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -139,7 +164,7 @@ export async function DELETE(req: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: getErrorMessage(error) },
-      { status: 400 },
+      { status: 400 }
     );
   }
 }
