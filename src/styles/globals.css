@@ -11,52 +11,83 @@
   background-color: transparent !important;
 }
 
+/* پس‌زمینه پایه برای زمان بارگذاری تصویر */
 html {
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
+
   background-color: #120a12 !important;
+
   overscroll-behavior-y: none;
 }
 
-body,
-#__next {
+/* تنظیمات اصلی بدنه سایت */
+body {
+  position: relative;
+  isolation: isolate;
+
   min-height: 100vh;
   min-height: 100dvh;
+
   width: 100%;
   font-family: "IRANSansWeb";
+
   padding: 0;
   margin: 0;
+
   overflow-x: clip;
+
   background: transparent !important;
   background-color: transparent !important;
 }
 
-/* لایه مجزا و ثابت بک‌گراند برای تگ <div className="fixed-background" /> */
+/*
+  لایه ثابت تصویر پس‌زمینه
+
+  استفاده از inset: 0 به جای height: 100dvh
+  برای جلوگیری از تغییر ارتفاع پس‌زمینه هنگام اسکرول موبایل
+*/
+
 .fixed-background {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100dvh;
-  z-index: -1;
+
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+
+  z-index: 0;
+
+  background-color: #120a12;
+
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
     url("/images/book-cover-1.jpg");
+
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  pointer-events: none;
 
-  /* شتاب‌دهنده سخت‌افزاری و ایزولاسیون GPU برای رفع پرش سامسونگ */
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  pointer-events: none;
 }
+
+/* محتوای اصلی سایت همیشه بالای تصویر قرار می‌گیرد */
+.page-content {
+  position: relative;
+  z-index: 1;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  width: 100%;
+
+  background: transparent !important;
+}
+
+/* استایل‌های Select */
 
 .custom-select-input {
   color: #fdf6eb;
@@ -65,6 +96,7 @@ body,
   padding: 0px 15px;
   background: rgba(47, 22, 47, 0.57);
   backdrop-filter: blur(10px);
+
   transition: all 0.3s ease;
   height: 30px;
 }

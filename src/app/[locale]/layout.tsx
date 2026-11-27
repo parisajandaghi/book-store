@@ -1,11 +1,13 @@
+
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/carousel/styles.css";
 
-/* ایمپورت حتماً بعد از استایل‌های مانتین */
+/* ایمپورت استایل‌های اصلی بعد از استایل‌های Mantine */
 import "@/styles/globals.css";
 
 import { theme } from "@/styles/theme";
+
 import {
   ColorSchemeScript,
   MantineProvider,
@@ -13,7 +15,9 @@ import {
 } from "@mantine/core";
 
 import { Notifications } from "@mantine/notifications";
+
 import localFont from "next/font/local";
+
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -21,18 +25,30 @@ import { Viewport } from "next";
 
 const IRANSansWeb = localFont({
   src: [
-    { path: "../../../public/fonts/woff/IRANSansWeb_Bold.woff", weight: "700" },
-    { path: "../../../public/fonts/woff/IRANSansWeb.woff", weight: "400" },
+    {
+      path: "../../../public/fonts/woff/IRANSansWeb_Bold.woff",
+      weight: "700",
+    },
+    {
+      path: "../../../public/fonts/woff/IRANSansWeb.woff",
+      weight: "400",
+    },
     {
       path: "../../../public/fonts/woff/IRANSansWebFaNum_Bold.woff",
       weight: "700",
     },
-    { path: "../../../public/fonts/woff/IRANSansWebFaNum.woff", weight: "400" },
+    {
+      path: "../../../public/fonts/woff/IRANSansWebFaNum.woff",
+      weight: "400",
+    },
     {
       path: "../../../public/fonts/woff2/IRANSansWeb_Bold.woff2",
       weight: "700",
     },
-    { path: "../../../public/fonts/woff2/IRANSansWeb.woff2", weight: "400" },
+    {
+      path: "../../../public/fonts/woff2/IRANSansWeb.woff2",
+      weight: "400",
+    },
     {
       path: "../../../public/fonts/woff2/IRANSansWebFaNum_Bold.woff2",
       weight: "700",
@@ -71,6 +87,7 @@ export default async function RootLayout({
   }
 
   const dir = locale === "fa" ? "rtl" : "ltr";
+
   const messages = await getMessages();
 
   return (
@@ -85,6 +102,8 @@ export default async function RootLayout({
     >
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
+
+        {/* پیش‌بارگذاری تصویر پس‌زمینه */}
         <link
           rel="preload"
           as="image"
@@ -92,30 +111,37 @@ export default async function RootLayout({
           fetchPriority="high"
         />
       </head>
-      <body
-        className={`${IRANSansWeb.className} `}
-        // style={{
-        //   backgroundColor: "transparent",
-        //   background: "transparent",
-        // }}
-      >
-        <div className="fixed-background" />
-        <NextIntlClientProvider messages={messages} locale={locale}>
-          <MantineProvider
-            defaultColorScheme="dark"
-            theme={{
-              ...theme,
-              fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",
-            }}
+
+      <body className={IRANSansWeb.className}>
+        {/* لایه ثابت تصویر پس‌زمینه */}
+        <div
+          className="fixed-background"
+          aria-hidden="true"
+        />
+
+        {/* محتوای اصلی سایت */}
+        <div className="page-content">
+          <NextIntlClientProvider
+            messages={messages}
+            locale={locale}
           >
-            <Notifications
-              position="top-center"
-              zIndex={2000}
-              autoClose={4000}
-            />
-            {children}
-          </MantineProvider>
-        </NextIntlClientProvider>
+            <MantineProvider
+              defaultColorScheme="dark"
+              theme={{
+                ...theme,
+                fontFamily: "'IRANSansWeb', 'IRANSansWeb Fallback'",
+              }}
+            >
+              <Notifications
+                position="top-center"
+                zIndex={2000}
+                autoClose={4000}
+              />
+
+              {children}
+            </MantineProvider>
+          </NextIntlClientProvider>
+        </div>
       </body>
     </html>
   );
