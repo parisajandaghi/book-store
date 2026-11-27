@@ -1,5 +1,6 @@
 import GlassPanel from "@/components/ui/glass/glass-panel";
 import {
+  ComboboxProps,
   Flex,
   Group,
   ScrollArea,
@@ -141,7 +142,10 @@ export default function AddressForm({
     dropdown: style.dropDown,
     option: style.option,
   };
-
+  const comboboxProps: ComboboxProps = {
+    withinPortal: true,
+    transitionProps: { transition: "fade", duration: 200 },
+  };
   return (
     <GlassPanel flex={2} p={"md"}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -182,6 +186,10 @@ export default function AddressForm({
             <Select
               placeholder={t("PlaceHolders.Province")}
               label={t("Province")}
+              comboboxProps={{
+                ...comboboxProps,
+                position: "bottom-start",
+              }}
               leftSection={<IconMap size={16} />}
               searchable
               data={provincesList}
@@ -197,6 +205,10 @@ export default function AddressForm({
               key={form.values.province}
               data={currentCitiesList}
               placeholder={t("PlaceHolders.City")}
+              comboboxProps={{
+                ...comboboxProps,
+                position: "bottom-start",
+              }}
               label={t("City")}
               searchable
               leftSection={<IconBuildingCommunity size={16} />}
