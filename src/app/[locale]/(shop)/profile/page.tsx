@@ -146,7 +146,7 @@ export default function Profile() {
             </Text>
 
             <ScrollArea h={{ base: 360, sm: 300 }} offsetScrollbars>
-              <OrderCard />
+              <OrderCard orders={orders} isLoading={isOrdersLoading} />
             </ScrollArea>
           </Box>
         ) : (

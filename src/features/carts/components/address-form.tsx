@@ -143,89 +143,87 @@ export default function AddressForm({
   };
 
   return (
-    <ScrollArea h={{ base: 360, sm: 490 }} offsetScrollbars type="hover">
-      <GlassPanel flex={2} p={"md"}>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap={3}>
-            <Group justify="space-between" align="center">
-              <Group gap={5}>
-                <IconMapPin color="var(--mantine-color-surface-7)" />
-                <Text mt={3} c={"textMain.3"}>
-                  {title}
-                </Text>
-              </Group>
-              {showCloseButton && (
-                <IconX
-                  size={18}
-                  color="var(--mantine-color-surface-7)"
-                  cursor={"pointer"}
-                  onClick={handleClose}
-                />
-              )}
+    <GlassPanel flex={2} p={"md"}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap={3}>
+          <Group justify="space-between" align="center">
+            <Group gap={5}>
+              <IconMapPin color="var(--mantine-color-surface-7)" />
+              <Text mt={3} c={"textMain.3"}>
+                {title}
+              </Text>
             </Group>
-            <TextInput
-              placeholder={t("PlaceHolders.Name")}
-              leftSection={<IconUser size={16} />}
-              label={t("Name")}
-              classNames={commonClasses}
-              {...form.getInputProps("recipientName")}
-            />
-            <TextInput
-              label={t("Mobile")}
-              placeholder={t("PlaceHolders.Phone")}
-              maxLength={11}
-              leftSection={<IconPhone size={16} />}
-              classNames={commonClasses}
-              {...form.getInputProps("phone")}
-            />
-
-            <Flex w={"100%"} direction={{ base: "column", sm: "row" }} gap="xs">
-              <Select
-                placeholder={t("PlaceHolders.Province")}
-                label={t("Province")}
-                leftSection={<IconMap size={16} />}
-                searchable
-                data={provincesList}
-                classNames={selectClasses}
-                flex={1}
-                {...form.getInputProps("province")}
-                onChange={(value) => {
-                  form.setFieldValue("province", value);
-                  form.setFieldValue("city", null);
-                }}
+            {showCloseButton && (
+              <IconX
+                size={18}
+                color="var(--mantine-color-surface-7)"
+                cursor={"pointer"}
+                onClick={handleClose}
               />
-              <Select
-                key={form.values.province}
-                data={currentCitiesList}
-                placeholder={t("PlaceHolders.City")}
-                label={t("City")}
-                searchable
-                leftSection={<IconBuildingCommunity size={16} />}
-                classNames={selectClasses}
-                flex={1}
-                {...form.getInputProps("city")}
-              />
-            </Flex>
+            )}
+          </Group>
+          <TextInput
+            placeholder={t("PlaceHolders.Name")}
+            leftSection={<IconUser size={16} />}
+            label={t("Name")}
+            classNames={commonClasses}
+            {...form.getInputProps("recipientName")}
+          />
+          <TextInput
+            label={t("Mobile")}
+            placeholder={t("PlaceHolders.Phone")}
+            maxLength={11}
+            leftSection={<IconPhone size={16} />}
+            classNames={commonClasses}
+            {...form.getInputProps("phone")}
+          />
 
-            <TextInput
-              placeholder={t("PlaceHolders.PostalCode")}
-              leftSection={<IconMailbox size={16} />}
-              label={t("PostalCode")}
-              maxLength={10}
-              classNames={commonClasses}
-              {...form.getInputProps("postalCode")}
+          <Flex w={"100%"} direction={{ base: "column", sm: "row" }} gap="xs">
+            <Select
+              placeholder={t("PlaceHolders.Province")}
+              label={t("Province")}
+              leftSection={<IconMap size={16} />}
+              searchable
+              data={provincesList}
+              classNames={selectClasses}
+              flex={1}
+              {...form.getInputProps("province")}
+              onChange={(value) => {
+                form.setFieldValue("province", value);
+                form.setFieldValue("city", null);
+              }}
             />
-            <Textarea
-              maxLength={250}
-              leftSection={<IconMapPin2 size={16} />}
-              label={t("Address")}
-              classNames={commonClasses}
-              {...form.getInputProps("address")}
+            <Select
+              key={form.values.province}
+              data={currentCitiesList}
+              placeholder={t("PlaceHolders.City")}
+              label={t("City")}
+              searchable
+              leftSection={<IconBuildingCommunity size={16} />}
+              classNames={selectClasses}
+              flex={1}
+              {...form.getInputProps("city")}
             />
-            {children && <Stack mt={"sm"}>{children}</Stack>}
-          </Stack>
-        </form>
-      </GlassPanel>
-    </ScrollArea>
+          </Flex>
+
+          <TextInput
+            placeholder={t("PlaceHolders.PostalCode")}
+            leftSection={<IconMailbox size={16} />}
+            label={t("PostalCode")}
+            maxLength={10}
+            classNames={commonClasses}
+            {...form.getInputProps("postalCode")}
+          />
+          <Textarea
+            maxLength={250}
+            leftSection={<IconMapPin2 size={16} />}
+            label={t("Address")}
+            classNames={commonClasses}
+            {...form.getInputProps("address")}
+          />
+          {children && <Stack mt={"sm"}>{children}</Stack>}
+        </Stack>
+      </form>
+    </GlassPanel>
   );
 }

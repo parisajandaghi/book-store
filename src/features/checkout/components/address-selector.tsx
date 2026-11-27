@@ -73,8 +73,10 @@ export default function AddressSelector() {
       className={styles.root}
       value={item.id.toString()}
       key={item.id}
+     
+      ml={5}
     >
-      <Group wrap="nowrap" align="flex-start" justify="space-between">
+      <Group wrap="nowrap" align="flex-start" justify="space-between" >
         <Group wrap="nowrap" align="flex-start">
           <Radio.Indicator variant="outline" className={styles.indicator} />
           <div
@@ -112,7 +114,7 @@ export default function AddressSelector() {
   console.log("addressCards", addresses);
 
   return (
-    <Stack flex={2}>
+    <Stack flex={2} >
       <ScrollArea.Autosize mah={430} offsetScrollbars>
         <Radio.Group
           value={activeValue}

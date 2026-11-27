@@ -24,7 +24,11 @@ export default function OrderSummary({
       : `${formattedPrice} ${t1("CurrencySymbol")}`;
   };
   return (
-    <GlassPanel flex={{ base: "1 1 auto", md: 1 }} w={{ base: "100%", md: "auto" }}  p={"sm"}>
+    <GlassPanel flex={{ base: "1 1 auto", md: 1 }} w={{ base: "100%", md: "auto" }}  p={"sm"} style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}>
       <Group gap={5}>
         <IconFileDescription size={18} color="var(--mantine-color-surface-9)" />
         <Text fw={500} c={"textMain.0"}>
@@ -81,8 +85,9 @@ export default function OrderSummary({
 
       {button && (
         <>
+        
           <HorizontalDivider />
-          <Group w={"100%"}>{button}</Group>
+          <Group w={"100%"} mt={'auto'} mb={'xs'}>{button}</Group>
         </>
       )}
     </GlassPanel>
