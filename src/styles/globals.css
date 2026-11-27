@@ -52,27 +52,23 @@ body {
 
 .fixed-background {
   position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100vh;
-  height: 100lvh;
-
+  inset: 0; /* جایگزین top, left, width, height شد */
+  
   z-index: 0;
-
   background-color: #120a12;
-
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
     url("/images/book-cover-1.jpg");
-
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   pointer-events: none;
+  
+  /* اضافه کردن این دو خط برای جلوگیری از لرزش در iOS */
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
+
 
 /* محتوای اصلی سایت همیشه بالای تصویر قرار می‌گیرد */
 .page-content {
