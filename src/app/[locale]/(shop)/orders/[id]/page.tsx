@@ -38,7 +38,7 @@ export default function OrderDetails() {
   const orderId = params.id as string;
   const { cancelOrder, isCancelling } = useCancelOrder(orderId);
   const { isLoading, order } = useOrderDetails(orderId);
-  console.log("order", order);
+  
 
   const { getStatusBadge } = useStatusBadge();
 
