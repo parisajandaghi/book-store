@@ -23,7 +23,7 @@ export default function SearchDropdown({
   const locale = useLocale();
 
   return (
-    <ScrollArea h={200} offsetScrollbars type="hover">
+    <ScrollArea h={300} offsetScrollbars type="hover">
       <Stack gap="xs">
         {books?.map((book: Book, index) => {
           const localizedBook = getLocalizedBook(book, locale);

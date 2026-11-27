@@ -34,56 +34,28 @@ body,
   background-color: transparent !important;
 }
 
-.appBackground {
-  min-height: 100vh;
-  min-height: 100dvh;
-  width: 100%;
-  position: relative;
-  background: transparent !important;
-}
-
-/* .appBackground::before {
-  content: "";
+/* لایه مجزا و ثابت بک‌گراند برای تگ <div className="fixed-background" /> */
+.fixed-background {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
-  height: 100dvh; 
-  background-image:
-    linear-gradient(
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.7)
-    ),
-    url("/images/book-cover-1.jpg");
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  
-  pointer-events: none;
+  height: 100dvh;
   z-index: -1;
-  
-
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-} */
-
-.appBackground::before {
-  content: "";
-  position: fixed;
-  inset: 0;
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
     url("/images/book-cover-1.jpg");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-
   pointer-events: none;
-  z-index: -1;
 
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+  /* شتاب‌دهنده سخت‌افزاری و ایزولاسیون GPU برای رفع پرش سامسونگ */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .custom-select-input {

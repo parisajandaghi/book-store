@@ -53,7 +53,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#120a12", // تم تاریک نوار وضعیت بالای گوشی و مرورگر موبایل
+  userScalable: false,
+  themeColor: "#120a12",
 };
 
 export default async function RootLayout({
@@ -92,12 +93,13 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${IRANSansWeb.className} appBackground`}
-        style={{
-          backgroundColor: "transparent",
-          background: "transparent",
-        }}
+        className={`${IRANSansWeb.className} `}
+        // style={{
+        //   backgroundColor: "transparent",
+        //   background: "transparent",
+        // }}
       >
+        <div className="fixed-background" />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <MantineProvider
             defaultColorScheme="dark"

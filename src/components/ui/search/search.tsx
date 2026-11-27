@@ -22,7 +22,6 @@ import SecondaryButton from "../action-panel/secondary-button";
 import SearchDropdown from "./search-dropdown";
 import { SearchBoxProps } from "./search.type";
 
-
 export default function Search({
   placeholder,
   buttonText,
@@ -49,89 +48,91 @@ export default function Search({
   };
 
   return (
-  <Group className={style.searchContainer} p={1}>
-    <Popover
-      opened={focused && isOpen}
-      width="target"
-      position="bottom-start"
-      offset={4}
-      shadow="md"
-    >
-      <Popover.Target>
-        <Paper
-          className={`${style.wrapper} ${focused ? style.focused : ""}`}
-        >
-          <Input
-            rightSectionPointerEvents="all"
-            variant="unstyled"
-            value={searchQuery}
-            placeholder={placeholder}
-            rightSection={
-              <ActionIcon variant="subtle" onClick={handleSearch}>
-                <IconSearch size={18} color="gray" />
-              </ActionIcon>
-            }
-            onFocus={() => setFocused(true)}
-            onKeyDown={(e) => {
-              if (!books.length) return;
-
-              if (e.key === "ArrowUp") {
-                e.preventDefault();
-                setSelectedIndex((prev) => Math.max(prev - 1, 0));
-              }
-
-              if (e.key === "ArrowDown") {
-                e.preventDefault();
-                setSelectedIndex((prev) =>
-                  Math.min(prev + 1, books.length - 1),
-                );
-              }
-
-              if (e.key === "Enter") {
-                if (selectedIndex >= 0) {
-                  router.push(`/books/${books[selectedIndex].id}`);
-                } else {
-                  handleSearch();
-                }
-              }
-            }}
-            onBlur={() => {
-              setTimeout(() => setFocused(false), 150);
-            }}
-            classNames={{
-              input: style.input,
-            }}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setSelectedIndex(-1);
-            }}
-          />
-        </Paper>
-      </Popover.Target>
-
-      <Popover.Dropdown
-        bg="#1f0f1fa8"
-        bd="none"
-        p="xs"
-        style={{ backdropFilter: "blur(30px)" }}
+    <Group className={style.searchContainer} p={1}>
+      <Popover
+        opened={focused && isOpen}
+        width="target" // عرض را دقیقاً به عرض Wrapper تنظیم می‌کند
+        position="bottom-start"
+        middlewares={{ flip: false, shift: true }} // جلوگیری از پرش به بالا
+        withinPortal={true}
+        offset={8}
+        shadow="md"
       >
-        {!isPending ? (
-          <Center>
-            <Loader size="sm" color="surface.4" />
-          </Center>
-        ) : isEmpty ? (
-          <Text size="sm" c="dimmed" ta="center">
-            {t("NotFound")}
-          </Text>
-        ) : (
-          <SearchDropdown books={books} selectedIndex={selectedIndex} />
-        )}
-      </Popover.Dropdown>
-    </Popover>
+        <Popover.Target>
+          <Paper className={`${style.wrapper} ${focused ? style.focused : ""}`}>
+            <Input
+              rightSectionPointerEvents="all"
+              variant="unstyled"
+              value={searchQuery}
+              placeholder={placeholder}
+              rightSection={
+                <ActionIcon variant="subtle" onClick={handleSearch}>
+                  <IconSearch size={18} color="gray" />
+                </ActionIcon>
+              }
+              onFocus={() => setFocused(true)}
+              onKeyDown={(e) => {
+                if (!books.length) return;
 
-    <Link href={buttonLink} className={style.searchButtonLink}>
-      <SecondaryButton btnText={buttonText} radius={20} />
-    </Link>
-  </Group>
-);;
+                if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  setSelectedIndex((prev) => Math.max(prev - 1, 0));
+                }
+
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setSelectedIndex((prev) =>
+                    Math.min(prev + 1, books.length - 1),
+                  );
+                }
+
+                if (e.key === "Enter") {
+                  if (selectedIndex >= 0) {
+                    router.push(`/books/${books[selectedIndex].id}`);
+                  } else {
+                    handleSearch();
+                  }
+                }
+              }}
+              onBlur={() => {
+                setTimeout(() => setFocused(false), 150);
+              }}
+              classNames={{
+                input: style.input,
+              }}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setSelectedIndex(-1);
+              }}
+            />
+          </Paper>
+        </Popover.Target>
+
+        <Popover.Dropdown
+          bg="#1f0f1fa8"
+          p="xs"
+          style={{
+            backdropFilter: "blur(40px)",
+            border: "1px solid rgba(212, 175, 55, 0.3)",
+          }}
+        >
+          {!isPending ? (
+            <Center>
+              <Loader size="sm" color="surface.4" />
+            </Center>
+          ) : isEmpty ? (
+            <Text size="sm" c="dimmed" ta="center">
+              {t("NotFound")}
+            </Text>
+          ) : (
+            <SearchDropdown books={books} selectedIndex={selectedIndex} />
+          )}
+        </Popover.Dropdown>
+      </Popover>
+
+      <Link href={buttonLink} className={style.searchButtonLink}>
+        <SecondaryButton btnText={buttonText} radius={20} />
+      </Link>
+    </Group>
+  );
 }
