@@ -1,3 +1,4 @@
+
 :root {
   --mantine-color-body: transparent !important;
 }
@@ -11,19 +12,17 @@
   background-color: transparent !important;
 }
 
-/* پس‌زمینه پایه برای زمان بارگذاری تصویر */
+/* پس‌زمینه پایه */
 html {
   min-height: 100%;
   width: 100%;
-  padding: 0;
   margin: 0;
-
+  padding: 0;
   background-color: #120a12 !important;
-
   overscroll-behavior-y: none;
 }
 
-/* تنظیمات اصلی بدنه سایت */
+/* بدنه اصلی */
 body {
   position: relative;
   isolation: isolate;
@@ -32,45 +31,46 @@ body {
   min-height: 100dvh;
 
   width: 100%;
-  font-family: "IRANSansWeb";
-
-  padding: 0;
   margin: 0;
+  padding: 0;
 
+  font-family: "IRANSansWeb";
   overflow-x: clip;
 
   background: transparent !important;
-  background-color: transparent !important;
 }
 
-/*
-  لایه ثابت تصویر پس‌زمینه
-
-  استفاده از inset: 0 به جای height: 100dvh
-  برای جلوگیری از تغییر ارتفاع پس‌زمینه هنگام اسکرول موبایل
-*/
-
+/* لایه ثابت پس‌زمینه */
 .fixed-background {
   position: fixed;
-  inset: 0; /* جایگزین top, left, width, height شد */
-  
+
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+
   z-index: 0;
+  pointer-events: none;
+
   background-color: #120a12;
+
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+    linear-gradient(
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.7)
+    ),
     url("/images/book-cover-1.jpg");
+
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  pointer-events: none;
-  
-  /* اضافه کردن این دو خط برای جلوگیری از لرزش در iOS */
-  -webkit-backface-visibility: hidden;
-  will-change: transform;
 }
 
-
-/* محتوای اصلی سایت همیشه بالای تصویر قرار می‌گیرد */
+/* محتوای سایت بالای پس‌زمینه */
 .page-content {
   position: relative;
   z-index: 1;
@@ -79,20 +79,17 @@ body {
   min-height: 100dvh;
 
   width: 100%;
-
   background: transparent !important;
 }
 
-/* استایل‌های Select */
-
+/* Select */
 .custom-select-input {
   color: #fdf6eb;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
-  padding: 0px 15px;
+  padding: 0 15px;
   background: rgba(47, 22, 47, 0.57);
   backdrop-filter: blur(10px);
-
   transition: all 0.3s ease;
   height: 30px;
 }
