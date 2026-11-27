@@ -97,7 +97,7 @@ export default async function RootLayout({
       {...mantineHtmlProps}
       suppressHydrationWarning
       style={{
-        backgroundColor: "#120a12",
+        backgroundColor: "#000000",
       }}
     >
       <head>
